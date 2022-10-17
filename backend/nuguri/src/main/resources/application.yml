@@ -1,0 +1,40 @@
+spring:
+  profiles:
+    include: API-KEY
+  output:
+    ansi:
+      enabled: always # ?? ?? ??
+  datasource:
+    url: jdbc:mysql://localhost:3306/uniqon?allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
+    username: uniqon
+    driver-class-name: com.mysql.cj.jdbc.Driver # MySql ???? ??
+    password: ${MYSQL_PASSWORD}
+  sql:
+    init:
+      mode: always
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 1000
+    defer-datasource-initialization: true
+
+  redis:
+    host: localhost
+    port: 6379
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+  servlet:
+    multipart:
+      max-file-size: 7MB
+      max-request-size: 7MB
+
+logging:
+  level:
+    org.hibernate.SQL: debug
