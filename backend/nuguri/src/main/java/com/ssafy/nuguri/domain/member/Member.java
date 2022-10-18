@@ -2,9 +2,11 @@ package com.ssafy.nuguri.domain.member;
 
 import com.ssafy.nuguri.domain.BaseEntity;
 import com.ssafy.nuguri.domain.alarm.Alarm;
+import com.ssafy.nuguri.domain.baseaddress.BaseAddress;
 import com.ssafy.nuguri.domain.deal.Deal;
 import com.ssafy.nuguri.domain.deal.DealFavorite;
 import com.ssafy.nuguri.domain.deal.DealHistory;
+import com.ssafy.nuguri.domain.group.GroupPurchase;
 import com.ssafy.nuguri.domain.group.GroupPurchaseHistory;
 import com.ssafy.nuguri.domain.hobby.HobbyHistory;
 import lombok.AllArgsConstructor;
@@ -28,6 +30,10 @@ public class Member extends BaseEntity {
     @Column(name = "member_id")
     private Long id;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "local_id")
+    private BaseAddress baseAddress;
+
     @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Alarm> alarmList = new ArrayList<>();
@@ -50,6 +56,10 @@ public class Member extends BaseEntity {
 
     @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<GroupPurchase> groupPurchaseList = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<GroupPurchaseHistory> groupPurchaseHistoryList = new ArrayList<>();
 
     @Column(unique = true)
@@ -60,12 +70,12 @@ public class Member extends BaseEntity {
     @Column(unique = true)
     private String nickname;
 
-    private int dongcode;
-
     private double temperature;
 
     private int age;
 
-    private boolean isMan;
+    private char sex;
+
+    private String profileImage;
 
 }

@@ -4,6 +4,7 @@ import com.ssafy.nuguri.domain.BaseEntity;
 import com.ssafy.nuguri.domain.deal.Deal;
 import com.ssafy.nuguri.domain.group.GroupPurchase;
 import com.ssafy.nuguri.domain.hobby.Hobby;
+import com.ssafy.nuguri.domain.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,6 +25,9 @@ public class BaseAddress extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "local_id")
     private Long id;
+
+    @OneToOne(mappedBy = "baseAddress", fetch = FetchType.LAZY)
+    private Member member;
 
     @Builder.Default
     @OneToMany(mappedBy = "baseAddress", cascade = CascadeType.ALL)

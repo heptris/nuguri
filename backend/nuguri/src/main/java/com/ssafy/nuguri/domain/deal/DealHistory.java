@@ -32,6 +32,11 @@ public class DealHistory extends BaseEntity {
 
     private LocalDateTime dealDate;
 
-    private boolean isPurchase;
+    @Enumerated(EnumType.STRING)
+    private DealStatus dealStatus;
+
+    private LocalDateTime promiseTime;
+
+    private String promiseLocation;
 
 }

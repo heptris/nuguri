@@ -31,6 +31,7 @@ public class HobbyHistory extends BaseEntity {
 
     private boolean isPromoter;
 
-    private boolean isApproved;
+    @Enumerated(EnumType.STRING)
+    private ApproveStatus approveStatus;
 
 }

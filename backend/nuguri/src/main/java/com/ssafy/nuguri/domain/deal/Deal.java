@@ -60,10 +60,5 @@ public class Deal extends BaseEntity {
 
     private boolean isDeal;
 
-    private String productType;
-
-    private LocalDateTime promiseTime;
-
-    private String promiseLocation;
-
+    private String dealImage;
 }

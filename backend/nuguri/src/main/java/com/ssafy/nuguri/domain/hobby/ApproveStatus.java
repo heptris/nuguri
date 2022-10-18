@@ -1,5 +1,5 @@
 package com.ssafy.nuguri.domain.hobby;
 
-public enum HobbyMemberStatus {
+public enum ApproveStatus {
     APPROVE, READY, REJECT
 }

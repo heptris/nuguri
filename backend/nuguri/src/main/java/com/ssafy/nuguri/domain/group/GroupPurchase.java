@@ -3,6 +3,7 @@ package com.ssafy.nuguri.domain.group;
 import com.ssafy.nuguri.domain.BaseEntity;
 import com.ssafy.nuguri.domain.baseaddress.BaseAddress;
 import com.ssafy.nuguri.domain.category.Category;
+import com.ssafy.nuguri.domain.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,6 +31,10 @@ public class GroupPurchase extends BaseEntity {
     private List<GroupPurchaseHistory> groupPurchaseHistoryList = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "local_id")
     private BaseAddress baseAddress;
 
@@ -41,9 +46,9 @@ public class GroupPurchase extends BaseEntity {
 
     private String productName;
 
-    private String productUrl;
+    private String description;
 
-    private String productType;
+    private String productUrl;
 
     private LocalDateTime endDate;
 
@@ -52,5 +57,7 @@ public class GroupPurchase extends BaseEntity {
     private int reservedNumber;
 
     private int price;
+
+    private String groupPurchaseImage;
 
 }
