@@ -10,5 +10,12 @@
     "@storybook/core-common/webpack": "^5",
     "@storybook/core-server/webpack": "^5",
     "@storybook/react/webpack": "^5"
+  },
+  "scripts": {
+    "dev": "yarn workspace web dev",
+    "build": "yarn workspace web build",
+    "start": "yarn workspace web start",
+    "storybook": "yarn workspace @common/components storybook",
+    "build-storybook": "yarn workspace @common/components build-storybook"
   }
 }
