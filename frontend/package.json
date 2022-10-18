@@ -4,5 +4,11 @@
   "private": true,
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "resolutions": {
+    "webpack": "5",
+    "@storybook/core-common/webpack": "^5",
+    "@storybook/core-server/webpack": "^5",
+    "@storybook/react/webpack": "^5"
+  }
 }

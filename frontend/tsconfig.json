@@ -18,9 +18,9 @@
   },
   "references": [
     {
-      "path": "packages/web"
+      "path": ["packages/web", "packages/components"]
     }
   ],
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "packages/**/dist/**"]
 }
