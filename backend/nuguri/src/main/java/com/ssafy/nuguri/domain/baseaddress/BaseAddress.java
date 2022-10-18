@@ -19,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Entity
-public class BaseAddress extends BaseEntity {
+public class BaseAddress {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,10 +47,10 @@ public class BaseAddress extends BaseEntity {
 
     private String dong;
 
-    private int dongcode;
+    private String dongcode;
 
-    private double lat;
+    private String lat;
 
-    private double lng;
+    private String lng;
 
 }

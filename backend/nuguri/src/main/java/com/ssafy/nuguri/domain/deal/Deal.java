@@ -48,11 +48,7 @@ public class Deal extends BaseEntity {
 
     private String title;
 
-    private String productName;
-
     private String description;
-
-    private LocalDateTime endDate;
 
     private int price;
 

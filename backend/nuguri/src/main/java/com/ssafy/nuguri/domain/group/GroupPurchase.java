@@ -44,8 +44,6 @@ public class GroupPurchase extends BaseEntity {
 
     private String title;
 
-    private String productName;
-
     private String description;
 
     private String productUrl;
