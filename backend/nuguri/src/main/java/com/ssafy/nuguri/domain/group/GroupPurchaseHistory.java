@@ -1,4 +1,4 @@
-package com.ssafy.nuguri.domain.deal;
+package com.ssafy.nuguri.domain.group;
 
 import com.ssafy.nuguri.domain.BaseEntity;
 import com.ssafy.nuguri.domain.member.Member;
@@ -8,30 +8,25 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @NoArgsConstructor
 @Builder
 @AllArgsConstructor
 @Getter
 @Entity
-public class DealHistory extends BaseEntity {
+public class GroupPurchaseHistory extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "deal_history_id")
+    @Column(name = "group_purchase_history_id")
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_purchase_id")
+    private GroupPurchase groupPurchase;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "deal_id")
-    private Deal deal;
-
-    private LocalDateTime dealDate;
-
-    private boolean isPurchase;
 
 }

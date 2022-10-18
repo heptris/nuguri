@@ -1,4 +1,4 @@
-package com.ssafy.nuguri.domain.hobby;
+package com.ssafy.nuguri.domain.group;
 
 import com.ssafy.nuguri.domain.BaseEntity;
 import com.ssafy.nuguri.domain.baseaddress.BaseAddress;
@@ -18,16 +18,16 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Entity
-public class Hobby extends BaseEntity {
+public class GroupPurchase extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "hobby_id")
+    @Column(name = "group_purchase_id")
     private Long id;
 
     @Builder.Default
-    @OneToMany(mappedBy = "hobby", cascade = CascadeType.ALL)
-    private List<HobbyHistory> hobbyHistoryList = new ArrayList<>();
+    @OneToMany(mappedBy = "groupPurchase", cascade = CascadeType.ALL)
+    private List<GroupPurchaseHistory> groupPurchaseHistoryList = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "local_id")
@@ -39,22 +39,18 @@ public class Hobby extends BaseEntity {
 
     private String title;
 
-    private String content;
+    private String productName;
+
+    private String productUrl;
+
+    private String productType;
 
     private LocalDateTime endDate;
 
-    private String meetingPlace;
+    private int goalNumber;
 
-    private boolean isClosed;
+    private int reservedNumber;
 
-    private int curNum;
-
-    private int maxNum;
-
-    private int fee;
-
-    private int ageLimit;
-
-    private int sexLimit;
+    private int price;
 
 }

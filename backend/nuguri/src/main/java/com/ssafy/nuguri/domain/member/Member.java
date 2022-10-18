@@ -1,13 +1,11 @@
 package com.ssafy.nuguri.domain.member;
 
+import com.ssafy.nuguri.domain.BaseEntity;
 import com.ssafy.nuguri.domain.alarm.Alarm;
-import com.ssafy.nuguri.domain.baseaddress.BaseAddress;
 import com.ssafy.nuguri.domain.deal.Deal;
 import com.ssafy.nuguri.domain.deal.DealFavorite;
 import com.ssafy.nuguri.domain.deal.DealHistory;
-import com.ssafy.nuguri.domain.grouppurchase.GroupPurchase;
-import com.ssafy.nuguri.domain.grouppurchase.GroupPurchaseHistory;
-import com.ssafy.nuguri.domain.hobby.Hobby;
+import com.ssafy.nuguri.domain.group.GroupPurchaseHistory;
 import com.ssafy.nuguri.domain.hobby.HobbyHistory;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,7 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Entity
-public class Member {
+public class Member extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
