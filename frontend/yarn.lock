@@ -9261,6 +9261,8 @@ __metadata:
 "frontend@workspace:.":
   version: 0.0.0-use.local
   resolution: "frontend@workspace:."
+  dependencies:
+    typescript: ^4.8.4
   languageName: unknown
   linkType: soft
 

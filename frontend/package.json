@@ -17,5 +17,8 @@
     "start": "yarn workspace web start",
     "storybook": "yarn workspace @common/components storybook",
     "build-storybook": "yarn workspace @common/components build-storybook"
+  },
+  "devDependencies": {
+    "typescript": "^4.8.4"
   }
 }
