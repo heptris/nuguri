@@ -26,4 +26,22 @@ public class DealController {
         );
     }
 
+    @ApiOperation(value = "비로그인시 중고거래 상세페이지 조회")
+    @GetMapping("/{dealId}/detail")
+    public ResponseEntity findDealDetail(@PathVariable Long dealId){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseDto(HttpStatus.OK.value(), "비로그인시 중고거래 상세페이지", dealService.findDealDetail(dealId))
+        );
+    }
+
+    @ApiOperation(value = "로그인시 중고거래 상세페이지 조회")
+    @GetMapping("/{dealId}/login/detail")
+    public ResponseEntity findLoginDealDetail(@PathVariable Long dealId){
+//        Long memberId = SecurityUtil.getCurrentMemberId();
+        Long memberId = 1L;
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseDto(HttpStatus.OK.value(), "비로그인시 중고거래 상세페이지", dealService.findLoginDealDetail(memberId, dealId))
+        );
+    }
+
 }

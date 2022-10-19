@@ -3,6 +3,10 @@ package com.ssafy.nuguri.repository.deal;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.nuguri.domain.deal.QDealFavorite;
+import com.ssafy.nuguri.domain.member.QMember;
+import com.ssafy.nuguri.dto.deal.DealDetailDto;
+import com.ssafy.nuguri.dto.deal.DealLoginDetailDto;
 import com.ssafy.nuguri.dto.deal.DealListDto;
 
 import javax.persistence.EntityManager;
@@ -11,6 +15,8 @@ import java.util.List;
 import static com.ssafy.nuguri.domain.baseaddress.QBaseAddress.baseAddress;
 import static com.ssafy.nuguri.domain.category.QCategory.category;
 import static com.ssafy.nuguri.domain.deal.QDeal.deal;
+import static com.ssafy.nuguri.domain.deal.QDealFavorite.dealFavorite;
+import static com.ssafy.nuguri.domain.member.QMember.member;
 
 public class DealRepositoryImpl implements DealRepositoryCustom{
 
@@ -22,19 +28,9 @@ public class DealRepositoryImpl implements DealRepositoryCustom{
 
     @Override
     public List<DealListDto> findLocalCategoryDealList(Long localId, Long categoryId) {
-        Tuple tuple = queryFactory
-                .select(baseAddress.lat,
-                        baseAddress.lng
-                )
-                .from(baseAddress)
-                .where(baseAddress.id.eq(localId))
-                .fetchOne();
-
-        double lat = Double.parseDouble(tuple.get(baseAddress.lat));
-        System.out.println("lat = " + lat);
-
-        double lng = Double.parseDouble(tuple.get(baseAddress.lng));
-        System.out.println("lng = " + lng);
+        double[] latLng = findLatLng(localId);
+        double lat = latLng[0];
+        double lng = latLng[1];
 
         List<DealListDto> dealListDtoList = queryFactory.select(Projections.constructor(DealListDto.class,
                         deal.id,
@@ -56,5 +52,57 @@ public class DealRepositoryImpl implements DealRepositoryCustom{
                 .fetch();
 
         return dealListDtoList;
+    }
+
+    @Override
+    public DealDetailDto dealDetail(Long dealId) {
+        return queryFactory
+                .select(Projections.constructor(DealDetailDto.class,
+                        deal.id,
+                        deal.title,
+                        deal.description,
+                        deal.price,
+                        deal.hit,
+                        deal.isDeal,
+                        deal.dealImage,
+                        baseAddress.dong,
+                        deal.member.id
+                ))
+                .from(deal)
+                .innerJoin(deal.baseAddress, baseAddress)
+                .where(deal.id.eq(dealId))
+                .fetchOne();
+    }
+
+    @Override
+    public boolean findIsDealFavorite(Long memberId, Long dealId) {
+        Boolean isFavorite = queryFactory
+                .select(dealFavorite.isFavorite)
+                .from(member)
+                .innerJoin(member.dealFavoriteList, dealFavorite)
+                .innerJoin(dealFavorite.deal, deal)
+                .where(member.id.eq(memberId).and(deal.id.eq(dealId)))
+                .fetchOne();
+        if(isFavorite == null){
+            return false;
+        }
+        return isFavorite;
+    }
+
+    public double[] findLatLng(Long localId){
+        Tuple tuple = queryFactory
+                .select(baseAddress.lat,
+                        baseAddress.lng
+                )
+                .from(baseAddress)
+                .where(baseAddress.id.eq(localId))
+                .fetchOne();
+
+        double lat = Double.parseDouble(tuple.get(baseAddress.lat));
+        System.out.println("lat = " + lat);
+
+        double lng = Double.parseDouble(tuple.get(baseAddress.lng));
+        System.out.println("lng = " + lng);
+        return new double[] {lat, lng};
     }
 }

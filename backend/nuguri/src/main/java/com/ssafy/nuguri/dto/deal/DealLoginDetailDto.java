@@ -9,17 +9,20 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DealListDto {
+public class DealLoginDetailDto {
 
+    // 로그인시
     private Long dealId;
-    private Long categoryId;
-    private Long localId;
     private String title;
     private String description;
     private int price;
     private int hit;
     private boolean isDeal;
     private String dealImage;
-//    무슨 동인지도 필요할 거 같음
-//    private String dong;
+    // baseAddress Join
+    private String dong;
+    // 즐겨찾기
+    private boolean isFavorite;
+    private Long sellerId;
+
 }
