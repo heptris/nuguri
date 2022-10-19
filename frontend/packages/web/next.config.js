@@ -1,3 +1,4 @@
+const withTM = require("next-transpile-modules")(["@common/components"]);
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
@@ -7,4 +8,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = withTM(nextConfig);
