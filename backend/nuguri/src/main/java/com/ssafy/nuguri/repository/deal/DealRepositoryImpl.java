@@ -31,11 +31,9 @@ public class DealRepositoryImpl implements DealRepositoryCustom{
                 .fetchOne();
 
         double lat = Double.parseDouble(tuple.get(baseAddress.lat));
-//        double lat = 36.0;
         System.out.println("lat = " + lat);
 
         double lng = Double.parseDouble(tuple.get(baseAddress.lng));
-//        double lng = 126.0;
         System.out.println("lng = " + lng);
 
         List<DealListDto> dealListDtoList = queryFactory.select(Projections.constructor(DealListDto.class,
