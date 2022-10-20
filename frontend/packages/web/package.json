@@ -24,6 +24,7 @@
     "@emotion/cache": "^11.10.3",
     "@emotion/react": "11.10.4",
     "@emotion/styled": "11.10.4",
+    "@mui/material": "^5.10.10",
     "next": "latest",
     "react": "18.2.0",
     "react-dom": "18.2.0"
