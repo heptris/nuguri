@@ -11,6 +11,7 @@ import com.ssafy.nuguri.dto.deal.DealListDto;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 
 import static com.ssafy.nuguri.domain.baseaddress.QBaseAddress.baseAddress;
 import static com.ssafy.nuguri.domain.category.QCategory.category;
@@ -55,8 +56,8 @@ public class DealRepositoryImpl implements DealRepositoryCustom{
     }
 
     @Override
-    public DealDetailDto dealDetail(Long dealId) {
-        return queryFactory
+    public Optional<DealDetailDto> dealDetail(Long dealId) {
+        return Optional.ofNullable(queryFactory
                 .select(Projections.constructor(DealDetailDto.class,
                         deal.id,
                         deal.title,
@@ -71,8 +72,31 @@ public class DealRepositoryImpl implements DealRepositoryCustom{
                 .from(deal)
                 .innerJoin(deal.baseAddress, baseAddress)
                 .where(deal.id.eq(dealId))
-                .fetchOne();
+                .fetchOne());
     }
+
+//    @Override
+//    public Optional<DealLoginDetailDto> dealLoginDetail(Long memberId, Long dealId) {
+//        return Optional.ofNullable(queryFactory
+//                .select(Projections.constructor(DealLoginDetailDto.class,
+//                        deal.id,
+//                        deal.title,
+//                        deal.description,
+//                        deal.price,
+//                        deal.hit,
+//                        deal.isDeal,
+//                        deal.dealImage,
+//                        baseAddress.dong,
+//                        dealFavorite.isFavorite,
+//                        deal.member.id
+//                ))
+//                .from(member)
+//                .innerJoin(member.dealFavoriteList, dealFavorite)
+//                .innerJoin(dealFavorite.deal, deal)
+//                .innerJoin(deal.baseAddress, baseAddress)
+//                .where(member.id.eq(memberId).and(deal.id.eq(dealId)))
+//                .fetchOne());
+//    }
 
     @Override
     public boolean findIsDealFavorite(Long memberId, Long dealId) {

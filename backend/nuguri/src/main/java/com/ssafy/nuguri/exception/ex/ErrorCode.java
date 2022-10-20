@@ -14,6 +14,9 @@ public enum ErrorCode {
 
     // 404 NOT FOUND 잘못된 리소스 접근
     MEMBER_NOT_FOUND(404, "존재하지 않은 회원 ID 입니다."),
+    DEAL_NOT_FOUND(404, "존재하지 않는 중고거래입니다."),
+    CATEGORY_NOT_FOUND(404, "존재하지 않는 카테고리입니다."),
+    BASEADDRESS_NOT_FOUND(404, "존재하지 않는 지역입니다."),
 
 
     //409 CONFLICT 중복된 리소스

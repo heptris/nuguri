@@ -2,6 +2,7 @@ package com.ssafy.nuguri.repository.deal;
 
 import com.ssafy.nuguri.dto.deal.DealDetailDto;
 import com.ssafy.nuguri.dto.deal.DealListDto;
+import com.ssafy.nuguri.dto.deal.DealLoginDetailDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import javax.transaction.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @SpringBootTest
@@ -28,9 +30,18 @@ class DealRepositoryImplTest {
 
     @Test
     public void 중고거래상세페이지() throws Exception{
-        DealDetailDto dealDetailDto = dealRepository.dealDetail(2L);
+        Optional<DealDetailDto> dealDetailDto = dealRepository.dealDetail(2L);
         System.out.println("dealDetailDto = " + dealDetailDto);
     }
+
+//    @Test
+//    public void 로그인시중고거래상세페이지() throws Exception{
+//        //given
+//        Optional<DealLoginDetailDto> dealLoginDetailDto = dealRepository.dealLoginDetail(1L, 3L);
+//
+//        System.out.println("dealLoginDetailDto = " + dealLoginDetailDto);
+//
+//     }
 
     @Test
     public void 즐겨찾기확인() throws Exception{
