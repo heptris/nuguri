@@ -67,6 +67,9 @@ public class Member extends BaseEntity {
 
     private String name;
 
+    @Column(nullable = false)
+    private String password;
+
     @Column(unique = true)
     private String nickname;
 

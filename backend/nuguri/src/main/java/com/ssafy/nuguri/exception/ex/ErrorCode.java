@@ -8,12 +8,15 @@ import lombok.Getter;
 public enum ErrorCode {
 
 
+    // 400
+    NOT_EQUAL_PASSWORD(400, "비밀번호가 서로 일치하지 않습니다"),
 
     // 401
 
 
     // 404 NOT FOUND 잘못된 리소스 접근
     MEMBER_NOT_FOUND(404, "존재하지 않은 회원 ID 입니다."),
+    MEMBER_EMAIL_NOT_FOUND(404, "존재하지 않은 이메일입니다."),
 
 
     //409 CONFLICT 중복된 리소스
