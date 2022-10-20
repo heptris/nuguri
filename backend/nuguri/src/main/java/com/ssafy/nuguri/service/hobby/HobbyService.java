@@ -1,4 +1,4 @@
-package com.ssafy.nuguri.service.hobby;
+package com.ssafy.nuguri.service.group.hobby;
 
 import com.ssafy.nuguri.domain.hobby.Hobby;
 import com.ssafy.nuguri.repository.hobby.HobbyRepository;

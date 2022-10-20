@@ -1,16 +1,15 @@
-package com.ssafy.nuguri.service.hobby;
+package com.ssafy.nuguri.service.group.hobby;
 
 import com.ssafy.nuguri.domain.hobby.ApproveStatus;
 import com.ssafy.nuguri.domain.hobby.Hobby;
 import com.ssafy.nuguri.domain.hobby.HobbyHistory;
-import com.ssafy.nuguri.domain.member.Member;
+import com.ssafy.nuguri.dto.member.member.Member;
 import com.ssafy.nuguri.repository.hobby.HobbyHistoryRepository;
 import com.ssafy.nuguri.repository.hobby.HobbyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
