@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 public class HobbyHistoryDto {
-    private Long id;
-    private Long Id;
+    private Long hobbyHistoryId;
     private Long hobbyId;
+    private Long memberId;
     private boolean isPromoter;
     private ApproveStatus approveStatus;
 

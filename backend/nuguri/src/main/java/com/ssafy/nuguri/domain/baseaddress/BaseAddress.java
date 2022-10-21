@@ -1,10 +1,9 @@
 package com.ssafy.nuguri.domain.baseaddress;
 
-import com.ssafy.nuguri.domain.BaseEntity;
 import com.ssafy.nuguri.domain.deal.Deal;
 import com.ssafy.nuguri.domain.group.GroupPurchase;
 import com.ssafy.nuguri.domain.hobby.Hobby;
-import com.ssafy.nuguri.domain.member.Member;
+import com.ssafy.nuguri.dto.member.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
