@@ -31,4 +31,8 @@ public class DealFavorite extends BaseEntity {
 
     private boolean isFavorite;
 
+    public void changeFavorite(){
+        this.isFavorite = !this.isFavorite;
+    }
+
 }

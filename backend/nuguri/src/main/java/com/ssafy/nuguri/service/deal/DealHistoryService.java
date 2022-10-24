@@ -4,6 +4,7 @@ import com.ssafy.nuguri.domain.deal.Deal;
 import com.ssafy.nuguri.domain.deal.DealHistory;
 import com.ssafy.nuguri.domain.deal.DealStatus;
 import com.ssafy.nuguri.domain.member.Member;
+import com.ssafy.nuguri.dto.deal.DealFinishedDto;
 import com.ssafy.nuguri.dto.deal.DealHistoryUpdateDto;
 import com.ssafy.nuguri.exception.ex.CustomException;
 import com.ssafy.nuguri.exception.ex.ErrorCode;
@@ -16,8 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-import static com.ssafy.nuguri.exception.ex.ErrorCode.ALREADY_USED_DEALHISTORY;
-import static com.ssafy.nuguri.exception.ex.ErrorCode.DEALHISTORY_NOT_FOUND;
+import static com.ssafy.nuguri.exception.ex.ErrorCode.*;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -43,7 +43,7 @@ public class DealHistoryService {
 
         // 이미 채팅을 했던 것에 대한 중복 로그 쌓임 방지를 위한 Exception
         DealHistory duplicateCheckDealRepository = dealHistoryRepository.findByMemberIdAndDealId(memberId, dealId);
-        if(duplicateCheckDealRepository != null)throw new CustomException(ALREADY_USED_DEALHISTORY);
+        if(duplicateCheckDealRepository != null)throw new CustomException(ALREADY_USED_DEAL_HISTORY);
 
         dealHistoryRepository.save(dealHistory);
     }
@@ -52,10 +52,22 @@ public class DealHistoryService {
     public void updateToReserver(DealHistoryUpdateDto dealHistoryUpdateDto){
         DealHistory dealHistory = dealHistoryRepository.
                 findByMemberIdAndDealId(dealHistoryUpdateDto.getBuyerId(), dealHistoryUpdateDto.getDealId());
-        if(dealHistory == null) throw new CustomException(DEALHISTORY_NOT_FOUND);
+        if(dealHistory == null) throw new CustomException(DEAL_HISTORY_NOT_FOUND);
 
         dealHistory.updateDealHistory(DealStatus.RESERVER,
                 dealHistoryUpdateDto.getPromiseTime(), dealHistoryUpdateDto.getPromiseLocation());
     }
 
+    @Transactional
+    public void dealFinished(DealFinishedDto dealFinishedDto){
+        Deal deal = dealRepository.findById(dealFinishedDto.getDealId())
+                .orElseThrow(()->new CustomException(DEAL_NOT_FOUND));
+        deal.finishDeal();
+
+        DealHistory dealHistory = dealHistoryRepository.
+                findByMemberIdAndDealId(dealFinishedDto.getBuyerId(), dealFinishedDto.getDealId());
+        if(dealHistory == null) throw new CustomException(DEAL_HISTORY_NOT_FOUND);
+
+        dealHistory.dealFinished();
+    }
 }

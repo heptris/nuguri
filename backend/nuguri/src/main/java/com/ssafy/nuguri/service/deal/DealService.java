@@ -3,6 +3,7 @@ package com.ssafy.nuguri.service.deal;
 import com.ssafy.nuguri.domain.baseaddress.BaseAddress;
 import com.ssafy.nuguri.domain.category.Category;
 import com.ssafy.nuguri.domain.deal.Deal;
+import com.ssafy.nuguri.domain.deal.DealFavorite;
 import com.ssafy.nuguri.domain.member.Member;
 import com.ssafy.nuguri.domain.s3.AwsS3;
 import com.ssafy.nuguri.dto.deal.DealDetailDto;
@@ -12,6 +13,7 @@ import com.ssafy.nuguri.dto.deal.DealRegistRequestDto;
 import com.ssafy.nuguri.exception.ex.CustomException;
 import com.ssafy.nuguri.repository.baseaddress.BaseaddressRepository;
 import com.ssafy.nuguri.repository.category.CategoryRepository;
+import com.ssafy.nuguri.repository.deal.DealFavoriteRepository;
 import com.ssafy.nuguri.repository.deal.DealRepository;
 import com.ssafy.nuguri.repository.member.MemberRepository;
 import com.ssafy.nuguri.service.s3.AwsS3Service;
@@ -21,7 +23,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +41,7 @@ public class DealService {
 
     private final DealRepository dealRepository;
     private final MemberRepository memberRepository;
+    private final DealFavoriteRepository dealFavoriteRepository;
     private final CategoryRepository categoryRepository;
     private final BaseaddressRepository baseaddressRepository;
     private final AwsS3Service awsS3Service;
@@ -105,5 +113,67 @@ public class DealService {
                 .build();
     }
 
+    @Transactional
+    public void createOrModifyDealFavorite(Long memberId, Long dealId){
+        DealFavorite dealFavorite = dealFavoriteRepository.findByMemberIdAndDealId(memberId, dealId);
+        if(dealFavorite == null) {
+            Member member = memberRepository.findById(memberId).orElseThrow(()-> new CustomException(MEMBER_NOT_FOUND));
+            Deal deal = dealRepository.findById(dealId).orElseThrow(()-> new CustomException(DEAL_NOT_FOUND));
+            DealFavorite newDealFavorite = DealFavorite.builder()
+                    .member(member)
+                    .deal(deal)
+                    .isFavorite(true)
+                    .build();
+            dealFavoriteRepository.save(newDealFavorite);
+        }else{
+            dealFavorite.changeFavorite();
+        }
+    }
+
+    private final static String VIEWCOOKIENAME = "alreadyViewCookie";
+
+    @Transactional
+    public void increaseHit(Long dealId, HttpServletRequest request, HttpServletResponse response){
+        Deal deal = dealRepository.findById(dealId).orElseThrow(()-> new CustomException(DEAL_NOT_FOUND));
+        Cookie[] cookies = request.getCookies();
+        boolean checkCookie = false;
+        if(cookies != null){
+            for (Cookie cookie : cookies)
+            {
+                // 이미 조회를 한 경우 체크
+                if (cookie.getName().equals(VIEWCOOKIENAME+dealId)) checkCookie = true;
+
+            }
+            if(!checkCookie){
+                Cookie newCookie = createCookieForForNotOverlap(dealId);
+                response.addCookie(newCookie);
+                deal.increaseHit();
+            }
+        } else {
+            Cookie newCookie = createCookieForForNotOverlap(dealId);
+            response.addCookie(newCookie);
+            deal.increaseHit();
+        }
+    }
+
+    /*
+     * 조회수 중복 방지를 위한 쿠키 생성 메소드
+     * @param cookie
+     * @return
+     * */
+    private Cookie createCookieForForNotOverlap(Long dealId) {
+        Cookie cookie = new Cookie(VIEWCOOKIENAME+dealId, String.valueOf(dealId));
+        cookie.setComment("조회수 중복 증가 방지 쿠키");	// 쿠키 용도 설명 기재
+        cookie.setMaxAge(getRemainSecondForTommorow()); 	// 하루를 준다.
+        cookie.setHttpOnly(true);				// 서버에서만 조작 가능
+        return cookie;
+    }
+
+    // 다음 날 정각까지 남은 시간(초)
+    private int getRemainSecondForTommorow() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime tommorow = LocalDateTime.now().plusDays(1L).truncatedTo(ChronoUnit.DAYS);
+        return (int) now.until(tommorow, ChronoUnit.SECONDS);
+    }
 
 }

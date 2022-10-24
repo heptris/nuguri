@@ -19,15 +19,16 @@ public enum ErrorCode {
     MEMBER_NOT_FOUND(404, "존재하지 않은 회원 ID 입니다."),
     MEMBER_EMAIL_NOT_FOUND(404, "존재하지 않은 이메일입니다."),
     DEAL_NOT_FOUND(404, "존재하지 않는 중고거래입니다."),
+    DEAL_FAVORITE_NOT_FOUND(404, "존재하지 않는 중고거래 즐겨찾기입니다."),
     CATEGORY_NOT_FOUND(404, "존재하지 않는 카테고리입니다."),
     BASEADDRESS_NOT_FOUND(404, "존재하지 않는 지역입니다."),
-    DEALHISTORY_NOT_FOUND(404, "존재하지 않는 중고거래 기록입니다."),
+    DEAL_HISTORY_NOT_FOUND(404, "존재하지 않는 중고거래 기록입니다."),
 
 
     //409 CONFLICT 중복된 리소스
     ALREADY_SAVED_MEMBER(409, "이미 가입되어 있는 회원입니다."),
     ALREADY_USED_NICKNAME(409, "이미 사용중인 닉네임입니다."),
-    ALREADY_USED_DEALHISTORY(409, "이미 채팅 신청한 중고거래입니다.");
+    ALREADY_USED_DEAL_HISTORY(409, "이미 채팅 신청한 중고거래입니다.");
 
     private final int status;
     private final String message;

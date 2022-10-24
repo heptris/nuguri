@@ -37,6 +37,9 @@ public class DealHistory extends BaseEntity {
 
     private String promiseLocation;
 
+    public void dealFinished(){
+        this.dealStatus = DealStatus.BUYER;
+    }
     public void updateDealHistory(DealStatus dealStatus, LocalDateTime promiseTime, String promiseLocation){
         this.dealStatus = dealStatus;
         this.promiseTime = promiseTime;
