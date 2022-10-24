@@ -1,4 +1,4 @@
-package com.ssafy.nuguri.dto.member.member;
+package com.ssafy.nuguri.domain.member;
 
 import com.ssafy.nuguri.domain.BaseEntity;
 import com.ssafy.nuguri.domain.alarm.Alarm;
