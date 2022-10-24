@@ -3,7 +3,7 @@ package com.ssafy.nuguri.domain.group;
 import com.ssafy.nuguri.domain.BaseEntity;
 import com.ssafy.nuguri.domain.baseaddress.BaseAddress;
 import com.ssafy.nuguri.domain.category.Category;
-import com.ssafy.nuguri.dto.member.member.Member;
+import com.ssafy.nuguri.domain.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

@@ -1,8 +1,6 @@
 package com.ssafy.nuguri.controller.hobby;
 
-import com.ssafy.nuguri.domain.hobby.Hobby;
 import com.ssafy.nuguri.dto.hobby.HobbyDto;
-import com.ssafy.nuguri.dto.member.member.Member;
 import com.ssafy.nuguri.dto.response.ResponseDto;
 import com.ssafy.nuguri.service.hobby.HobbyHistoryService;
 import com.ssafy.nuguri.service.hobby.HobbyService;
@@ -11,8 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
