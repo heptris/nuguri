@@ -36,20 +36,27 @@ class HobbyRepositoryImplTest {
 
         queryFactory = new JPAQueryFactory(em);
 
-        BaseAddress ba = queryFactory
+        BaseAddress ba1 = queryFactory
                 .selectFrom(baseAddress)
                 .where(baseAddress.id.eq(1L))
                 .fetchOne();
-        Category ca = queryFactory
+        Category ca1 = queryFactory
                 .selectFrom(category)
                 .where(category.id.eq(1L))
                 .fetchOne();
 
-
+        BaseAddress ba2 = queryFactory
+                .selectFrom(baseAddress)
+                .where(baseAddress.id.eq(40L))
+                .fetchOne();
+        Category ca2 = queryFactory
+                .selectFrom(category)
+                .where(category.id.eq(17L))
+                .fetchOne();
 
         Hobby hobbyEntity1 = Hobby.builder()
-                .baseAddress(ba)
-                .category(ca)
+                .baseAddress(ba1)
+                .category(ca1)
                 .title("취미방 1")
                 .content("1번방 입니다")
                 .endDate(LocalDateTime.now())
@@ -64,8 +71,8 @@ class HobbyRepositoryImplTest {
                 .build();
 
         Hobby hobbyEntity2 = Hobby.builder()
-                .baseAddress(ba)
-                .category(ca)
+                .baseAddress(ba2)
+                .category(ca2)
                 .title("취미방 2")
                 .content("2번방 입니다")
                 .endDate(LocalDateTime.now())
@@ -78,15 +85,43 @@ class HobbyRepositoryImplTest {
                 .sexLimit((char)2)
                 .hobbyImage("bb")
                 .build();
-
+        Hobby hobbyEntity3 = Hobby.builder()
+                .baseAddress(ba1)
+                .category(ca2)
+                .title("취미방 3")
+                .content("3번방 입니다")
+                .endDate(LocalDateTime.now())
+                .meetingPlace("부산에서 모여요")
+                .isClosed(false)
+                .curNum(20)
+                .maxNum(20)
+                .fee(20)
+                .ageLimit(20)
+                .sexLimit((char)2)
+                .hobbyImage("bb")
+                .build();
+        Hobby hobbyEntity4 = Hobby.builder()
+                .baseAddress(ba1)
+                .category(ca1)
+                .title("취미방 4")
+                .content("4번방 입니다")
+                .endDate(LocalDateTime.now())
+                .meetingPlace("1번방이랑 모든 내용이 동일해요")
+                .isClosed(false)
+                .curNum(10)
+                .maxNum(10)
+                .fee(10)
+                .ageLimit(10)
+                .sexLimit((char)1)
+                .hobbyImage("aa")
+                .build();
 
         em.persist(hobbyEntity1);
         em.persist(hobbyEntity2);
+        em.persist(hobbyEntity3);
+        em.persist(hobbyEntity4);
     }
-
-
     public List<HobbyDto> findByRegion(Long RegionId) {
-
         List<HobbyDto> hobbyDtoList = queryFactory.select(Projections.constructor(HobbyDto.class,
                         hobby.id,
                         baseAddress.id,
@@ -104,13 +139,19 @@ class HobbyRepositoryImplTest {
                         hobby.hobbyImage
                 ))
                 .from(hobby)
-//                .innerJoin()
-//                .innerJoin()
-                .where(category.id.eq(RegionId))
+                .innerJoin(hobby.baseAddress, baseAddress)
+                .innerJoin(hobby.category, category)
+                .where(baseAddress.id.eq(RegionId))
                 .fetch();
         return hobbyDtoList;
     }
-
+    @Test
+    public void 지역으로_찾기(){
+        List<HobbyDto> result = findByRegion(1L);
+        for (HobbyDto a: result) {
+            System.out.println("결과값: " + a.toString());
+        }
+    }
 
     public List<HobbyDto> findByRegionAndCategory(Long RegionId, Long CategoryId) {
         List<HobbyDto> hobbyDtoList = queryFactory.select(Projections.constructor(HobbyDto.class,
@@ -130,17 +171,29 @@ class HobbyRepositoryImplTest {
                         hobby.hobbyImage
                 ))
                 .from(hobby)
-//                  .innerJoin()
-//                  .innerJoin()
+                .innerJoin(hobby.baseAddress, baseAddress)
+                .innerJoin(hobby.category, category)
                 .where(
-                        category.id.eq(RegionId)
-                                .and(baseAddress.id.eq(RegionId))
+                        baseAddress.id.eq(RegionId)
+                                .and(category.id.eq(CategoryId))
                 )
                 .fetch();
         return hobbyDtoList;
     }
+    @Test
+    public void 지역과_카테고리로_찾기(){
+        List<HobbyDto> result = findByRegionAndCategory(1L,1L);
+        for (HobbyDto a: result) {
+            System.out.println("결과값: " + a.toString());
+        }
+    }
 
-    public HobbyDto hobbyDetail(Long HobbyId) {
+    public List<HobbyDto> findMultipleRegionAndCategory(List<Long> RegionIds, List<Long> CategoryIds) {
+        return null;
+    }
+
+
+    public HobbyDto hobbyDetail(Long hobbyId) {
         HobbyDto hobbyDto = queryFactory.select(Projections.constructor(HobbyDto.class,
                         hobby.id,
                         baseAddress.id,
@@ -158,43 +211,20 @@ class HobbyRepositoryImplTest {
                         hobby.hobbyImage
                 ))
                 .from(hobby)
+                .innerJoin(hobby.baseAddress, baseAddress)
+                .innerJoin(hobby.category, category)
                 .where(
-                        hobby.id.eq(HobbyId)
+                        hobby.id.eq(hobbyId)
                 )
                 .fetchOne();
         return hobbyDto;
     }
 
-    public void createHobby(HobbyDto hobbyDto) {
-
-    }
-
-
-
     @Test
-    public void func(){
-        System.out.println("findByRegion: " + findByRegion(1L));
-        System.out.println("findByRegionandCategory: "+ findByRegionAndCategory(1L,1L));
-        System.out.println("findHobbyDetail: "+ hobbyDetail(5L));
-        System.out.println("취미방 생성 시도");
-        createHobby(HobbyDto.builder()
-                .localId(9L)
-                .categoryId(5L)
-                .title("생성 테스트")
-                .content("만들기")
-                .endDate(LocalDateTime.now())
-                .meetingPlace("어디서 만날까요")
-                .isClosed(false)
-                .curNum(30)
-                .maxNum(30)
-                .fee(30)
-                .ageLimit(30)
-                .sexLimit((char)1)
-                .hobbyImage("cc")
-                .build());
-        System.out.println("취미방 생성 확인: "+findByRegion(9L));
-
+    public void 취미방_상세보기(){
+        HobbyDto result = hobbyDetail(1L);
+        if(result!=null){
+            System.out.println("취미방 상세보기: "+ result.toString());
+        }
     }
-
-
 }

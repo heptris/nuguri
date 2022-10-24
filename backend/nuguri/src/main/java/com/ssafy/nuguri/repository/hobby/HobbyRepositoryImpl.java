@@ -42,7 +42,9 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
                 hobby.hobbyImage
                 ))
                 .from(hobby)
-                .where(category.id.eq(RegionId))
+                .innerJoin(hobby.baseAddress, baseAddress)
+                .innerJoin(hobby.category, category)
+                .where(baseAddress.id.eq(RegionId))
                 .fetch();
         return hobbyDtoList;
     }
@@ -66,9 +68,11 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
                         hobby.hobbyImage
                 ))
                 .from(hobby)
+                .innerJoin(hobby.baseAddress, baseAddress)
+                .innerJoin(hobby.category, category)
                 .where(
-                    category.id.eq(RegionId)
-                    .and(baseAddress.id.eq(RegionId))
+                    baseAddress.id.eq(RegionId)
+                    .and(category.id.eq(CategoryId))
                 )
                 .fetch();
         return hobbyDtoList;
@@ -98,6 +102,8 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
                         hobby.hobbyImage
                 ))
                 .from(hobby)
+                .innerJoin(hobby.baseAddress, baseAddress)
+                .innerJoin(hobby.category, category)
                 .where(
                         hobby.id.eq(hobbyId)
                 )

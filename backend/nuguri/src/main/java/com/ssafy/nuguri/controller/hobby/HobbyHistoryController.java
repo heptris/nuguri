@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/hobby/history") // hobby_history hobbyHistory
+@RequestMapping("/hobby/history")
 public class HobbyHistoryController {
 
     private final HobbyHistoryService hobbyHistoryService;
@@ -52,6 +52,7 @@ public class HobbyHistoryController {
     @GetMapping("/{userId}/{Status}/list")
     public ResponseEntity UserStatusHobbyList(@PathVariable Long userId, @PathVariable ApproveStatus status){
         return ResponseEntity.status(HttpStatus.OK).body(
+                // 찜 숫자, 댓글숫자 담은 DTO로 보내주기
                 new ResponseDto(HttpStatus.OK.value(), "상태를 기준으로 취미방 보여주기", hobbyHistoryService.findStatusHobbyList(userId,status))
         );
     }

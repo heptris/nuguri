@@ -34,4 +34,8 @@ public class HobbyHistory extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ApproveStatus approveStatus;
 
+    public void updateApproveStatus(ApproveStatus approveStatus){
+        this.approveStatus = approveStatus;
+    }
+
 }
