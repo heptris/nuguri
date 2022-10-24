@@ -1,6 +1,7 @@
 package com.ssafy.nuguri.service.deal;
 
 import com.ssafy.nuguri.domain.deal.DealHistory;
+import com.ssafy.nuguri.dto.deal.DealFinishedDto;
 import com.ssafy.nuguri.dto.deal.DealHistoryUpdateDto;
 import com.ssafy.nuguri.repository.deal.DealHistoryRepository;
 import org.junit.jupiter.api.Test;
@@ -48,4 +49,12 @@ class DealHistoryServiceTest {
 
      }
 
+     @Test
+     @Commit
+     public void 판매완료() throws Exception{
+         dealHistoryService.dealFinished(DealFinishedDto.builder()
+                 .buyerId(1L)
+                 .dealId(3L)
+                 .build());
+      }
 }
