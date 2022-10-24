@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface DealRepository extends JpaRepository<Deal, Long>, DealRepositoryCustom {
-    List<Deal> findByMemberId(Long memberId);
+    List<Deal> findByMemberIdAndIsDeal(Long memberId, boolean isDeal);
 }
