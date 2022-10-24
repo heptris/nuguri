@@ -4,6 +4,7 @@ import com.ssafy.nuguri.dto.deal.DealListRequestDto;
 import com.ssafy.nuguri.dto.deal.DealRegistRequestDto;
 import com.ssafy.nuguri.dto.response.ResponseDto;
 import com.ssafy.nuguri.service.deal.DealService;
+import com.ssafy.nuguri.util.SecurityUtil;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,8 +40,7 @@ public class DealController {
     @ApiOperation(value = "로그인시 중고거래 상세페이지 조회")
     @GetMapping("/{dealId}/login/detail")
     public ResponseEntity findLoginDealDetail(@PathVariable Long dealId){
-//        Long memberId = SecurityUtil.getCurrentMemberId();
-        Long memberId = 1L;
+        Long memberId = SecurityUtil.getCurrentMemberId();
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseDto(HttpStatus.OK.value(), "비로그인시 중고거래 상세페이지", dealService.findLoginDealDetail(memberId, dealId))
         );
@@ -49,8 +49,7 @@ public class DealController {
     @PostMapping("/regist")
     public ResponseEntity dealRegist(@RequestPart DealRegistRequestDto dealRegistRequestDto,
                                      @RequestPart(value = "file", required = false) MultipartFile dealImage){
-        //        Long memberId = SecurityUtil.getCurrentMemberId();
-        Long memberId = 1L;
+        Long memberId = SecurityUtil.getCurrentMemberId();
         dealService.dealRegist(memberId, dealRegistRequestDto, dealImage);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseDto(HttpStatus.OK.value(), "중고거래 등록", "중고거래 등록 완료 !!")
