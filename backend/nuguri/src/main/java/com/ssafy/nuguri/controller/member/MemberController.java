@@ -20,9 +20,8 @@ public class MemberController {
 
     @GetMapping
     public ResponseEntity profile(){
-        Long memberId = SecurityUtil.getCurrentMemberId();
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseDto<>(HttpStatus.OK.value(), "회원 프로필 조회", memberService.profile(memberId))
+                new ResponseDto<>(HttpStatus.OK.value(), "회원 프로필 조회", memberService.profile())
         );
     }
 }

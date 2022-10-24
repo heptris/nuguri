@@ -9,6 +9,7 @@ import com.ssafy.nuguri.dto.token.TokenDto;
 import com.ssafy.nuguri.dto.token.TokenRequestDto;
 import com.ssafy.nuguri.exception.ex.CustomException;
 import com.ssafy.nuguri.repository.member.MemberRepository;
+import com.ssafy.nuguri.service.s3.AwsS3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -27,6 +28,11 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
     private final TokenProvider tokenProvider;
+    private final AwsS3Service awsS3Service;
+
+    /**
+     * 회원가입
+     */
     @Transactional
     public MemberJoinResponseDto signup(MemberJoinDto memberJoinDto) {
         if(memberRepository.existsByEmail(memberJoinDto.getEmail())){
@@ -34,11 +40,15 @@ public class AuthService {
         }
 
         Member member = memberJoinDto.toMember(passwordEncoder);
+        member.changeProfileImage(randomProfileImage());
         memberRepository.save(member);
 
         return new MemberJoinResponseDto(member.getEmail());
     }
 
+    /**
+     * 로그인
+     */
     @Transactional
     public TokenDto login(MemberLoginDto memberLoginDto){
         // 1. Login ID/PW 를 기반으로 AuthenticationToken 생성
@@ -57,6 +67,9 @@ public class AuthService {
         return tokenDto;
     }
 
+    /**
+     * 토큰 재발행
+     */
     @Transactional
     public TokenDto reissue(TokenRequestDto tokenRequestDto){
         // 1. Refresh Token 검증
@@ -76,5 +89,15 @@ public class AuthService {
 
         // 토큰 발급
         return tokenDto;
+    }
+
+    /**
+     * 랜덤 프로필 이미지
+     */
+    public String randomProfileImage(){
+        int random = (int) (Math.random() * 6) + 1;
+        String path = "member/default/" + random + ".jpg";
+        String thumbnailPath = awsS3Service.getThumbnailPath(path);
+        return thumbnailPath;
     }
 }
