@@ -1,4 +1,4 @@
-package com.ssafy.nuguri.dto.member;
+package com.ssafy.nuguri.dto.auth;
 
 import com.ssafy.nuguri.domain.baseaddress.BaseAddress;
 import com.ssafy.nuguri.domain.member.Member;

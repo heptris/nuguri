@@ -1,7 +1,7 @@
 package com.ssafy.nuguri.controller.auth;
 
-import com.ssafy.nuguri.dto.member.MemberJoinDto;
-import com.ssafy.nuguri.dto.member.MemberLoginDto;
+import com.ssafy.nuguri.dto.auth.MemberJoinDto;
+import com.ssafy.nuguri.dto.auth.MemberLoginDto;
 import com.ssafy.nuguri.dto.response.ResponseDto;
 import com.ssafy.nuguri.dto.token.TokenDto;
 import com.ssafy.nuguri.dto.token.TokenRequestDto;

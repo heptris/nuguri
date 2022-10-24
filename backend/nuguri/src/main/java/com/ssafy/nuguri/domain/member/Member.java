@@ -73,6 +73,8 @@ public class Member extends BaseEntity {
     @Column(unique = true)
     private String nickname;
 
+    private String description;
+
     private Double temperature;
 
     private Integer age;

@@ -1,4 +1,4 @@
-package com.ssafy.nuguri.dto.member;
+package com.ssafy.nuguri.dto.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

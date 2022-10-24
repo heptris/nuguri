@@ -1,15 +1,13 @@
 package com.ssafy.nuguri.service.member;
 
-import antlr.Token;
 import com.ssafy.nuguri.config.jwt.TokenProvider;
 import com.ssafy.nuguri.domain.member.Member;
-import com.ssafy.nuguri.dto.member.MemberJoinDto;
-import com.ssafy.nuguri.dto.member.MemberJoinResponseDto;
-import com.ssafy.nuguri.dto.member.MemberLoginDto;
+import com.ssafy.nuguri.dto.auth.MemberJoinDto;
+import com.ssafy.nuguri.dto.auth.MemberJoinResponseDto;
+import com.ssafy.nuguri.dto.auth.MemberLoginDto;
 import com.ssafy.nuguri.dto.token.TokenDto;
 import com.ssafy.nuguri.dto.token.TokenRequestDto;
 import com.ssafy.nuguri.exception.ex.CustomException;
-import com.ssafy.nuguri.exception.ex.ErrorCode;
 import com.ssafy.nuguri.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,8 +16,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 import static com.ssafy.nuguri.exception.ex.ErrorCode.*;
 
