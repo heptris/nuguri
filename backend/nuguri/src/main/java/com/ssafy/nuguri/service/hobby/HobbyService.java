@@ -1,7 +1,9 @@
 package com.ssafy.nuguri.service.hobby;
 
 import com.ssafy.nuguri.domain.hobby.Hobby;
+import com.ssafy.nuguri.dto.hobby.HobbyDto;
 import com.ssafy.nuguri.repository.hobby.HobbyRepository;
+import com.ssafy.nuguri.repository.hobby.HobbyRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,32 +18,42 @@ public class HobbyService {
     private final HobbyRepository hobbyRepository;
 
     @Transactional
-    public void createHobby(Hobby hobby){ // 취미방 생성
-        hobbyRepository.save(hobby);
+    public List<HobbyDto> findLocalHobbyList(Long regionId){ // 지역으로 취미방 찾기
+        return hobbyRepository.findByRegion(regionId);
     }
 
     @Transactional
-    public Hobby searchHobby(Long id){ // id로 취미방 찾기
-        Hobby result = hobbyRepository.findById(id).orElseThrow();
-        return result;
+    public List<HobbyDto> findLocalCategoryHobbyList(Long regionId, Long categoryId){ // 지역과 카테고리로 취미방 찾기
+        return hobbyRepository.findByRegionAndCategory(regionId,categoryId);
     }
 
     @Transactional
-    public List<Hobby> searchAllHobbyByRegion(String region){ // 지역으로 취미 찾기
-        List<Hobby> result = hobbyRepository.findByRegion(region);
-        return result;
+    public HobbyDto findHobbyDetail(Long hobbyId){ // 취미방 상세보기
+        return hobbyRepository.hobbyDetail(hobbyId);
     }
 
     @Transactional
-    public List<Hobby> searchAllHobbyByCategory(String category){ // 카테고리로 취미 찾기 -> 지역 필터링 없이 카테고리로만 데이터를 가져오는건데 필요할지 의문
-        List<Hobby> result = hobbyRepository.findByCategory(category);
-        return result;
+    public Integer createHobby(HobbyDto hobbyDto){ // 취미방 생성
+        Hobby hobbyEntity = Hobby.builder()
+                .id(hobbyDto.getHobbyId())
+//                .baseAddress(hobbyDto.getLocalId())
+//                .category(hobbyDto.getCategoryId())
+                .title(hobbyDto.getTitle())
+                .content(hobbyDto.getContent())
+                .endDate(hobbyDto.getEndDate())
+                .meetingPlace(hobbyDto.getMeetingPlace())
+                .isClosed(hobbyDto.isClosed())
+                .curNum(hobbyDto.getCurNum())
+                .maxNum(hobbyDto.getMaxNum())
+                .fee(hobbyDto.getFee())
+                .ageLimit(hobbyDto.getAgeLimit())
+                .sexLimit(hobbyDto.getSexLimit())
+                .hobbyImage(hobbyDto.getHobbyImage())
+                .build();
+
+        hobbyRepository.save(hobbyEntity);
+        return 1;
     }
 
 
-    @Transactional
-    public List<Hobby> searchAllHobbyByRegionAndCategory(String region,String category){ // 지역과 카테고리로 취미 찾기
-        List<Hobby> result = hobbyRepository.findByRegionAndCategory(region, category);
-        return result;
-    }
 }
