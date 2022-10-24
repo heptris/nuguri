@@ -24,4 +24,30 @@ public class MemberController {
                 new ResponseDto<>(HttpStatus.OK.value(), "회원 프로필 조회", memberService.profile())
         );
     }
+
+    @GetMapping("/deal/on-sale")
+    public ResponseEntity profileDealOnSale(){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseDto<>(HttpStatus.OK.value(), "회원 중고 거래(판매 중) 조회", memberService.profileDealOnSale())
+        );
+    }
+
+    @GetMapping("/deal/sold-out")
+    public ResponseEntity profileDealSoldOut(){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseDto<>(HttpStatus.OK.value(), "회원 중고 거래(판매 완료) 조회", memberService.profileDealSoldOut())
+        );
+    }
+    @GetMapping("/deal/purchase")
+    public ResponseEntity profileDealPurchase(){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseDto<>(HttpStatus.OK.value(), "회원 중고 거래(구매 완료) 조회", memberService.profileDealPurchase())
+        );
+    }
+//    @GetMapping("/deal/favorite")
+//    public ResponseEntity profileDealFavorite(){
+//        return ResponseEntity.status(HttpStatus.OK).body(
+//                new ResponseDto<>(HttpStatus.OK.value(), "회원 중고 거래(찜) 조회", memberService.profileDeal())
+//        );
+//    }
 }
