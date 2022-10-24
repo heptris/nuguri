@@ -1,6 +1,5 @@
 package com.ssafy.nuguri.domain.baseaddress;
 
-import com.ssafy.nuguri.domain.BaseEntity;
 import com.ssafy.nuguri.domain.deal.Deal;
 import com.ssafy.nuguri.domain.group.GroupPurchase;
 import com.ssafy.nuguri.domain.hobby.Hobby;

@@ -37,4 +37,5 @@ public class HobbyDto {
 
     private String hobbyImage;
 
+
 }
