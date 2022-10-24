@@ -27,8 +27,8 @@ public class ChatRoom {
     private Long dealId;    // 중고거래를 위한 dealId
 
     // 1대1 채팅을 위한
-    private String sender;
-    private String receiver;
+    private String senderId;
+    private String receiverId;
 
 
 }
