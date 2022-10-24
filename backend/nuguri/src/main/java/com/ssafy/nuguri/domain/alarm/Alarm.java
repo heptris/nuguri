@@ -1,7 +1,7 @@
 package com.ssafy.nuguri.domain.alarm;
 
 import com.ssafy.nuguri.domain.BaseEntity;
-import com.ssafy.nuguri.domain.member.Member;
+import com.ssafy.nuguri.dto.member.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

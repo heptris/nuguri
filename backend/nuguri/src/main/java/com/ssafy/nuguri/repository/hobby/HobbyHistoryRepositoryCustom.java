@@ -2,8 +2,11 @@ package com.ssafy.nuguri.repository.hobby;
 
 
 import com.ssafy.nuguri.domain.hobby.ApproveStatus;
+import com.ssafy.nuguri.domain.hobby.HobbyHistory;
 import com.ssafy.nuguri.dto.hobby.HobbyDto;
-import com.ssafy.nuguri.domain.member.Member;
+import com.ssafy.nuguri.dto.hobby.HobbyHistoryDto;
+import com.ssafy.nuguri.dto.member.member.Member;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 

@@ -3,9 +3,10 @@ package com.ssafy.nuguri.repository.hobby;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.nuguri.domain.hobby.ApproveStatus;
+import com.ssafy.nuguri.domain.hobby.HobbyHistory;
 import com.ssafy.nuguri.dto.hobby.HobbyDto;
 import com.ssafy.nuguri.dto.hobby.HobbyHistoryDto;
-import com.ssafy.nuguri.domain.member.Member;
+import com.ssafy.nuguri.dto.member.member.Member;
 
 import javax.persistence.EntityManager;
 import java.util.List;
