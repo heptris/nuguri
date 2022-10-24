@@ -48,7 +48,7 @@ public class HobbyController {
     @ApiOperation(value="취미방 생성")
     @PostMapping("/regist")
     public ResponseEntity regist(HobbyDto hobbyDto){
-        // 취미방 참여하는 HobbyHistoryController의 regist호출 필요
+        // HobbyHistoryController의 regist호출 필요
 
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseDto(HttpStatus.OK.value(), "취미방 생성",hobbyService.createHobby(hobbyDto))

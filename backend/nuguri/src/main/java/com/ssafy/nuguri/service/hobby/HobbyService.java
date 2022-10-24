@@ -34,7 +34,25 @@ public class HobbyService {
 
     @Transactional
     public Integer createHobby(HobbyDto hobbyDto){ // 취미방 생성
-        return hobbyRepository.createHobby(hobbyDto);
+        Hobby hobbyEntity = Hobby.builder()
+                .id(hobbyDto.getHobbyId())
+//                .baseAddress(hobbyDto.getLocalId())
+//                .category(hobbyDto.getCategoryId())
+                .title(hobbyDto.getTitle())
+                .content(hobbyDto.getContent())
+                .endDate(hobbyDto.getEndDate())
+                .meetingPlace(hobbyDto.getMeetingPlace())
+                .isClosed(hobbyDto.isClosed())
+                .curNum(hobbyDto.getCurNum())
+                .maxNum(hobbyDto.getMaxNum())
+                .fee(hobbyDto.getFee())
+                .ageLimit(hobbyDto.getAgeLimit())
+                .sexLimit(hobbyDto.getSexLimit())
+                .hobbyImage(hobbyDto.getHobbyImage())
+                .build();
+
+        hobbyRepository.save(hobbyEntity);
+        return 1;
     }
 
 

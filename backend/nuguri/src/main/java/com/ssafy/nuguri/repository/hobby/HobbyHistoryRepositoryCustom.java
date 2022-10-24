@@ -11,8 +11,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface HobbyHistoryRepositoryCustom {
-    // 취미방 참여 신청
-    Integer create(HobbyHistoryDto hobbyHistoryDto);
 
     // 어떤 방에 참여를 신청한 사람들 목록(Status 대기중)
     List<Member> waiter(Long hobbyId);

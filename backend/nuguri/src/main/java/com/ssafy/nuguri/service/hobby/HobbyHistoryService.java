@@ -23,13 +23,23 @@ public class HobbyHistoryService {
 
     @Transactional
     public Integer createHobbyHistory(HobbyHistoryDto hobbyHistoryDto){ // 취미방 생성 또는 참여신청
+        HobbyHistory hobbyHistoryEntity = HobbyHistory.builder()
+                .id(hobbyHistoryDto.getHobbyHistoryId())
+//                .member(hobbyHistoryDto.getMemberId())
+//                .hobby(hobbyHistoryDto.getHobbyId())
+                .isPromoter(hobbyHistoryDto.isPromoter())
+                .approveStatus(hobbyHistoryDto.getApproveStatus())
+                .build();
+
+        hobbyHistoryRepository.save(hobbyHistoryEntity);
+
         // 생성이 아닌 참여인 경우 조건검사
 //        if(hobby.getCurNum() >= hobby.getMaxNum() // 정원초과
 //                || hobby.getAgeLimit() > member.  // 나이제한
 //                || hobby.getSexLimit() == member. // 성별제한
 //                || hobby.getEndDate() <= LocalDateTime.now() // 모임기간 만료
 //                || hobby.getBaseAddress() != member. // 참여 불가능한 위치
-        return hobbyHistoryRepository.create(hobbyHistoryDto);
+        return 1;
     }
 
     @Transactional

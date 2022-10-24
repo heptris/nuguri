@@ -24,12 +24,6 @@ public class HobbyHistoryRepositoryImpl implements HobbyHistoryRepositoryCustom{
     }
 
     @Override
-    public Integer create(HobbyHistoryDto hobbyHistoryDto) {
-        //em.persist(HobbyHistoryEntity);
-        return 1;
-    }
-
-    @Override
     public List<Member> waiter(Long hobbyId) {
         List<HobbyHistoryDto> hobbyHistoryDtoList = queryFactory.select(Projections.constructor(HobbyHistoryDto.class,
                         hobbyHistory.id,

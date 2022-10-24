@@ -15,8 +15,6 @@ public interface HobbyRepositoryCustom {
     // 여러 지역에서 여러 카테고리 중 하나에 포함되는 모든 취미방 목록
     List<HobbyDto> findMultipleRegionAndCategory(List<Long> RegionIds, List<Long> CategoryIds);
 
-    // 취미방 생성
-    Integer createHobby(HobbyDto hobbyDto);
 
     // hobbyId로 취미방 찾기(취미방 상세보기 클릭 시)
     HobbyDto hobbyDetail(Long hobbyId);
