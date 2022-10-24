@@ -73,11 +73,11 @@ public class Member extends BaseEntity {
     @Column(unique = true)
     private String nickname;
 
-    private double temperature;
+    private Double temperature;
 
-    private int age;
+    private Integer age;
 
-    private char sex;
+    private Character sex;
 
     private String profileImage;
 

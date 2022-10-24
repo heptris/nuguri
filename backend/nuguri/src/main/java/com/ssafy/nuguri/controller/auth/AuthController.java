@@ -4,6 +4,7 @@ import com.ssafy.nuguri.dto.member.MemberJoinDto;
 import com.ssafy.nuguri.dto.member.MemberLoginDto;
 import com.ssafy.nuguri.dto.response.ResponseDto;
 import com.ssafy.nuguri.dto.token.TokenDto;
+import com.ssafy.nuguri.dto.token.TokenRequestDto;
 import com.ssafy.nuguri.exception.ex.CustomException;
 import com.ssafy.nuguri.exception.ex.CustomValidationException;
 import com.ssafy.nuguri.service.member.AuthService;
@@ -54,5 +55,11 @@ public class AuthController {
         TokenDto token = authService.login(memberLoginDto);
         return new ResponseEntity<ResponseDto>(new ResponseDto<>(200, "로그인 성공",
                 token), HttpStatus.OK);
+    }
+
+    @PostMapping("/reissue")
+    public ResponseEntity<?> reissue(@RequestBody TokenRequestDto tokenRequestDto) {
+        return new ResponseEntity<ResponseDto>(new ResponseDto<>(200, "토큰 재발행",
+                authService.reissue(tokenRequestDto)), HttpStatus.OK);
     }
 }

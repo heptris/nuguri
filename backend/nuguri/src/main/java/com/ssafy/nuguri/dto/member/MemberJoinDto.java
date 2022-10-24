@@ -1,10 +1,12 @@
 package com.ssafy.nuguri.dto.member;
 
+import com.ssafy.nuguri.domain.baseaddress.BaseAddress;
 import com.ssafy.nuguri.domain.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.Email;
@@ -37,13 +39,23 @@ public class MemberJoinDto {
     @Size(min = 3, max = 30, message = "닉네임은 3~30자리수여야 합니다.")
     private String nickName;
 
+    private String profileImage;
+    private Character sex;
+    private Integer age;
+    private BaseAddress baseAddress;
+    private Double temperature;
+
     public Member toMember(PasswordEncoder passwordEncoder) {
         return Member.builder()
                 .email(email)
                 .password(passwordEncoder.encode(password))
-                .authority(Authority.ROLE_USER)
                 .name(name)
-                .nickName(nickName)
+                .nickname(nickName)
+                .profileImage(profileImage)
+                .sex(sex)
+                .age(age)
+                .baseAddress(baseAddress)
+                .temperature(temperature)
                 .build();
     }
 
@@ -51,14 +63,13 @@ public class MemberJoinDto {
         return Member.builder()
                 .email(email)
                 .password(password)
-                .authority(Authority.ROLE_USER)
                 .name(name)
-                .nickName(nickName)
+                .nickname(nickName)
                 .build();
     }
 
     public UsernamePasswordAuthenticationToken toAuthentication() {
-        return new UsernamePasswordAuthenticationToken(memberEmail, password);
+        return new UsernamePasswordAuthenticationToken(email, password);
     }
 
 }
