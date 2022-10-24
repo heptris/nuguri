@@ -51,3 +51,8 @@ values (now(), now(), true, 1, 1),
        (now(), now(), true, 4, 5),
        (now(), now(), true, 5, 5),
        (now(), now(), true, 2, 6);
+
+insert into deal_history (created_date, last_modified_date, deal_status, promise_location, promise_time, deal_id, member_id)
+values (now(), now(), 'AWAITER', null, null, 2, 1),
+       (now(), now(), 'AWAITER', null, null, 3, 1),
+       (now(), now(), 'RESERVER', null, null, 5, 1);

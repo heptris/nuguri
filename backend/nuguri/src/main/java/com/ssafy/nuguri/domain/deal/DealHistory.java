@@ -30,13 +30,17 @@ public class DealHistory extends BaseEntity {
     @JoinColumn(name = "deal_id")
     private Deal deal;
 
-    private LocalDateTime dealDate;
-
     @Enumerated(EnumType.STRING)
     private DealStatus dealStatus;
 
     private LocalDateTime promiseTime;
 
     private String promiseLocation;
+
+    public void updateDealHistory(DealStatus dealStatus, LocalDateTime promiseTime, String promiseLocation){
+        this.dealStatus = dealStatus;
+        this.promiseTime = promiseTime;
+        this.promiseLocation = promiseLocation;
+    }
 
 }
