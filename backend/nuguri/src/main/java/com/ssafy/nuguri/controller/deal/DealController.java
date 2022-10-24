@@ -1,6 +1,5 @@
 package com.ssafy.nuguri.controller.deal;
 
-import com.ssafy.nuguri.config.aop.ExeTimer;
 import com.ssafy.nuguri.dto.deal.DealListRequestDto;
 import com.ssafy.nuguri.dto.deal.DealRegistRequestDto;
 import com.ssafy.nuguri.dto.response.ResponseDto;
@@ -37,7 +36,6 @@ public class DealController {
         );
     }
 
-//    @ExeTimer
     @ApiOperation(value = "로그인시 중고거래 상세페이지 조회")
     @GetMapping("/{dealId}/login/detail")
     public ResponseEntity findLoginDealDetail(@PathVariable Long dealId){
