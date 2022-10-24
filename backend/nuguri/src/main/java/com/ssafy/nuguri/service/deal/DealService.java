@@ -81,9 +81,15 @@ public class DealService {
         로그인시 중고거래 detail
      */
     public DealLoginDetailDto findLoginDealDetail(Long memberId, Long dealId){
+        long startTime = System.currentTimeMillis();
 
         DealDetailDto dealDetailDto = dealRepository.dealDetail(dealId).orElseThrow(()->new CustomException(DEAL_NOT_FOUND));
         boolean isDealFavorite = dealRepository.findIsDealFavorite(memberId, dealId);
+
+        long stopTime = System.currentTimeMillis();
+
+        long elapsedTime = stopTime - startTime;
+        System.out.println(elapsedTime);
 
         return DealLoginDetailDto.builder()
                 .dealId(dealDetailDto.getDealId())
