@@ -1,5 +1,6 @@
 package com.ssafy.nuguri.chat.controller;
 
+import com.querydsl.core.types.Predicate;
 import com.ssafy.nuguri.chat.domain.ChatRoom;
 import com.ssafy.nuguri.chat.dto.CreateChatRoomDto;
 import com.ssafy.nuguri.chat.dto.JoinChatRoomDto;

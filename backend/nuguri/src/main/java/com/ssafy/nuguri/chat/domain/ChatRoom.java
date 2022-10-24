@@ -1,5 +1,6 @@
 package com.ssafy.nuguri.chat.domain;
 
+import com.querydsl.core.annotations.QueryEntity;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -17,18 +18,13 @@ public class ChatRoom {
 
     private String roomId;
 
-    private Boolean isGroup;
-
     @Builder.Default
     private Set<Long> userList = new HashSet<>();
 
     private String roomName;
 
     private Long dealId;    // 중고거래를 위한 dealId
-
-    // 1대1 채팅을 위한
-    private String senderId;
-    private String receiverId;
-
+    private Long hobbyId;   // 취미 모임 채팅을 위한 hobbyId
+    private Boolean isOneToOne;  // 순수 1대1 채팅일 경우
 
 }
