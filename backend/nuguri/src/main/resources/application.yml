@@ -38,6 +38,7 @@ spring:
 logging:
   level:
     org.hibernate.SQL: debug
+    com.amazonaws.util.EC2MetadataUtils: error
 
 jwt:
   secret: c3ByaW5nLWJvb3Qtc2VjdXJpdHktand0LXR1dG9yaWFsLWppd29vbi1zcHJpbmctYm9vdC1zZWN1cml0eS1qd3QtdHV0b3JpYWwK

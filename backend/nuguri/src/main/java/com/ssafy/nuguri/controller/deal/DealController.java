@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/app/deal")
+@RequestMapping("/ap/deal")
 public class DealController {
 
     private final DealService dealService;
