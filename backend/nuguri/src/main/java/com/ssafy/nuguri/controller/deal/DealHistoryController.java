@@ -1,5 +1,6 @@
 package com.ssafy.nuguri.controller.deal;
 
+import com.ssafy.nuguri.dto.deal.DealFinishedDto;
 import com.ssafy.nuguri.dto.deal.DealHistoryUpdateDto;
 import com.ssafy.nuguri.dto.response.ResponseDto;
 import com.ssafy.nuguri.service.deal.DealHistoryService;
@@ -35,6 +36,15 @@ public class DealHistoryController {
         dealHistoryService.updateToReserver(dealHistoryUpdateDto);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseDto(HttpStatus.OK.value(), "약속시간, 장소 저장", "약속시간, 장소 저장 완료 !!")
+        );
+    }
+
+    @ApiOperation(value = "판매자가 판매완료 버튼 눌렀을 때 API")
+    @PostMapping("/finish")
+    public ResponseEntity dealFinished(@RequestBody DealFinishedDto dealFinishedDto){
+        dealHistoryService.dealFinished(dealFinishedDto);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseDto(HttpStatus.OK.value(), "해당 구매자, 판매자 판매 완료 처리", "판매완료 처리 완료 !!")
         );
     }
 }

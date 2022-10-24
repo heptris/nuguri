@@ -57,6 +57,12 @@ public class Deal extends BaseEntity {
 
     private String dealImage;
 
+    public void  finishDeal(){
+        this.isDeal = true;
+    }
+    public void increaseHit(){
+        this.hit+=1;
+    }
     public void registDeal(Member member, Category category, BaseAddress baseAddress, String dealImage){
         this.member = member;
         this.category = category;

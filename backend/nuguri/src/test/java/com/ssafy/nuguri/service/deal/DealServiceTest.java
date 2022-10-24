@@ -1,13 +1,19 @@
 package com.ssafy.nuguri.service.deal;
 
+import com.ssafy.nuguri.domain.deal.DealFavorite;
 import com.ssafy.nuguri.dto.deal.DealDetailDto;
 import com.ssafy.nuguri.dto.deal.DealLoginDetailDto;
 import com.ssafy.nuguri.dto.deal.DealRegistRequestDto;
+import com.ssafy.nuguri.repository.deal.DealFavoriteRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
@@ -16,6 +22,8 @@ class DealServiceTest {
 
     @Autowired
     DealService dealService;
+    @Autowired
+    DealFavoriteRepository dealFavoriteRepository;
 
     @Test
     public void 중고거래등록() throws Exception{
@@ -38,5 +46,21 @@ class DealServiceTest {
         DealLoginDetailDto loginDealDetail = dealService.findLoginDealDetail(2L, 4L);
         System.out.println("loginDealDetail = " + loginDealDetail);
     }
+
+    @Test
+    @Commit
+    public void 즐겨찾기등록해제() throws Exception{
+        dealService.createOrModifyDealFavorite(4L, 4L);
+        dealService.createOrModifyDealFavorite(6L, 3L);
+
+        Optional<DealFavorite> dealFavorite = dealFavoriteRepository.findById(9L);
+        System.out.println("dealFavorite.get().isFavorite() = " + dealFavorite.get().isFavorite());
+    }
+
+    @Test
+    @Commit
+    public void 조회수증가() throws Exception{
+        dealService.increaseHit(3L, null, null);
+     }
 
 }
