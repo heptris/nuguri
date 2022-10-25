@@ -215,6 +215,26 @@ class HobbyHistoryRepositoryImplTest {
         }
 
     }
+    public HobbyHistoryDto findByIdDto(Long hobbyHistoryId) {
+        HobbyHistoryDto hobbyHistoryDto = queryFactory
+                .select(Projections.constructor(HobbyHistoryDto.class,
+                        hobbyHistory.id,
+                        hobby.id,
+                        member.id,
+                        hobbyHistory.isPromoter,
+                        hobbyHistory.approveStatus
+                ))
+                .from(hobbyHistory)
+                .innerJoin(hobbyHistory.hobby,hobby)
+                .innerJoin(hobbyHistory.member,member)
+                .where(hobbyHistory.id.eq(hobbyHistoryId))
+                .fetchOne();
+        return hobbyHistoryDto;
+    }
+    @Test
+    public void Id로_값_찾기(){
+        System.out.println(findByIdDto(1L).toString());
+    }
 
 
 }

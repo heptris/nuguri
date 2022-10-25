@@ -39,14 +39,14 @@ public class HobbyService {
     @Transactional
     public Long createHobby(HobbyDto hobbyDto){ // 취미방 생성
         Hobby hobbyEntity = Hobby.builder()
-                .baseAddress(baseaddressRepository.findById(hobbyDto.getLocalId()).orElseThrow()) // 여기서 orElseThrow를 써도 됨? Throw가 발생하면 어떻게 코드가 실행되는지?
+                .baseAddress(baseaddressRepository.findById(hobbyDto.getLocalId()).orElseThrow())
                 .category(categoryRepository.findById(hobbyDto.getCategoryId()).orElseThrow())
                 .title(hobbyDto.getTitle())
                 .content(hobbyDto.getContent())
                 .endDate(hobbyDto.getEndDate())
                 .meetingPlace(hobbyDto.getMeetingPlace())
                 .isClosed(hobbyDto.isClosed())
-                .curNum(hobbyDto.getCurNum())
+                .curNum(hobbyDto.getCurNum()) // 그냥 1을 넣어도 될듯
                 .maxNum(hobbyDto.getMaxNum())
                 .fee(hobbyDto.getFee())
                 .ageLimit(hobbyDto.getAgeLimit())
