@@ -1,6 +1,7 @@
 package com.ssafy.nuguri.service.member;
 
 import com.ssafy.nuguri.domain.deal.Deal;
+import com.ssafy.nuguri.domain.deal.DealFavorite;
 import com.ssafy.nuguri.domain.deal.DealHistory;
 import com.ssafy.nuguri.domain.deal.DealStatus;
 import com.ssafy.nuguri.domain.member.Member;
@@ -8,6 +9,7 @@ import com.ssafy.nuguri.dto.deal.DealListDto;
 import com.ssafy.nuguri.dto.hobby.HobbyDto;
 import com.ssafy.nuguri.dto.member.MemberProfileDto;
 import com.ssafy.nuguri.exception.ex.CustomException;
+import com.ssafy.nuguri.repository.deal.DealFavoriteRepository;
 import com.ssafy.nuguri.repository.deal.DealHistoryRepository;
 import com.ssafy.nuguri.repository.deal.DealRepository;
 import com.ssafy.nuguri.repository.hobby.HobbyHistoryRepository;
@@ -30,6 +32,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final HobbyHistoryRepository hobbyHistoryRepository;
     private final DealRepository dealRepository;
+    private final DealFavoriteRepository dealFavoriteRepository;
     private final DealHistoryRepository dealHistoryRepository;
 
     @Transactional
@@ -109,27 +112,18 @@ public class MemberService {
     /**
      * 중고 거래 (찜)
      */
-//    @Transactional
-//    public List<DealListDto> profileDealFavorite(){
-//        Long memberId = SecurityUtil.getCurrentMemberId();
-//
-//        List<Deal> dealList = dealRepository.findByMemberId(memberId);
-//        List<DealListDto> dtoList = new ArrayList<>();
-//        for(Deal d : dealList){
-//            dtoList.add(DealListDto.builder()
-//                            .dealId(d.getId())
-//                            .categoryId(d.getCategory().getId())
-//                            .localId(d.getBaseAddress().getId())
-//                            .title(d.getTitle())
-//                            .description(d.getDescription())
-//                            .price(d.getPrice())
-//                            .hit(d.getHit())
-//                            .isDeal(d.isDeal())
-//                            .dealImage(d.getDealImage())
-//                            .build());
-//        }
-//        return dtoList;
-//    }
+    @Transactional
+    public List<DealListDto> profileDealFavorite(){
+        Long memberId = SecurityUtil.getCurrentMemberId();
+
+        List<DealFavorite> dealList = dealFavoriteRepository.findByMemberIdAndIsFavorite(memberId, true);
+        List<DealListDto> dtoList = new ArrayList<>();
+        for(DealFavorite df : dealList){
+            Deal d = df.getDeal();
+            convertToDto(dtoList, d);
+        }
+        return dtoList;
+    }
 
 //    @Transactional
 //    public 공동구매

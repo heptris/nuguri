@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface DealFavoriteRepository extends JpaRepository<DealFavorite, Long> {
     DealFavorite findByMemberIdAndDealId(Long memberId, Long dealId);
+    List<DealFavorite> findByMemberIdAndIsFavorite(Long memberId, boolean isFavorite);
 }

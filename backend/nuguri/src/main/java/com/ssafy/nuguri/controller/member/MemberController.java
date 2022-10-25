@@ -44,10 +44,10 @@ public class MemberController {
                 new ResponseDto<>(HttpStatus.OK.value(), "회원 중고 거래(구매 완료) 조회", memberService.profileDealPurchase())
         );
     }
-//    @GetMapping("/deal/favorite")
-//    public ResponseEntity profileDealFavorite(){
-//        return ResponseEntity.status(HttpStatus.OK).body(
-//                new ResponseDto<>(HttpStatus.OK.value(), "회원 중고 거래(찜) 조회", memberService.profileDeal())
-//        );
-//    }
+    @GetMapping("/deal/favorite")
+    public ResponseEntity profileDealFavorite(){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseDto<>(HttpStatus.OK.value(), "회원 중고 거래(찜) 조회", memberService.profileDealFavorite())
+        );
+    }
 }
