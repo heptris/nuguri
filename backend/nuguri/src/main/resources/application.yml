@@ -18,6 +18,9 @@ spring:
       host: localhost
       port: 27017
       database: chatdb
+      username: nuguri
+      password: ${MONGODB_PASSWORD}
+      authentication-database: admin
 
   jpa:
     hibernate:
