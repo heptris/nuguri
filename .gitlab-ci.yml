@@ -44,7 +44,7 @@ spring-dockerize:
   services:
     - docker:dind
   before_script: |
-    cd backend/uniqon
+    cd backend/nuguri
     echo $BACK_DOCKER_HUB_PW | docker login -u $BACK_DOCKER_HUB_USER --password-stdin
   script: |
     docker build -t $BACK_IMAGE_NAME .
