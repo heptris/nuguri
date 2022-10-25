@@ -24,8 +24,8 @@ spring-build:
     echo -e $BACK_APIKEY > ./backend/nuguri/src/main/resources/application-API-KEY.properties
     value=`cat ./backend/nuguri/src/main/resources/application-API-KEY.properties`
     echo "$value"
-    # cd backend/nuguri/
-    # chmod +x gradlew
+    cd backend/nuguri/
+    chmod +x gradlew
     # ./gradlew build -x test
   artifacts:
     paths:
