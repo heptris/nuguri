@@ -1,0 +1,55 @@
+spring:
+  profiles:
+    include: API-KEY
+  output:
+    ansi:
+      enabled: always # ?? ?? ??
+  datasource:
+    url: jdbc:mysql://localhost:3306/nuguri?allowPublicKeyRetrieval=true&useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul
+    username: nuguri
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: ${MYSQL_PASSWORD}
+  sql:
+    init:
+      mode: always
+
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: chatdb
+      username: nuguri
+      password: ${MONGODB_PASSWORD}
+      authentication-database: admin
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 1000
+    defer-datasource-initialization: true
+
+  redis:
+    host: localhost
+    port: 6379
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+  servlet:
+    multipart:
+      max-file-size: 7MB
+      max-request-size: 7MB
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    com.amazonaws.util.EC2MetadataUtils: error
+
+jwt:
+  secret: c3ByaW5nLWJvb3Qtc2VjdXJpdHktand0LXR1dG9yaWFsLWppd29vbi1zcHJpbmctYm9vdC1zZWN1cml0eS1qd3QtdHV0b3JpYWwK
+  blacklist:
+    access-token: BlackList_AccessToken_
