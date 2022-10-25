@@ -21,7 +21,7 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/SSAFY/Documents/GitHub/S07P31A702/backend/nuguri/build.gradle",
+    "last_opened_file_path": "C:/Users/SSAFY/Desktop/S07P31A702/backend/nuguri/build.gradle",
     "nodejs_package_manager_path": "npm"
   }
 }]]></component>
@@ -34,6 +34,7 @@
       <option name="presentableId" value="Default" />
       <updated>1665985920928</updated>
       <workItem from="1665985922095" duration="42000" />
+      <workItem from="1666676924689" duration="21000" />
     </task>
     <servers />
   </component>
