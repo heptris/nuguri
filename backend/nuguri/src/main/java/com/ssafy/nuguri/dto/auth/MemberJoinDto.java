@@ -42,7 +42,7 @@ public class MemberJoinDto {
     private String profileImage;
     private Character sex;
     private Integer age;
-    private BaseAddress baseAddress;
+    private String baseAddress;
     private Double temperature;
 
     public Member toMember(PasswordEncoder passwordEncoder) {
@@ -54,7 +54,6 @@ public class MemberJoinDto {
                 .profileImage(profileImage)
                 .sex(sex)
                 .age(age)
-                .baseAddress(baseAddress)
                 .temperature(temperature)
                 .build();
     }
