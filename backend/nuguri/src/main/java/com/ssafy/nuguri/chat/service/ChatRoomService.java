@@ -47,7 +47,7 @@ public class ChatRoomService {
     public String createChatRoom(CreateChatRoomDto createChatRoomDto) {
         log.info("createChatRoomDto = {}", createChatRoomDto);
             // 1대1 채팅일 시
-        if (createChatRoomDto.getIsOneToOne()) {
+        if (createChatRoomDto.getIsOneToOne() != null && createChatRoomDto.getIsOneToOne()) {
            // 1대1 채팅방 있는지 찾기
             Set<Long> collect = Stream.of(createChatRoomDto.getSenderId(), createChatRoomDto.getReceiverId()).collect(Collectors.toSet());
 //            List<ChatRoom> chatRooms = mongoTemplate.find(
