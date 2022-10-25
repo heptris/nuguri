@@ -18,7 +18,7 @@ cache:
     - node_modules/
 
 spring-build:
-  image: azul/zulu-openjdk:11
+  image: azul/zulu-openjdk:11.0.15
   stage: spring-build
   script: |
     echo -e $BACK_APIKEY > ./backend/nuguri/src/main/resources/application-API-KEY.properties
