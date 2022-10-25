@@ -40,7 +40,7 @@ public class RoomController {
     public String create(@RequestParam String name, RedirectAttributes rttr){
         log.info("# Create Chat Room , name: " + name);
         CreateChatRoomDto createChatRoomDto = CreateChatRoomDto.builder().roomName(name).build();
-        rttr.addFlashAttribute("roomName", chatRoomService.createChatRoom(createChatRoomDto));
+        chatRoomService.createChatRoomTest(createChatRoomDto);
         return "redirect:/chat/rooms";
     }
 
@@ -49,6 +49,7 @@ public class RoomController {
     public void getRoom(String roomId, Model model){
 
         log.info("# get Chat Room, roomID : " + roomId);
+        chatRoomService.joinTest(roomId);
         model.addAttribute("room", chatRoomService.findChatRoom(roomId));
     }
 

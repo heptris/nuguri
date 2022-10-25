@@ -1,18 +1,14 @@
 package com.ssafy.nuguri.chat.controller;
 
-import com.querydsl.core.types.Predicate;
+import com.ssafy.nuguri.chat.domain.ChatMessage;
 import com.ssafy.nuguri.chat.domain.ChatRoom;
 import com.ssafy.nuguri.chat.dto.CreateChatRoomDto;
 import com.ssafy.nuguri.chat.dto.JoinChatRoomDto;
-import com.ssafy.nuguri.chat.repository.ChatRoomRepository;
 import com.ssafy.nuguri.chat.service.ChatRoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
@@ -31,10 +27,12 @@ public class ChatRoomController {
 
     /**
      * 채팅방 참가
+     *
+     * @return
      */
     @PostMapping("/join")
-    public void joinChatRoom(@RequestBody JoinChatRoomDto joinChatRoomDto) {
-        chatRoomService.join(joinChatRoomDto);
+    public List<ChatMessage> joinChatRoom(@RequestBody JoinChatRoomDto joinChatRoomDto) {
+        return chatRoomService.join(joinChatRoomDto);
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.ssafy.nuguri.chat.controller;
 
 import com.ssafy.nuguri.chat.dto.ChatMessageDto;
+import com.ssafy.nuguri.chat.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Controller;
 public class StompChatController {
 
     private final SimpMessagingTemplate template; //특정 Broker로 메세지를 전달
+    private final ChatService chatService;
 
     //Client가 SEND할 수 있는 경로
     //stompConfig에서 설정한 applicationDestinationPrefixes와 @MessageMapping 경로가 병합됨
@@ -26,6 +28,7 @@ public class StompChatController {
 
     @MessageMapping(value = "/chat/message")
     public void message(ChatMessageDto message){
+        chatService.save(message);
         template.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
     }
 }

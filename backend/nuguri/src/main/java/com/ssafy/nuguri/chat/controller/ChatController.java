@@ -21,13 +21,8 @@ public class ChatController {
         return chatService.getChatLog();
     }
 
-    @GetMapping("/chatlog/{roomId}")
-    public List<ChatMessage> chatLogRoomId(@PathVariable String roomId) {
-        return chatService.getChatLogByRoomId(roomId);
-    }
-
     @PostMapping("/chat")
-    public void update(@RequestBody ChatMessageDto chatMessageDto) {
+    public void save(@RequestBody ChatMessageDto chatMessageDto) {
         chatService.save(chatMessageDto);
     }
 

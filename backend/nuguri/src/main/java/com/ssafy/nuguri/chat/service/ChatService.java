@@ -20,10 +20,6 @@ public class ChatService {
         return chatRepository.findAll();
     }
 
-    public List<ChatMessage> getChatLogByRoomId(String roomId) {
-        return chatRepository.findChatMessageByRoomId(roomId);
-    }
-
     public void save(ChatMessageDto chatMessageDto) {
         ChatMessage chatMessage = chatMessageDto.toChatMessage();
         chatRepository.save(chatMessage);

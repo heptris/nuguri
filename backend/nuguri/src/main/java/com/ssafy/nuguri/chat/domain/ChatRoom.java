@@ -25,6 +25,10 @@ public class ChatRoom {
 
     private Long dealId;    // 중고거래를 위한 dealId
     private Long hobbyId;   // 취미 모임 채팅을 위한 hobbyId
-    private Boolean isOneToOne;  // 순수 1대1 채팅일 경우
+
+    // 순수 1대1 채팅일 경우
+    private Boolean isOneToOne;
+    private Long senderId;
+    private Long receiverId;
 
 }
