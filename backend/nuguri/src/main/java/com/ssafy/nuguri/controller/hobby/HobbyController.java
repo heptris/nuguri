@@ -1,9 +1,13 @@
 package com.ssafy.nuguri.controller.hobby;
 
+import com.ssafy.nuguri.domain.hobby.ApproveStatus;
+import com.ssafy.nuguri.domain.hobby.HobbyHistory;
 import com.ssafy.nuguri.dto.hobby.HobbyDto;
+import com.ssafy.nuguri.dto.hobby.HobbyHistoryDto;
 import com.ssafy.nuguri.dto.response.ResponseDto;
 import com.ssafy.nuguri.service.hobby.HobbyHistoryService;
 import com.ssafy.nuguri.service.hobby.HobbyService;
+import com.ssafy.nuguri.util.SecurityUtil;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -44,10 +48,14 @@ public class HobbyController {
     @ApiOperation(value="취미방 생성")
     @PostMapping("/regist")
     public ResponseEntity regist(HobbyDto hobbyDto){
-        // HobbyHistoryController의 regist호출 필요
+        Long memberId = SecurityUtil.getCurrentMemberId();
+
+        // 취미방 생성
+        Long hobbyId = hobbyService.createHobby(hobbyDto);
+        HobbyHistoryDto hobbyHistoryDto = HobbyHistoryDto.builder().hobbyId(hobbyId).memberId(memberId).isPromoter(true).approveStatus(ApproveStatus.READY).build();
 
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseDto(HttpStatus.OK.value(), "취미방 생성",hobbyService.createHobby(hobbyDto))
+                new ResponseDto(HttpStatus.OK.value(), "취미방 생성 완료",hobbyHistoryService.createHobbyHistory(hobbyHistoryDto))
         );
     }
 

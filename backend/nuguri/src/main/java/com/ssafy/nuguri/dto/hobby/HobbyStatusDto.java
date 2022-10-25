@@ -1,6 +1,6 @@
 package com.ssafy.nuguri.dto.hobby;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ssafy.nuguri.domain.hobby.ApproveStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,32 +13,27 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @Data
-public class HobbyDto {
+public class HobbyStatusDto {
     private Long hobbyId;
-    private Long localId;
-    private Long categoryId;
-    private String title;
 
-    private String content;
+    private Long categoryId;
+
+    private String title;
 
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime endDate;
-
-    private String meetingPlace;
-
-    private boolean isClosed;
 
     private int curNum;
 
     private int maxNum;
 
-    private int fee;
+    private int wishlistNum;
 
-    private int ageLimit;
+    private int chatNum;
 
-    private char sexLimit;
+    private String imageurl;
 
-    private String hobbyImage;
+    private ApproveStatus approveStatus;
 
 
 }
