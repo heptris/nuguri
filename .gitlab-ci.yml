@@ -39,6 +39,7 @@ spring-build:
 spring-dockerize:
   image: docker:latest
   stage: spring-dockerize
+  tags: build
   variables:
     DOCKER_TLS_CERTDIR: ""
   services:
