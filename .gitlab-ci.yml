@@ -18,7 +18,7 @@ cache:
     - node_modules/
 
 spring-build:
-  image: openjdk:8
+  image: openjdk:11
   stage: spring-build
   script: |
     echo -e $BACK_APIKEY > ./backend/nuguri/src/main/resources/application-API-KEY.properties
@@ -56,38 +56,38 @@ spring-dockerize:
     - develop
     - backend
 
-react-test:
-  image: node:16.16
-  stage: react-test
-  script: |
-    cd frontend/
-    yarn install
-    yarn test:ci
-  only:
-    - master
-    - develop
-    - frontend
+# react-test:
+#   image: node:16.16
+#   stage: react-test
+#   script: |
+#     cd frontend/
+#     yarn install
+#     yarn test:ci
+#   only:
+#     - master
+#     - develop
+#     - frontend
 
-react-dockerize:
-  image: docker:latest
-  stage: react-dockerize
-  variables:
-    DOCKER_TLS_CERTDIR: ""
-  services:
-    - docker:dind
-  before_script: |
-    echo $FRONT_DOCKER_HUB_PW | docker login -u $FRONT_DOCKER_HUB_USER --password-stdin
-  script: |
-    echo -e $FRONT_DOTENV_LOCAL > ./frontend/.env.local
-    docker build -t $FRONT_IMAGE_NAME ./frontend/
-    docker push $FRONT_IMAGE_NAME
-  after_script: |
-    docker logout
-  when: on_success
-  only:
-    - master
-    - develop
-    - frontend
+# react-dockerize:
+#   image: docker:latest
+#   stage: react-dockerize
+#   variables:
+#     DOCKER_TLS_CERTDIR: ""
+#   services:
+#     - docker:dind
+#   before_script: |
+#     echo $FRONT_DOCKER_HUB_PW | docker login -u $FRONT_DOCKER_HUB_USER --password-stdin
+#   script: |
+#     echo -e $FRONT_DOTENV_LOCAL > ./frontend/.env.local
+#     docker build -t $FRONT_IMAGE_NAME ./frontend/
+#     docker push $FRONT_IMAGE_NAME
+#   after_script: |
+#     docker logout
+#   when: on_success
+#   only:
+#     - master
+#     - develop
+#     - frontend
 
 deploy:
   image: docker:latest
