@@ -4,6 +4,7 @@ import com.ssafy.nuguri.domain.deal.DealFavorite;
 import com.ssafy.nuguri.dto.deal.DealDetailDto;
 import com.ssafy.nuguri.dto.deal.DealLoginDetailDto;
 import com.ssafy.nuguri.dto.deal.DealRegistRequestDto;
+import com.ssafy.nuguri.dto.deal.DealUpdateDto;
 import com.ssafy.nuguri.repository.deal.DealFavoriteRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,5 +63,17 @@ class DealServiceTest {
     public void 조회수증가() throws Exception{
         dealService.increaseHit(3L, null, null);
      }
+
+     @Test
+     @Commit
+     public void 중고거래수정() throws Exception{
+
+        dealService.updateDealDetail(DealUpdateDto.builder()
+                .dealId(3L)
+                .title("변경")
+                .description("변경되나요")
+                .price(24581000)
+                .build(), null);
+      }
 
 }
