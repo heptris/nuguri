@@ -24,6 +24,8 @@ public enum ErrorCode {
     BASEADDRESS_NOT_FOUND(404, "존재하지 않는 지역입니다."),
     DEAL_HISTORY_NOT_FOUND(404, "존재하지 않는 중고거래 기록입니다."),
 
+    CHATROOM_NOT_FOUND(404, "존재하지 않는 채팅방입니다."),
+
 
     //409 CONFLICT 중복된 리소스
     ALREADY_SAVED_MEMBER(409, "이미 가입되어 있는 회원입니다."),
