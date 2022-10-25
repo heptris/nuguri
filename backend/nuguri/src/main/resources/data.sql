@@ -11,7 +11,7 @@ values (now(), now(), 25, 'aaa@naver.com', '$2a$10$Wo6GV5hJWVP27cnBnwvMH.67Oqx0B
        (now(), now(), 21, 'test@naver.com', '$2a$10$Wo6GV5hJWVP27cnBnwvMH.67Oqx0BSgwX.7y4wupfwdoQ40Ive49S', 'test', 'test', null, 'w', 38.0, 300);
 
 insert into category (created_date, last_modified_date, category_name, parent_id)
-values (now(), now(), '성장, 자기계발', null),
+values (now(), now(), '성장!, 자기계발', null),
        (now(), now(), '운동, 엑티비티', null),
        (now(), now(), '문화, 예술', null),
        (now(), now(), '푸드, 드링크', null),
