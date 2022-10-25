@@ -47,7 +47,7 @@ public class HobbyController {
 
     @ApiOperation(value="취미방 생성")
     @PostMapping("/regist")
-    public ResponseEntity regist(HobbyDto hobbyDto){
+    public ResponseEntity regist(@RequestBody HobbyDto hobbyDto){
         Long memberId = SecurityUtil.getCurrentMemberId();
 
         // 취미방 생성
