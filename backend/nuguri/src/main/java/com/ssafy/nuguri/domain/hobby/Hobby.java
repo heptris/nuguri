@@ -29,6 +29,10 @@ public class Hobby extends BaseEntity {
     @OneToMany(mappedBy = "hobby", cascade = CascadeType.ALL)
     private List<HobbyHistory> hobbyHistoryList = new ArrayList<>();
 
+    @Builder.Default
+    @OneToMany(mappedBy = "hobby", cascade = CascadeType.ALL)
+    private List<HobbyFavorite> hobbyFavoriteList = new ArrayList<>();
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "local_id")
     private BaseAddress baseAddress;

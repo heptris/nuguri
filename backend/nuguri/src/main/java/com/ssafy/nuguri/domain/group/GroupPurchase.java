@@ -30,6 +30,10 @@ public class GroupPurchase extends BaseEntity {
     @OneToMany(mappedBy = "groupPurchase", cascade = CascadeType.ALL)
     private List<GroupPurchaseHistory> groupPurchaseHistoryList = new ArrayList<>();
 
+    @Builder.Default
+    @OneToMany(mappedBy = "groupPurchase", cascade = CascadeType.ALL)
+    private List<GroupPurchaseFavorite> groupPurchaseFavoriteList = new ArrayList<>();
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
