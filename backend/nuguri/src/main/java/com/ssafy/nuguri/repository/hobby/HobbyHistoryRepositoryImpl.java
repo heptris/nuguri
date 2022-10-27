@@ -3,6 +3,7 @@ package com.ssafy.nuguri.repository.hobby;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.nuguri.domain.hobby.ApproveStatus;
+import com.ssafy.nuguri.domain.hobby.HobbyHistory;
 import com.ssafy.nuguri.dto.hobby.HobbyHistoryDto;
 import com.ssafy.nuguri.dto.hobby.HobbyStatusDto;
 
@@ -92,6 +93,23 @@ public class HobbyHistoryRepositoryImpl implements HobbyHistoryRepositoryCustom{
         return hobbyStatusDtoList;
     }
 
+    @Override
+    public HobbyHistoryDto findByIdDto(Long hobbyHistoryId) {
+        HobbyHistoryDto hobbyHistoryDto = queryFactory
+                .select(Projections.constructor(HobbyHistoryDto.class,
+                        hobbyHistory.id,
+                        hobby.id,
+                        member.id,
+                        hobbyHistory.isPromoter,
+                        hobbyHistory.approveStatus
+                        ))
+                .from(hobbyHistory)
+                .innerJoin(hobbyHistory.hobby,hobby)
+                .innerJoin(hobbyHistory.member,member)
+                .where(hobbyHistory.id.eq(hobbyHistoryId))
+                .fetchOne();
+        return hobbyHistoryDto;
+    }
 
 
 }

@@ -40,6 +40,7 @@ public class HobbyHistoryService {
             || hobby.getSexLimit() ==  member.getSex() // 성별제한
             || LocalDateTime.now().isAfter(hobby.getEndDate()) // 만료된 모임
             || hobby.getBaseAddress() != member.getBaseAddress()){ // 주소가 다름
+            System.out.println("입장하실 수 없습니다");
             return -1L;
         }
 
@@ -71,5 +72,10 @@ public class HobbyHistoryService {
     @Transactional
     public List<HobbyStatusDto> findStatusHobbyList(Long userId, ApproveStatus status){ //유저의 참여중인, 대기중인, 만료된 방 목록 보여주기
         return hobbyHistoryRepository.findByStatus(userId,status);
+    }
+
+    @Transactional
+    public void findByIdDto(Long hobbyHistoryId){
+        hobbyHistoryRepository.findByIdDto(hobbyHistoryId);
     }
 }

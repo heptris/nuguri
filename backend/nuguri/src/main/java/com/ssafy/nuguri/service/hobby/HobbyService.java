@@ -1,16 +1,26 @@
 package com.ssafy.nuguri.service.hobby;
 
+import com.ssafy.nuguri.domain.baseaddress.BaseAddress;
+import com.ssafy.nuguri.domain.category.Category;
 import com.ssafy.nuguri.domain.hobby.Hobby;
+import com.ssafy.nuguri.domain.s3.AwsS3;
 import com.ssafy.nuguri.dto.hobby.HobbyDto;
+import com.ssafy.nuguri.exception.ex.CustomException;
 import com.ssafy.nuguri.repository.baseaddress.BaseaddressRepository;
 import com.ssafy.nuguri.repository.category.CategoryRepository;
 import com.ssafy.nuguri.repository.hobby.HobbyRepository;
 import com.ssafy.nuguri.repository.hobby.HobbyRepositoryImpl;
+import com.ssafy.nuguri.service.s3.AwsS3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
+
+import static com.ssafy.nuguri.exception.ex.ErrorCode.BASEADDRESS_NOT_FOUND;
+import static com.ssafy.nuguri.exception.ex.ErrorCode.CATEGORY_NOT_FOUND;
 
 @Service
 @Transactional(readOnly = true)
@@ -20,6 +30,7 @@ public class HobbyService {
     private final HobbyRepository hobbyRepository;
     private final BaseaddressRepository baseaddressRepository;
     private final CategoryRepository categoryRepository;
+    private final AwsS3Service awsS3Service;
 
     @Transactional
     public List<HobbyDto> findLocalHobbyList(Long regionId){ // 지역으로 취미방 찾기
@@ -37,16 +48,27 @@ public class HobbyService {
     }
 
     @Transactional
-    public Long createHobby(HobbyDto hobbyDto){ // 취미방 생성
+    public Long createHobby(HobbyDto hobbyDto, MultipartFile hobbyImage){ // 취미방 생성
+        BaseAddress baseAddress = baseaddressRepository.findById(hobbyDto.getLocalId()).orElseThrow(()->new CustomException(BASEADDRESS_NOT_FOUND));
+        Category category = categoryRepository.findById(hobbyDto.getCategoryId()).orElseThrow(()->new CustomException(CATEGORY_NOT_FOUND));
+        // 중고거래 이미지
+        AwsS3 awsS3 = new AwsS3();
+        try {
+            awsS3 = awsS3Service.upload(hobbyImage, "hobbyImage");
+        }catch (IOException e){
+            System.out.println(e);
+        }
+        String dealImageUrl = awsS3.getPath();
+
         Hobby hobbyEntity = Hobby.builder()
-                .baseAddress(baseaddressRepository.findById(hobbyDto.getLocalId()).orElseThrow()) // 여기서 orElseThrow를 써도 됨? Throw가 발생하면 어떻게 코드가 실행되는지?
-                .category(categoryRepository.findById(hobbyDto.getCategoryId()).orElseThrow())
+                .baseAddress(baseAddress)
+                .category(category)
                 .title(hobbyDto.getTitle())
                 .content(hobbyDto.getContent())
                 .endDate(hobbyDto.getEndDate())
                 .meetingPlace(hobbyDto.getMeetingPlace())
                 .isClosed(hobbyDto.isClosed())
-                .curNum(hobbyDto.getCurNum())
+                .curNum(hobbyDto.getCurNum()) // 그냥 1을 넣어도 될듯
                 .maxNum(hobbyDto.getMaxNum())
                 .fee(hobbyDto.getFee())
                 .ageLimit(hobbyDto.getAgeLimit())

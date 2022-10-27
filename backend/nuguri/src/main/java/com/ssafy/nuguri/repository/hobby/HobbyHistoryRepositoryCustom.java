@@ -6,6 +6,7 @@ import com.ssafy.nuguri.dto.hobby.HobbyHistoryDto;
 import com.ssafy.nuguri.dto.hobby.HobbyStatusDto;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface HobbyHistoryRepositoryCustom {
 
@@ -21,5 +22,5 @@ public interface HobbyHistoryRepositoryCustom {
     // 상태별로 취미방 뿌려주기(유저페이지에서 상태별로 취미방 확인 가능해야 함)
     List<HobbyStatusDto> findByStatus(Long userId, ApproveStatus status);
 
-
+    HobbyHistoryDto findByIdDto(Long hobbyHistoryId);
 }
