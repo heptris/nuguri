@@ -56,3 +56,13 @@ insert into deal_history (created_date, last_modified_date, deal_status, promise
 values (now(), now(), 'AWAITER', null, null, 2, 1),
        (now(), now(), 'AWAITER', null, null, 3, 1),
        (now(), now(), 'RESERVER', null, null, 5, 1);
+
+insert into group_purchase (created_date, last_modified_date, description, end_date, goal_number, group_purchase_image, price, product_url, reserved_number, title, local_id, category_id, member_id)
+values (now(), now(), '설명1', DATE_ADD(now(), interval 1 day), 10, null, 30000, 'url', 4, '제목1', 1, 8, 1),
+       (now(), now(), '설명1', DATE_ADD(now(), interval 1 day), 10, null, 3000, 'url', 6, '제목2', 2, 8, 2),
+       (now(), now(), '설명2', DATE_ADD(now(), interval 1 day), 20, null, 10000, 'url', 12, '제목3', 3, 8, 3),
+       (now(), now(), '설명3', DATE_ADD(now(), interval 1 day), 100, null, 300000, 'url', 67, '제목4', 1, 9, 1),
+       (now(), now(), '설명4', DATE_ADD(now(), interval 1 day), 30, null, 45000, 'url', 2, '제목5', 4, 9, 5),
+       (now(), now(), '설명5', DATE_ADD(now(), interval 1 day), 90, null, 20000, 'url', 2, '제목6', 300, 8, 6),
+       (now(), now(), '설명6', DATE_ADD(now(), interval 1 day), 400, null, 15000, 'url', 237, '제목7', 1, 8, 1),
+       (now(), now(), '설명7', DATE_ADD(now(), interval 1 day), 2, null, 300, 'url', 0, '제목8', 1, 9, 1);
