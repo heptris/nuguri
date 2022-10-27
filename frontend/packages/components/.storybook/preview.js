@@ -1,12 +1,16 @@
 import { GlobalStyle } from "../src/GlobalStyle.tsx";
+import { ThemeProvider, useTheme } from "@emotion/react";
 
 export const decorators = [
-  Story => (
-    <>
-      <GlobalStyle />
-      <Story />
-    </>
-  ),
+  Story => {
+    const theme = useTheme();
+    return (
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        <Story />
+      </ThemeProvider>
+    );
+  },
 ];
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
