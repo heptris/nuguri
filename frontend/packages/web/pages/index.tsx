@@ -1,23 +1,26 @@
-import { css } from '@emotion/react';
-import { Animated, Basic, bounce, Combined, Pink, BasicExtended, ComponentSelectorsExtended } from '../shared/styles';
+import { css } from "@emotion/react";
+import { Animated, Basic, bounce, Combined, Pink, BasicExtended, ComponentSelectorsExtended } from "../shared/styles";
+import { AppBar } from "../../components/src/components/AppBar";
+import { BottomNavbar } from "../../components/src/components/BottomNavbar";
+import { Menu } from "../../components/src/components/Menu";
 
-const Home = () => (
-  <div
-    css={css`
-      display: flex;
-      flex-direction: column;
-    `}
-  >
-    <Basic>Cool Styles</Basic>
-    <Pink>Pink text</Pink>
-    <Combined>
-      With <code>:hover</code>.
-    </Combined>
-    <Animated animation={bounce}>Let's bounce.</Animated>
-    <ComponentSelectorsExtended>
-      <BasicExtended>Nested</BasicExtended>
-    </ComponentSelectorsExtended>
-  </div>
-);
-
+import Box from "@mui/material/Box";
+const Home = () => {
+  return (
+    <Box>
+      <AppBar />
+      <Box
+        css={css`
+          display: flex;
+          height: 100rem;
+          position: relative;
+          padding: 6rem 2rem;
+        `}
+      >
+        <Menu open={false} />
+      </Box>
+      <BottomNavbar />
+    </Box>
+  );
+};
 export default Home;
