@@ -1,4 +1,4 @@
-import { GlobalStyle } from "../src/GlobalStyle.tsx";
+import { GlobalStyle } from "../src";
 import { ThemeProvider, useTheme } from "@emotion/react";
 
 export const decorators = [
