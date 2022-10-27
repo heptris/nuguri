@@ -25,9 +25,6 @@ public class BaseAddress {
     @Column(name = "local_id")
     private Long id;
 
-    @OneToOne(mappedBy = "baseAddress", fetch = FetchType.LAZY)
-    private Member member;
-
     @Builder.Default
     @OneToMany(mappedBy = "baseAddress", cascade = CascadeType.ALL)
     private List<Hobby> hobbyList = new ArrayList<>();

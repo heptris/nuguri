@@ -30,7 +30,7 @@ public class Member extends BaseEntity {
     @Column(name = "member_id")
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "local_id")
     private BaseAddress baseAddress;
 
@@ -91,4 +91,7 @@ public class Member extends BaseEntity {
         this.baseAddress = baseAddress;
     }
 
+    public void changeTemperature(Double temperature){
+        this.temperature = temperature;
+    }
 }
