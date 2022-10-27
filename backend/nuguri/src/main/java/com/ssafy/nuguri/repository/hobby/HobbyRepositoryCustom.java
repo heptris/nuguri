@@ -2,6 +2,7 @@ package com.ssafy.nuguri.repository.hobby;
 
 import com.ssafy.nuguri.domain.hobby.ApproveStatus;
 import com.ssafy.nuguri.dto.hobby.HobbyDto;
+import com.ssafy.nuguri.dto.hobby.HobbyStatusDto;
 
 import java.util.List;
 
@@ -18,5 +19,9 @@ public interface HobbyRepositoryCustom {
 
     // hobbyId로 취미방 찾기(취미방 상세보기 클릭 시)
     HobbyDto hobbyDetail(Long hobbyId);
+
+    List<HobbyStatusDto> findByMemberIdAndStatus(Long memberId, ApproveStatus approveStatus);
+    List<HobbyStatusDto> findByMemberIdAndPromoter(Long memberId, boolean isPromoter);
+    List<HobbyStatusDto> findByMemberIdAndFavorite(Long memberId, boolean isFavorite);
 
 }

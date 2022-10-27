@@ -5,6 +5,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.nuguri.domain.hobby.ApproveStatus;
 import com.ssafy.nuguri.domain.hobby.Hobby;
 import com.ssafy.nuguri.dto.hobby.HobbyDto;
+import com.ssafy.nuguri.dto.hobby.HobbyStatusDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.EntityManager;
@@ -14,6 +15,9 @@ import java.util.List;
 import static com.ssafy.nuguri.domain.baseaddress.QBaseAddress.baseAddress;
 import static com.ssafy.nuguri.domain.category.QCategory.category;
 import static com.ssafy.nuguri.domain.hobby.QHobby.hobby;
+import static com.ssafy.nuguri.domain.hobby.QHobbyFavorite.hobbyFavorite;
+import static com.ssafy.nuguri.domain.hobby.QHobbyHistory.hobbyHistory;
+import static com.ssafy.nuguri.domain.member.QMember.member;
 
 public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
 
@@ -109,6 +113,87 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
                 )
                 .fetchOne();
         return hobbyDto;
+    }
+
+    @Override
+    public List<HobbyStatusDto> findByMemberIdAndStatus(Long memberId, ApproveStatus approveStatus) {
+        List<HobbyStatusDto> hobbyStatusDtoList = queryFactory.select(Projections.constructor(HobbyStatusDto.class,
+                        hobby.id,
+                        category.id,
+                        hobby.title,
+                        hobby.endDate,
+                        hobby.curNum,
+                        hobby.maxNum,
+                        hobby.maxNum,
+                        hobby.maxNum,
+                        hobby.hobbyImage,
+                        hobbyHistory.approveStatus
+                ))
+                .from(hobby)
+                .innerJoin(hobby.hobbyHistoryList, hobbyHistory)
+                .innerJoin(hobby.hobbyFavoriteList, hobbyFavorite)
+                .innerJoin(hobbyHistory.member, member)
+                .innerJoin(hobby.category, category)
+                .where(
+                        member.id.eq(memberId)
+                                .and(hobbyHistory.approveStatus.eq(approveStatus))
+                )
+                .fetch();
+        return hobbyStatusDtoList;
+    }
+
+    @Override
+    public List<HobbyStatusDto> findByMemberIdAndPromoter(Long memberId, boolean isPromoter) {
+        List<HobbyStatusDto> hobbyStatusDtoList = queryFactory.select(Projections.constructor(HobbyStatusDto.class,
+                        hobby.id,
+                        category.id,
+                        hobby.title,
+                        hobby.endDate,
+                        hobby.curNum,
+                        hobby.maxNum,
+                        hobby.maxNum,
+                        hobby.maxNum,
+                        hobby.hobbyImage,
+                        hobbyHistory.approveStatus
+                ))
+                .from(hobby)
+                .innerJoin(hobby.hobbyHistoryList, hobbyHistory)
+                .innerJoin(hobby.hobbyFavoriteList, hobbyFavorite)
+                .innerJoin(hobbyHistory.member, member)
+                .innerJoin(hobby.category, category)
+                .where(
+                        member.id.eq(memberId)
+                                .and(hobbyHistory.isPromoter.eq(isPromoter))
+                )
+                .fetch();
+        return hobbyStatusDtoList;
+    }
+
+    @Override
+    public List<HobbyStatusDto> findByMemberIdAndFavorite(Long memberId, boolean isFavorite) {
+        List<HobbyStatusDto> hobbyStatusDtoList = queryFactory.select(Projections.constructor(HobbyStatusDto.class,
+                        hobby.id,
+                        category.id,
+                        hobby.title,
+                        hobby.endDate,
+                        hobby.curNum,
+                        hobby.maxNum,
+                        hobby.maxNum,
+                        hobby.maxNum,
+                        hobby.hobbyImage,
+                        hobbyHistory.approveStatus
+                ))
+                .from(hobby)
+                .innerJoin(hobby.hobbyHistoryList, hobbyHistory)
+                .innerJoin(hobby.hobbyFavoriteList, hobbyFavorite)
+                .innerJoin(hobbyHistory.member, member)
+                .innerJoin(hobby.category, category)
+                .where(
+                        member.id.eq(memberId)
+                                .and(hobbyFavorite.isFavorite.eq(isFavorite))
+                )
+                .fetch();
+        return hobbyStatusDtoList;
     }
 
 }

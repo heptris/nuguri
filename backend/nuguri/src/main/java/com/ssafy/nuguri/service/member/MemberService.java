@@ -4,9 +4,11 @@ import com.ssafy.nuguri.domain.deal.Deal;
 import com.ssafy.nuguri.domain.deal.DealFavorite;
 import com.ssafy.nuguri.domain.deal.DealHistory;
 import com.ssafy.nuguri.domain.deal.DealStatus;
+import com.ssafy.nuguri.domain.hobby.ApproveStatus;
 import com.ssafy.nuguri.domain.member.Member;
 import com.ssafy.nuguri.dto.deal.DealListDto;
 import com.ssafy.nuguri.dto.hobby.HobbyDto;
+import com.ssafy.nuguri.dto.hobby.HobbyStatusDto;
 import com.ssafy.nuguri.dto.member.MemberProfileDto;
 import com.ssafy.nuguri.dto.member.MemberProfileRequestDto;
 import com.ssafy.nuguri.exception.ex.CustomException;
@@ -32,18 +34,24 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final HobbyHistoryRepository hobbyHistoryRepository;
+    private final HobbyRepository hobbyRepository;
     private final DealRepository dealRepository;
     private final DealFavoriteRepository dealFavoriteRepository;
     private final DealHistoryRepository dealHistoryRepository;
 
     @Transactional
     public MemberProfileDto profile(MemberProfileRequestDto requestDto){
-        MemberProfileDto memberProfileDto = null;
+        MemberProfileDto memberProfileDto = new MemberProfileDto();
+
+        // 다른 회원 프로필 조회
         if(requestDto.getNickname() != null){
             Member member = memberRepository.findByNickname(requestDto.getNickname()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
 
             memberProfileDto = profileCreate(memberProfileDto, member);
-        } else {
+        }
+
+        // 본인 프로필 조회
+        else {
             Long memberId = SecurityUtil.getCurrentMemberId();
             Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
 
@@ -58,12 +66,82 @@ public class MemberService {
 //        return;
 //    }
 
-//    @Transactional
-//    public List<HobbyDto> profileHobby(){
-//        Long memberId = SecurityUtil.getCurrentMemberId();
-//        return hobbyHistoryRepository.findByMemberId(memberId);
-//    }
-//
+    /**
+     * 취미 모임방 (대기 중)
+     */
+    @Transactional
+    public List<HobbyStatusDto> profileHobbyReady(MemberProfileRequestDto requestDto){
+        List<HobbyStatusDto> hobbyStatusDtoList = new ArrayList<>();
+        if (requestDto.getNickname() != null) {
+            Member member = memberRepository.findByNickname(requestDto.getNickname()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+            Long memberId = member.getId();
+
+            hobbyStatusDtoList = hobbyRepository.findByMemberIdAndStatus(memberId, ApproveStatus.READY);
+        } else {
+            Long memberId = SecurityUtil.getCurrentMemberId();
+
+            hobbyStatusDtoList = hobbyRepository.findByMemberIdAndStatus(memberId, ApproveStatus.READY);
+        }
+        return hobbyStatusDtoList;
+    }
+
+    /**
+     * 취미 모임방 (참여 중)
+     */
+    @Transactional
+    public List<HobbyStatusDto> profileHobbyParticipation(MemberProfileRequestDto requestDto){
+        List<HobbyStatusDto> hobbyStatusDtoList = new ArrayList<>();
+        if (requestDto.getNickname() != null) {
+            Member member = memberRepository.findByNickname(requestDto.getNickname()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+            Long memberId = member.getId();
+
+            hobbyStatusDtoList = hobbyRepository.findByMemberIdAndStatus(memberId, ApproveStatus.APPROVE);
+        } else {
+            Long memberId = SecurityUtil.getCurrentMemberId();
+
+            hobbyStatusDtoList = hobbyRepository.findByMemberIdAndStatus(memberId, ApproveStatus.APPROVE);
+        }
+        return hobbyStatusDtoList;
+    }
+
+    /**
+     * 취미 모임방 (운영 중)
+     */
+    @Transactional
+    public List<HobbyStatusDto> profileHobbyManage(MemberProfileRequestDto requestDto){
+        List<HobbyStatusDto> hobbyStatusDtoList = new ArrayList<>();
+        if (requestDto.getNickname() != null) {
+            Member member = memberRepository.findByNickname(requestDto.getNickname()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+            Long memberId = member.getId();
+
+            hobbyStatusDtoList = hobbyRepository.findByMemberIdAndPromoter(memberId, true);
+        } else {
+            Long memberId = SecurityUtil.getCurrentMemberId();
+
+            hobbyStatusDtoList = hobbyRepository.findByMemberIdAndPromoter(memberId, true);
+        }
+        return hobbyStatusDtoList;
+    }
+
+    /**
+     * 취미 모임방 (찜)
+     */
+    @Transactional
+    public List<HobbyStatusDto> profileHobbyFavorite(MemberProfileRequestDto requestDto){
+        List<HobbyStatusDto> hobbyStatusDtoList = new ArrayList<>();
+        if (requestDto.getNickname() != null) {
+            Member member = memberRepository.findByNickname(requestDto.getNickname()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+            Long memberId = member.getId();
+
+            hobbyStatusDtoList = hobbyRepository.findByMemberIdAndFavorite(memberId, true);
+        } else {
+            Long memberId = SecurityUtil.getCurrentMemberId();
+
+            hobbyStatusDtoList = hobbyRepository.findByMemberIdAndFavorite(memberId, true);
+        }
+        return hobbyStatusDtoList;
+    }
+
 
     /**
      * 중고 거래 (판매 중)
@@ -72,6 +150,7 @@ public class MemberService {
     public List<DealListDto> profileDealOnSale(MemberProfileRequestDto requestDto){
         List<DealListDto> dtoList = new ArrayList<>();
 
+        // 다른 회원 프로필 조회
         if(requestDto.getNickname() != null){
             Member member = memberRepository.findByNickname(requestDto.getNickname()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
 
@@ -80,7 +159,9 @@ public class MemberService {
             for(Deal d : dealList){
                 convertToDto(dtoList, d);
             }
-        } else {
+        }
+        // 본인 프로필 조회
+        else {
             Long memberId = SecurityUtil.getCurrentMemberId();
 
             List<Deal> dealList = dealRepository.findByMemberIdAndIsDeal(memberId, false);
@@ -96,12 +177,27 @@ public class MemberService {
      */
     @Transactional
     public List<DealListDto> profileDealSoldOut(MemberProfileRequestDto requestDto){
-        Long memberId = SecurityUtil.getCurrentMemberId();
-
-        List<Deal> dealList = dealRepository.findByMemberIdAndIsDeal(memberId, true);
         List<DealListDto> dtoList = new ArrayList<>();
-        for(Deal d : dealList){
-            convertToDto(dtoList, d);
+
+        // 다른 회원 프로필 조회
+        if(requestDto.getNickname() != null){
+            Member member = memberRepository.findByNickname(requestDto.getNickname()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+            Long memberId = member.getId();
+
+            List<Deal> dealList = dealRepository.findByMemberIdAndIsDeal(memberId, true);
+            for(Deal d : dealList){
+                convertToDto(dtoList, d);
+            }
+        }
+
+        // 본인 프로필 조회
+        else {
+            Long memberId = SecurityUtil.getCurrentMemberId();
+
+            List<Deal> dealList = dealRepository.findByMemberIdAndIsDeal(memberId, true);
+            for(Deal d : dealList){
+                convertToDto(dtoList, d);
+            }
         }
         return dtoList;
     }
@@ -110,13 +206,29 @@ public class MemberService {
      */
     @Transactional
     public List<DealListDto> profileDealPurchase(MemberProfileRequestDto requestDto){
-        Long memberId = SecurityUtil.getCurrentMemberId();
-
-        List<DealHistory> dealList = dealHistoryRepository.findByMemberIdAndDealStatus(memberId, DealStatus.BUYER);
         List<DealListDto> dtoList = new ArrayList<>();
-        for(DealHistory dh : dealList){
-            Deal d = dh.getDeal();
-            convertToDto(dtoList, d);
+
+        // 다른 회원 프로필 조회
+        if(requestDto.getNickname() != null){
+            Member member = memberRepository.findByNickname(requestDto.getNickname()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+            Long memberId = member.getId();
+
+            List<DealHistory> dealList = dealHistoryRepository.findByMemberIdAndDealStatus(memberId, DealStatus.BUYER);
+            for(DealHistory dh : dealList){
+                Deal d = dh.getDeal();
+                convertToDto(dtoList, d);
+            }
+        }
+
+        // 본인 프로필 조회
+        else {
+            Long memberId = SecurityUtil.getCurrentMemberId();
+
+            List<DealHistory> dealList = dealHistoryRepository.findByMemberIdAndDealStatus(memberId, DealStatus.BUYER);
+            for(DealHistory dh : dealList){
+                Deal d = dh.getDeal();
+                convertToDto(dtoList, d);
+            }
         }
         return dtoList;
     }
@@ -125,13 +237,29 @@ public class MemberService {
      */
     @Transactional
     public List<DealListDto> profileDealFavorite(MemberProfileRequestDto requestDto){
-        Long memberId = SecurityUtil.getCurrentMemberId();
-
-        List<DealFavorite> dealList = dealFavoriteRepository.findByMemberIdAndIsFavorite(memberId, true);
         List<DealListDto> dtoList = new ArrayList<>();
-        for(DealFavorite df : dealList){
-            Deal d = df.getDeal();
-            convertToDto(dtoList, d);
+
+        // 다른 회원 프로필 조회
+        if(requestDto.getNickname() != null){
+            Member member = memberRepository.findByNickname(requestDto.getNickname()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+            Long memberId = member.getId();
+
+            List<DealFavorite> dealList = dealFavoriteRepository.findByMemberIdAndIsFavorite(memberId, true);
+            for(DealFavorite df : dealList){
+                Deal d = df.getDeal();
+                convertToDto(dtoList, d);
+            }
+        }
+
+        // 본인 프로필 조회
+        else {
+            Long memberId = SecurityUtil.getCurrentMemberId();
+
+            List<DealFavorite> dealList = dealFavoriteRepository.findByMemberIdAndIsFavorite(memberId, true);
+            for(DealFavorite df : dealList){
+                Deal d = df.getDeal();
+                convertToDto(dtoList, d);
+            }
         }
         return dtoList;
     }
