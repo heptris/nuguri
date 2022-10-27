@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { forwardRef } from "react";
 
-import { css, useTheme } from "@emotion/react";
+import { css } from "@emotion/react";
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -11,28 +11,64 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 
 import { AppBarProps, default as MuiAppBar } from "@mui/material/AppBar";
+import MyLocationIcon from "@mui/icons-material/MyLocation";
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import SearchIcon from "@mui/icons-material/Search";
 import { racconsThemes } from "../../styles/theme";
+import Text from "../Text";
+import styled from "@emotion/styled";
 
 export const AppBar = forwardRef<HTMLDivElement, AppBarProps>((props, ref) => {
   const theme = racconsThemes.darkTheme;
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <MuiAppBar
-        position="static"
+    <Box
+      css={css`
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 3;
+        border-bottom: 1px solid ${theme.color.text.hover};
+      `}
+    >
+      <Box
         css={css`
-          background-color: ${theme.color.hover.main};
+          background-color: ${theme.color.background.submain};
         `}
       >
         <Toolbar>
-          <IconButton size="large" edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
-            <MenuIcon />
-          </IconButton>
+          <IconWrapper>
+            <MyLocationIcon />
+          </IconWrapper>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            News
+            <Button>
+              <Text
+                css={css`
+                  font-size: 1.2rem;
+                  font-weight: bold;
+                `}
+              >
+                역삼동
+              </Text>
+            </Button>
           </Typography>
-          <Button color="inherit">Login</Button>
+          <IconWrapper>
+            <NotificationsNoneIcon />
+          </IconWrapper>
+          <IconWrapper>
+            <AddCircleIcon />
+          </IconWrapper>
+          <IconWrapper>
+            <SearchIcon />
+          </IconWrapper>
         </Toolbar>
-      </MuiAppBar>
+      </Box>
     </Box>
   );
 });
+
+const theme = racconsThemes.darkTheme;
+const IconWrapper = styled(IconButton)`
+  background-color: ${theme.color.background.submain};
+`;
