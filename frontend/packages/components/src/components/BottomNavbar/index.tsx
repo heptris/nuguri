@@ -8,11 +8,23 @@ import AddBoxOutlinedIcon from "@mui/icons-material/AddBoxOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 
 import { BottomNavigationProps, default as MuiBottomNavigation } from "@mui/material/BottomNavigation";
+import { css } from "@emotion/react";
+import { racconsThemes } from "../../styles/theme";
 
 export const BottomNavbar = forwardRef<HTMLDivElement, BottomNavigationProps>((props, ref) => {
+  const theme = racconsThemes.darkTheme;
   const [value, setValue] = React.useState(0);
   return (
-    <Box sx={{ width: 500 }}>
+    <Box
+      css={css`
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        border-top: 1px solid ${theme.color.text.hover};
+        z-index: 3;
+      `}
+    >
       <MuiBottomNavigation
         {...props}
         ref={ref}
