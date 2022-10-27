@@ -1,6 +1,7 @@
 package com.ssafy.nuguri.service.member;
 
 import com.ssafy.nuguri.config.jwt.TokenProvider;
+import com.ssafy.nuguri.domain.baseaddress.BaseAddress;
 import com.ssafy.nuguri.domain.member.Member;
 import com.ssafy.nuguri.dto.auth.MemberJoinDto;
 import com.ssafy.nuguri.dto.auth.MemberJoinResponseDto;
@@ -8,6 +9,7 @@ import com.ssafy.nuguri.dto.auth.MemberLoginDto;
 import com.ssafy.nuguri.dto.token.TokenDto;
 import com.ssafy.nuguri.dto.token.TokenRequestDto;
 import com.ssafy.nuguri.exception.ex.CustomException;
+import com.ssafy.nuguri.repository.baseaddress.BaseaddressRepository;
 import com.ssafy.nuguri.repository.member.MemberRepository;
 import com.ssafy.nuguri.service.s3.AwsS3Service;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,7 @@ public class AuthService {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
+    private final BaseaddressRepository baseaddressRepository;
     private final TokenProvider tokenProvider;
     private final AwsS3Service awsS3Service;
 
@@ -39,8 +42,14 @@ public class AuthService {
             throw new CustomException(ALREADY_SAVED_MEMBER);
         }
 
+        String[] memberAddress = memberJoinDto.getBaseAddress().split(" ");
+
+        BaseAddress baseAddress = baseaddressRepository.findBySidoAndGugunAndDong(memberAddress[0], memberAddress[1], memberAddress[2]).orElseThrow(() -> new CustomException(BASEADDRESS_NOT_FOUND));
+
         Member member = memberJoinDto.toMember(passwordEncoder);
         member.changeProfileImage(randomProfileImage());
+        member.changeBaseAddress(baseAddress);
+        member.changeTemperature(36.5);
         memberRepository.save(member);
 
         return new MemberJoinResponseDto(member.getEmail());

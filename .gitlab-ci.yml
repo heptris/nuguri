@@ -9,13 +9,13 @@
 stages:
   - spring-build
   - spring-dockerize
-  # - react-test
-  # - react-dockerize
+ # - react-test
+  - react-dockerize
   - deploy
 
-# cache:
-#   paths:
-#     - node_modules/
+cache:
+  paths:
+    - node_modules/
 
 spring-build:
   image: openjdk:11
@@ -68,26 +68,24 @@ spring-dockerize:
 #     - develop
 #     - frontend
 
-# react-dockerize:
-#   image: docker:latest
-#   stage: react-dockerize
-#   variables:
-#     DOCKER_TLS_CERTDIR: ""
-#   services:
-#     - docker:dind
-#   before_script: |
-#     echo $FRONT_DOCKER_HUB_PW | docker login -u $FRONT_DOCKER_HUB_USER --password-stdin
-#   script: |
-#     echo -e $FRONT_DOTENV_LOCAL > ./frontend/.env.local
-#     docker build -t $FRONT_IMAGE_NAME ./frontend/
-#     docker push $FRONT_IMAGE_NAME
-#   after_script: |
-#     docker logout
-#   when: on_success
-#   only:
-#     - master
-#     - develop
-#     - frontend
+react-dockerize:
+  image: docker:latest
+  stage: react-dockerize
+  variables:
+    DOCKER_TLS_CERTDIR: ""
+  services:
+    - docker:dind
+  before_script: |
+    echo $FRONT_DOCKER_HUB_PW | docker login -u $FRONT_DOCKER_HUB_USER --password-stdin
+  script: |
+    docker build -t $FRONT_IMAGE_NAME ./frontend/
+    docker push $FRONT_IMAGE_NAME
+  after_script: |
+    docker logout
+  only:
+    - master
+    - develop
+    - frontend
 
 deploy:
   image: docker:latest

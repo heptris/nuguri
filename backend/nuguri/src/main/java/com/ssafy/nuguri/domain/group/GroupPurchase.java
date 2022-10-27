@@ -62,4 +62,11 @@ public class GroupPurchase extends BaseEntity {
 
     private String groupPurchaseImage;
 
+    public void registGroupPurchase(Member member, Category category, BaseAddress baseAddress, String groupPurchaseImage){
+        this.member = member;
+        this.category = category;
+        this.baseAddress = baseAddress;
+        this.groupPurchaseImage = groupPurchaseImage;
+    }
+
 }

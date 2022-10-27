@@ -69,4 +69,11 @@ public class Deal extends BaseEntity {
         this.baseAddress = baseAddress;
         this.dealImage = dealImage;
     }
+
+    public void updateDeal(String title, String description, int price, String dealImage){
+        this.title = title;
+        this.description = description;
+        this.price = price;
+        this.dealImage = dealImage;
+    }
 }
