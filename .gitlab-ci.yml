@@ -9,7 +9,7 @@
 stages:
   - spring-build
   - spring-dockerize
-  - react-test
+ # - react-test
   - react-dockerize
   - deploy
 
@@ -44,7 +44,7 @@ spring-dockerize:
   services:
     - docker:dind
   before_script: |
-    cd backend/uniqon
+    cd backend/nuguri
     echo $BACK_DOCKER_HUB_PW | docker login -u $BACK_DOCKER_HUB_USER --password-stdin
   script: |
     docker build -t $BACK_IMAGE_NAME .
@@ -56,17 +56,17 @@ spring-dockerize:
     - develop
     - backend
 
-react-test:
-  image: node:16.16
-  stage: react-test
-  script: |
-    cd frontend/
-    yarn install
-    yarn test:ci
-  only:
-    - master
-    - develop
-    - frontend
+# react-test:
+#   image: node:16.16
+#   stage: react-test
+#   script: |
+#     cd frontend/
+#     yarn install
+#     yarn test:ci
+#   only:
+#     - master
+#     - develop
+#     - frontend
 
 react-dockerize:
   image: docker:latest
@@ -78,12 +78,10 @@ react-dockerize:
   before_script: |
     echo $FRONT_DOCKER_HUB_PW | docker login -u $FRONT_DOCKER_HUB_USER --password-stdin
   script: |
-    echo -e $FRONT_DOTENV_LOCAL > ./frontend/.env.local
     docker build -t $FRONT_IMAGE_NAME ./frontend/
     docker push $FRONT_IMAGE_NAME
   after_script: |
     docker logout
-  when: on_success
   only:
     - master
     - develop

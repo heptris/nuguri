@@ -6,10 +6,8 @@ import com.ssafy.nuguri.domain.deal.Deal;
 import com.ssafy.nuguri.domain.deal.DealFavorite;
 import com.ssafy.nuguri.domain.member.Member;
 import com.ssafy.nuguri.domain.s3.AwsS3;
-import com.ssafy.nuguri.dto.deal.DealDetailDto;
-import com.ssafy.nuguri.dto.deal.DealListDto;
-import com.ssafy.nuguri.dto.deal.DealLoginDetailDto;
-import com.ssafy.nuguri.dto.deal.DealRegistRequestDto;
+import com.ssafy.nuguri.dto.auth.MemberJoinDto;
+import com.ssafy.nuguri.dto.deal.*;
 import com.ssafy.nuguri.exception.ex.CustomException;
 import com.ssafy.nuguri.repository.baseaddress.BaseaddressRepository;
 import com.ssafy.nuguri.repository.category.CategoryRepository;
@@ -71,6 +69,23 @@ public class DealService {
 
         deal.registDeal(member, category, baseAddress, dealImageUrl);
         dealRepository.save(deal);
+    }
+
+    @Transactional
+    public void updateDealDetail(DealUpdateDto dealUpdateDto, MultipartFile dealImage){
+        Deal deal = dealRepository.findById(dealUpdateDto.getDealId())
+                .orElseThrow(() -> new CustomException(DEAL_NOT_FOUND));
+
+        // 중고거래 이미지
+        AwsS3 awsS3 = new AwsS3();
+        try {
+            awsS3 = awsS3Service.upload(dealImage, "dealImage");
+        }catch (IOException e){
+            System.out.println(e);
+        }
+        String dealImageUrl = awsS3.getPath();
+
+        deal.updateDeal(dealUpdateDto.getTitle(), dealUpdateDto.getDescription(), dealUpdateDto.getPrice(), dealImageUrl);
     }
 
     public List<DealListDto> findLocalCategoryDealList(Long localId, Long categoryId){
