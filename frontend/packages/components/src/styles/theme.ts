@@ -5,6 +5,7 @@ export interface RacconsTheme {
   color: {
     background: {
       main: string;
+      submain: string;
       emphasis: string;
       page: string;
       card: string;
@@ -34,6 +35,7 @@ const darkTheme: RacconsTheme = {
   color: {
     background: {
       main: "var(--main)",
+      submain: "var(--white)",
       emphasis: "var(--vividBlue)",
       page: "var(--ink900)",
       card: "var(--ink800)",
@@ -58,5 +60,4 @@ const darkTheme: RacconsTheme = {
     },
   },
 };
-export const racconsThemes = { darkTheme }
-
+export const racconsThemes = { darkTheme };
