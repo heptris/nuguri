@@ -21,7 +21,6 @@ spring-build:
   image: openjdk:11
   stage: spring-build
   script: |
-    ls
     echo -e $BACK_APIKEY > ./backend/nuguri/src/main/resources/application-API-KEY.properties
     value=`cat ./backend/nuguri/src/main/resources/application-API-KEY.properties`
     echo "$value"
