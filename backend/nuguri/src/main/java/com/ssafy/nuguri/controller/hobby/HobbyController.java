@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -47,11 +48,12 @@ public class HobbyController {
 
     @ApiOperation(value="취미방 생성")
     @PostMapping("/regist")
-    public ResponseEntity regist(@RequestBody HobbyDto hobbyDto){
+    public ResponseEntity regist(@RequestPart HobbyDto hobbyDto,
+                                 @RequestPart(value = "file", required = false) MultipartFile hobbyImage){
         Long memberId = SecurityUtil.getCurrentMemberId();
 
         // 취미방 생성
-        Long hobbyId = hobbyService.createHobby(hobbyDto);
+        Long hobbyId = hobbyService.createHobby(hobbyDto,hobbyImage);
         HobbyHistoryDto hobbyHistoryDto = HobbyHistoryDto.builder().hobbyId(hobbyId).memberId(memberId).isPromoter(true).approveStatus(ApproveStatus.READY).build();
 
         return ResponseEntity.status(HttpStatus.OK).body(
