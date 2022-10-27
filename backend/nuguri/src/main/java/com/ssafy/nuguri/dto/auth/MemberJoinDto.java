@@ -1,6 +1,5 @@
 package com.ssafy.nuguri.dto.auth;
 
-import com.ssafy.nuguri.domain.baseaddress.BaseAddress;
 import com.ssafy.nuguri.domain.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,11 +38,9 @@ public class MemberJoinDto {
     @Size(min = 3, max = 30, message = "닉네임은 3~30자리수여야 합니다.")
     private String nickName;
 
-    private String profileImage;
     private Character sex;
     private Integer age;
     private String baseAddress;
-    private Double temperature;
 
     public Member toMember(PasswordEncoder passwordEncoder) {
         return Member.builder()
@@ -51,10 +48,8 @@ public class MemberJoinDto {
                 .password(passwordEncoder.encode(password))
                 .name(name)
                 .nickname(nickName)
-                .profileImage(profileImage)
                 .sex(sex)
                 .age(age)
-                .temperature(temperature)
                 .build();
     }
 

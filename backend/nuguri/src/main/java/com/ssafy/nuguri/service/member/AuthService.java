@@ -49,6 +49,7 @@ public class AuthService {
         Member member = memberJoinDto.toMember(passwordEncoder);
         member.changeProfileImage(randomProfileImage());
         member.changeBaseAddress(baseAddress);
+        member.changeTemperature(36.5);
         memberRepository.save(member);
 
         return new MemberJoinResponseDto(member.getEmail());
