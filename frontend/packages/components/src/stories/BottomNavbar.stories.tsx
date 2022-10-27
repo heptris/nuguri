@@ -1,7 +1,7 @@
 import React from "react";
 
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import { BottomNavbar } from "../BottomNavbar";
+import { BottomNavbar } from "../components/BottomNavbar";
 
 export default {
   title: "BottomNavbar",

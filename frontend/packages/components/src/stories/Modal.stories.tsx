@@ -1,7 +1,7 @@
 import React from "react";
 
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import { Modal } from "../Modal";
+import { Modal } from "../components/Modal";
 
 export default {
   title: "Modal",

@@ -2,7 +2,7 @@ import React from "react";
 
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 
-import { LabelInput } from "../LabelInput";
+import { LabelInput } from "../components/LabelInput";
 import { JSX } from "@emotion/react/jsx-runtime";
 import { StandardTextFieldProps, FilledTextFieldProps, OutlinedTextFieldProps } from "@mui/material";
 

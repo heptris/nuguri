@@ -1,7 +1,7 @@
 import React from "react";
 
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import { Avatar } from "../Avatar";
+import { Avatar } from "../components/Avatar";
 import { JSX } from "@emotion/react/jsx-runtime";
 import { AvatarClasses, SxProps, Theme } from "@mui/material";
 
