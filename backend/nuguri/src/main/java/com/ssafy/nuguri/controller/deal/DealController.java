@@ -2,6 +2,7 @@ package com.ssafy.nuguri.controller.deal;
 
 import com.ssafy.nuguri.dto.deal.DealListRequestDto;
 import com.ssafy.nuguri.dto.deal.DealRegistRequestDto;
+import com.ssafy.nuguri.dto.deal.DealUpdateDto;
 import com.ssafy.nuguri.dto.response.ResponseDto;
 import com.ssafy.nuguri.service.deal.DealService;
 import com.ssafy.nuguri.util.SecurityUtil;
@@ -58,6 +59,17 @@ public class DealController {
                 new ResponseDto(HttpStatus.OK.value(), "중고거래 등록", "중고거래 등록 완료 !!")
         );
     }
+
+    @ApiOperation(value = "등록된 중고거래 수정")
+    @PutMapping
+    public ResponseEntity updateDealDetail(@RequestPart DealUpdateDto dealUpdateDto,
+                                           @RequestPart(value = "file", required = false) MultipartFile dealImage){
+        dealService.updateDealDetail(dealUpdateDto, dealImage);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseDto(HttpStatus.OK.value(), "중고거래 수정", "중고거래 수정 완료 !!")
+        );
+    }
+
     @ApiOperation(value = "중고거래 즐겨찾기 등록/해제")
     @PostMapping("/{dealId}/favorite")
     public ResponseEntity createOrModifyDealFavorite(@PathVariable Long dealId){

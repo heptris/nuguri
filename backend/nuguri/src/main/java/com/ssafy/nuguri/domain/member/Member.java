@@ -87,4 +87,8 @@ public class Member extends BaseEntity {
         this.profileImage = profileImage;
     }
 
+    public void changeBaseAddress(BaseAddress baseAddress){
+        this.baseAddress = baseAddress;
+    }
+
 }

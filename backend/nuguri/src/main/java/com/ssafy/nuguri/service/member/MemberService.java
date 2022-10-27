@@ -8,6 +8,7 @@ import com.ssafy.nuguri.domain.member.Member;
 import com.ssafy.nuguri.dto.deal.DealListDto;
 import com.ssafy.nuguri.dto.hobby.HobbyDto;
 import com.ssafy.nuguri.dto.member.MemberProfileDto;
+import com.ssafy.nuguri.dto.member.MemberProfileRequestDto;
 import com.ssafy.nuguri.exception.ex.CustomException;
 import com.ssafy.nuguri.repository.deal.DealFavoriteRepository;
 import com.ssafy.nuguri.repository.deal.DealHistoryRepository;
@@ -36,21 +37,20 @@ public class MemberService {
     private final DealHistoryRepository dealHistoryRepository;
 
     @Transactional
-    public MemberProfileDto profile(){
-        Long memberId = SecurityUtil.getCurrentMemberId();
-        Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+    public MemberProfileDto profile(MemberProfileRequestDto requestDto){
+        MemberProfileDto memberProfileDto = null;
+        if(requestDto.getNickname() != null){
+            Member member = memberRepository.findByNickname(requestDto.getNickname()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
 
-        MemberProfileDto memberProfileResponseDto = MemberProfileDto.builder()
-                .email(member.getEmail())
-                .name(member.getName())
-                .nickname(member.getNickname())
-                .description(member.getDescription())
-                .temperature(member.getTemperature())
-                .profileImage(member.getProfileImage())
-                .baseAddress(member.getBaseAddress())
-                .build();
+            memberProfileDto = profileCreate(memberProfileDto, member);
+        } else {
+            Long memberId = SecurityUtil.getCurrentMemberId();
+            Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
 
-        return memberProfileResponseDto;
+            memberProfileDto = profileCreate(memberProfileDto, member);
+        }
+
+        return memberProfileDto;
     }
 
 //    @Transactional
@@ -69,13 +69,24 @@ public class MemberService {
      * 중고 거래 (판매 중)
      */
     @Transactional
-    public List<DealListDto> profileDealOnSale(){
-        Long memberId = SecurityUtil.getCurrentMemberId();
-
-        List<Deal> dealList = dealRepository.findByMemberIdAndIsDeal(memberId, false);
+    public List<DealListDto> profileDealOnSale(MemberProfileRequestDto requestDto){
         List<DealListDto> dtoList = new ArrayList<>();
-        for(Deal d : dealList){
-            convertToDto(dtoList, d);
+
+        if(requestDto.getNickname() != null){
+            Member member = memberRepository.findByNickname(requestDto.getNickname()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+
+            Long memberId = member.getId();
+            List<Deal> dealList = dealRepository.findByMemberIdAndIsDeal(memberId, false);
+            for(Deal d : dealList){
+                convertToDto(dtoList, d);
+            }
+        } else {
+            Long memberId = SecurityUtil.getCurrentMemberId();
+
+            List<Deal> dealList = dealRepository.findByMemberIdAndIsDeal(memberId, false);
+            for(Deal d : dealList){
+                convertToDto(dtoList, d);
+            }
         }
         return dtoList;
     }
@@ -84,7 +95,7 @@ public class MemberService {
      * 중고 거래 (판매 완료)
      */
     @Transactional
-    public List<DealListDto> profileDealSoldOut(){
+    public List<DealListDto> profileDealSoldOut(MemberProfileRequestDto requestDto){
         Long memberId = SecurityUtil.getCurrentMemberId();
 
         List<Deal> dealList = dealRepository.findByMemberIdAndIsDeal(memberId, true);
@@ -98,7 +109,7 @@ public class MemberService {
      * 중고 거래 (구매 완료)
      */
     @Transactional
-    public List<DealListDto> profileDealPurchase(){
+    public List<DealListDto> profileDealPurchase(MemberProfileRequestDto requestDto){
         Long memberId = SecurityUtil.getCurrentMemberId();
 
         List<DealHistory> dealList = dealHistoryRepository.findByMemberIdAndDealStatus(memberId, DealStatus.BUYER);
@@ -113,7 +124,7 @@ public class MemberService {
      * 중고 거래 (찜)
      */
     @Transactional
-    public List<DealListDto> profileDealFavorite(){
+    public List<DealListDto> profileDealFavorite(MemberProfileRequestDto requestDto){
         Long memberId = SecurityUtil.getCurrentMemberId();
 
         List<DealFavorite> dealList = dealFavoriteRepository.findByMemberIdAndIsFavorite(memberId, true);
@@ -141,6 +152,19 @@ public class MemberService {
                 .isDeal(d.isDeal())
                 .dealImage(d.getDealImage())
                 .build());
+    }
+
+    private MemberProfileDto profileCreate(MemberProfileDto memberProfileDto, Member member){
+        memberProfileDto = MemberProfileDto.builder()
+                .email(member.getEmail())
+                .name(member.getName())
+                .nickname(member.getNickname())
+                .description(member.getDescription())
+                .temperature(member.getTemperature())
+                .profileImage(member.getProfileImage())
+                .baseAddress(member.getBaseAddress())
+                .build();
+        return memberProfileDto;
     }
 
 
