@@ -54,7 +54,12 @@ public class HobbyController {
 
         // 취미방 생성
         Long hobbyId = hobbyService.createHobby(hobbyDto,hobbyImage);
-        HobbyHistoryDto hobbyHistoryDto = HobbyHistoryDto.builder().hobbyId(hobbyId).memberId(memberId).isPromoter(true).approveStatus(ApproveStatus.READY).build();
+        HobbyHistoryDto hobbyHistoryDto = HobbyHistoryDto.builder()
+                .hobbyId(hobbyId)
+                .memberId(memberId)
+                .isPromoter(true)
+                .approveStatus(ApproveStatus.READY)
+                .build();
 
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseDto(HttpStatus.OK.value(), "취미방 생성 완료",hobbyHistoryService.createHobbyHistory(hobbyHistoryDto))

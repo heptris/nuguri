@@ -68,7 +68,7 @@ public class HobbyService {
                 .endDate(hobbyDto.getEndDate())
                 .meetingPlace(hobbyDto.getMeetingPlace())
                 .isClosed(hobbyDto.isClosed())
-                .curNum(hobbyDto.getCurNum()) // 그냥 1을 넣어도 될듯
+                .curNum(hobbyDto.getCurNum())
                 .maxNum(hobbyDto.getMaxNum())
                 .fee(hobbyDto.getFee())
                 .ageLimit(hobbyDto.getAgeLimit())

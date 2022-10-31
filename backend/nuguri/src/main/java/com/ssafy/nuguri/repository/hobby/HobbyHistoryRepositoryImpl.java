@@ -24,7 +24,7 @@ public class HobbyHistoryRepositoryImpl implements HobbyHistoryRepositoryCustom{
     }
 
     @Override
-    public List<HobbyHistoryDto> waiter(Long hobbyId) {
+    public List<HobbyHistoryDto> waitingPerson(Long hobbyId) {
         List<HobbyHistoryDto> hobbyHistoryDtoList = queryFactory.select(Projections.constructor(HobbyHistoryDto.class,
                         hobbyHistory.id,
                         hobby.id,

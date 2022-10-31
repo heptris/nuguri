@@ -5,6 +5,7 @@ import com.ssafy.nuguri.dto.hobby.HobbyDto;
 import com.ssafy.nuguri.repository.baseaddress.BaseaddressRepository;
 import com.ssafy.nuguri.repository.category.CategoryRepository;
 import com.ssafy.nuguri.repository.hobby.HobbyRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -57,25 +58,11 @@ class HobbyServiceTest {
                 .build();
         return hobbyRepository.save(hobbyEntity).getId();
     }
-    @Test
-    public void testflow(){
-        System.out.println("======취미방 생성 시작======");
-        HobbyDto hobbyDto = HobbyDto.builder()
-                .localId(10L)
-                .categoryId(3L)
-                .title("취미방 1")
-                .content("놀자")
-                .endDate(LocalDateTime.now())
-                .meetingPlace("멀티캠퍼스")
-                .isClosed(false)
-                .curNum(1)
-                .maxNum(10)
-                .fee(0)
-                .ageLimit(100)
-                .sexLimit((char)1)
-                .hobbyImage("imageUrl")
-                .build();
 
+    @Test
+    @BeforeEach
+    public void before(){
+        System.out.println("======취미방 생성 시작======");
         HobbyDto hobbyDto2 = HobbyDto.builder()
                 .localId(20L)
                 .categoryId(3L)
@@ -110,24 +97,45 @@ class HobbyServiceTest {
 
         createHobby(hobbyDto2);
         createHobby(hobbyDto3);
+    }
 
-        Long hobbyId = createHobby(hobbyDto);
-
-        System.out.println("======지역으로 취미방 찾기======");
+    @Test
+    public void 지역으로_취미방_찾기(){
         List<HobbyDto> result = findLocalHobbyList(10L);
         for (HobbyDto h:result
-             ) {
+        ) {
             System.out.println("지역이 10L인 데이터: "+h);
         }
+    }
 
-        System.out.println("======지역과 카테고리로 취미방 찾기======");
-        List<HobbyDto> result2 = findLocalCategoryHobbyList(10L, 3L);
+    @Test
+    public void 지역과_카테고리로_취미방_찾기(){
+        List<HobbyDto> result2 = findLocalCategoryHobbyList(10L, 2L);
         for (HobbyDto h:result2
         ) {
             System.out.println("지역이 10L, 카테고리가 30L인 데이터: "+h);
         }
+    }
 
-        System.out.println("======취미 상세조회======");
+    @Test
+    public void 취미_상세조회(){
+        HobbyDto hobbyDto = HobbyDto.builder()
+                .localId(10L)
+                .categoryId(3L)
+                .title("취미방 1")
+                .content("놀자")
+                .endDate(LocalDateTime.now())
+                .meetingPlace("멀티캠퍼스")
+                .isClosed(false)
+                .curNum(1)
+                .maxNum(10)
+                .fee(0)
+                .ageLimit(100)
+                .sexLimit((char)1)
+                .hobbyImage("imageUrl")
+                .build();
+
+        Long hobbyId = createHobby(hobbyDto);
         HobbyDto result3 = findHobbyDetail(hobbyId);
         System.out.println("아이디가 "+hobbyId+"인 취미방 상세조회: "+result3);
 

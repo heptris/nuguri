@@ -3,12 +3,9 @@ package com.ssafy.nuguri.service.hobby;
 import com.ssafy.nuguri.domain.hobby.ApproveStatus;
 import com.ssafy.nuguri.domain.hobby.Hobby;
 import com.ssafy.nuguri.domain.hobby.HobbyHistory;
-import com.ssafy.nuguri.dto.hobby.HobbyDto;
 import com.ssafy.nuguri.dto.hobby.HobbyHistoryDto;
 import com.ssafy.nuguri.domain.member.Member;
 import com.ssafy.nuguri.dto.hobby.HobbyStatusDto;
-import com.ssafy.nuguri.repository.baseaddress.BaseaddressRepository;
-import com.ssafy.nuguri.repository.category.CategoryRepository;
 import com.ssafy.nuguri.repository.hobby.HobbyHistoryRepository;
 import com.ssafy.nuguri.repository.hobby.HobbyRepository;
 import com.ssafy.nuguri.repository.member.MemberRepository;
@@ -56,7 +53,7 @@ public class HobbyHistoryService {
 
     @Transactional
     public List<HobbyHistoryDto> findWaitingMemberList(Long hobbyId){ // 해당 취미방 신청 대기자
-        return hobbyHistoryRepository.waiter(hobbyId);
+        return hobbyHistoryRepository.waitingPerson(hobbyId);
     }
 
     @Transactional

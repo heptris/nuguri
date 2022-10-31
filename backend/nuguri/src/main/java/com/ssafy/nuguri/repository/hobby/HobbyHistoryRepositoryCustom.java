@@ -6,12 +6,11 @@ import com.ssafy.nuguri.dto.hobby.HobbyHistoryDto;
 import com.ssafy.nuguri.dto.hobby.HobbyStatusDto;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface HobbyHistoryRepositoryCustom {
 
     // 어떤 방에 참여를 신청한 사람들 목록(Status 대기중)
-    List<HobbyHistoryDto> waiter(Long hobbyId);
+    List<HobbyHistoryDto> waitingPerson(Long hobbyId);
 
     // 어떤 방에 참여중인 사람들 목록(Status 승인)
     List<HobbyHistoryDto> participant(Long hobbyId);
