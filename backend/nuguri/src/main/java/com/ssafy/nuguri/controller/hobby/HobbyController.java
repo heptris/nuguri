@@ -60,9 +60,9 @@ public class HobbyController {
                 .isPromoter(true)
                 .approveStatus(ApproveStatus.READY)
                 .build();
-
+        Long result = hobbyHistoryService.createHobbyHistory(hobbyHistoryDto);
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseDto(HttpStatus.OK.value(), "취미방 생성 완료",hobbyHistoryService.createHobbyHistory(hobbyHistoryDto))
+                new ResponseDto(HttpStatus.OK.value(), "취미방 생성 완료",result)
         );
     }
 

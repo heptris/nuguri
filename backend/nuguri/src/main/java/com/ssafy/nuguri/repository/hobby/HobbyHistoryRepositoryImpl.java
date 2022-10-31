@@ -3,7 +3,6 @@ package com.ssafy.nuguri.repository.hobby;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.nuguri.domain.hobby.ApproveStatus;
-import com.ssafy.nuguri.domain.hobby.HobbyHistory;
 import com.ssafy.nuguri.dto.hobby.HobbyHistoryDto;
 import com.ssafy.nuguri.dto.hobby.HobbyStatusDto;
 
@@ -60,12 +59,12 @@ public class HobbyHistoryRepositoryImpl implements HobbyHistoryRepositoryCustom{
     }
 
     @Override
-    public boolean changeStatus(Long hobbyHistoryId, ApproveStatus status) {
+    public ApproveStatus changeStatus(Long hobbyHistoryId, ApproveStatus status) {
         queryFactory.selectFrom(hobbyHistory)
                 .where(hobbyHistory.id.eq(hobbyHistoryId))
                 .fetchOne()
                 .updateApproveStatus(status);
-        return false;
+        return status;
     }
 
 
