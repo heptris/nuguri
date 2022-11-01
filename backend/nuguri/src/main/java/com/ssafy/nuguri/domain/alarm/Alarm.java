@@ -1,5 +1,6 @@
 package com.ssafy.nuguri.domain.alarm;
 
+import com.ssafy.nuguri.alarm.dto.AlarmDto;
 import com.ssafy.nuguri.domain.BaseEntity;
 import com.ssafy.nuguri.domain.member.Member;
 import lombok.AllArgsConstructor;
@@ -25,8 +26,15 @@ public class Alarm extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    private String description;
+    private String title;
+    private String content;
+    private Boolean isRead;
+    // 취미방 참가 신청자
+    private Long participantId;
 
-    private boolean isRead;
+    public AlarmDto toAlarmDto() {
+        return AlarmDto.builder().alarmId(id).content(content).title(title).isRead(isRead).participantId(participantId)
+                .build();
+    }
 
 }

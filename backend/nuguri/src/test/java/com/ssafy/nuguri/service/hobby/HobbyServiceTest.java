@@ -13,6 +13,8 @@ import javax.transaction.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
@@ -131,5 +133,14 @@ class HobbyServiceTest {
         HobbyDto result3 = findHobbyDetail(hobbyId);
         System.out.println("아이디가 "+hobbyId+"인 취미방 상세조회: "+result3);
 
+    }
+
+    @Test
+    public void test() {
+        Map<Long, String> map = new ConcurrentHashMap<>();
+        map.put(1L, "A");
+        map.put(2L, "B");
+
+        System.out.println(map.get(3L));
     }
 }
