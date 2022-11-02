@@ -10,6 +10,7 @@ import com.ssafy.nuguri.dto.hobby.HobbyStatusDto;
 import com.ssafy.nuguri.repository.hobby.HobbyHistoryRepository;
 import com.ssafy.nuguri.repository.hobby.HobbyRepository;
 import com.ssafy.nuguri.repository.member.MemberRepository;
+import com.ssafy.nuguri.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -32,9 +33,11 @@ public class HobbyHistoryService {
 
 
     @Transactional
-    public Long createHobbyHistory(HobbyHistoryDto hobbyHistoryDto){ // 취미방 생성 또는 참여신청
-        Member member = memberRepository.findById(hobbyHistoryDto.getMemberId()).orElseThrow();
-        Hobby hobby = hobbyRepository.findById(hobbyHistoryDto.getHobbyId()).orElseThrow();
+    public Long createHobbyHistory(Long hobbyId){ // 취미방 생성 또는 참여신청 // 신청만
+        Member member = new Member();
+        member.changeMemberId(SecurityUtil.getCurrentMemberId());
+
+        Hobby hobby = hobbyRepository.findById(hobbyId).orElseThrow();
 
 //        // 조건 미달
 //        if(!hobbyHistoryDto.isPromoter() // 방장이 아니면서
@@ -51,8 +54,8 @@ public class HobbyHistoryService {
         HobbyHistory hobbyHistoryEntity = HobbyHistory.builder()
                 .member(member)
                 .hobby(hobby)
-                .isPromoter(hobbyHistoryDto.isPromoter())
-                .approveStatus(hobbyHistoryDto.getApproveStatus())
+                .isPromoter(false)
+                .approveStatus(ApproveStatus.READY)
                 .build();
 
         /**
