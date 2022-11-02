@@ -30,6 +30,7 @@ public class HobbyController {
         );
     }
 
+    //
     @ApiOperation(value ="해당 지역과 카테고리에 대한 취미방 목록 조회")
     @GetMapping("/{localId}/{categoryId}/list")
     public ResponseEntity findLocalCategoryHobbyList(@PathVariable Long localId, @PathVariable Long categoryId){
@@ -50,19 +51,11 @@ public class HobbyController {
     @PostMapping("/regist")
     public ResponseEntity regist(@RequestPart HobbyDto hobbyDto,
                                  @RequestPart(value = "file", required = false) MultipartFile hobbyImage){
-        Long memberId = SecurityUtil.getCurrentMemberId();
-
         // 취미방 생성
-        Long hobbyId = hobbyService.createHobby(hobbyDto,hobbyImage);
-        HobbyHistoryDto hobbyHistoryDto = HobbyHistoryDto.builder()
-                .hobbyId(hobbyId)
-                .memberId(memberId)
-                .isPromoter(true)
-                .approveStatus(ApproveStatus.READY)
-                .build();
-        Long result = hobbyHistoryService.createHobbyHistory(hobbyHistoryDto);
+        hobbyService.createHobby(hobbyDto,hobbyImage);
+
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseDto(HttpStatus.OK.value(), "취미방 생성 완료",result)
+                new ResponseDto(HttpStatus.OK.value(), "취미방 생성 완료","message")
         );
     }
 

@@ -2,15 +2,21 @@ package com.ssafy.nuguri.service.hobby;
 
 import com.ssafy.nuguri.domain.baseaddress.BaseAddress;
 import com.ssafy.nuguri.domain.category.Category;
+import com.ssafy.nuguri.domain.hobby.ApproveStatus;
 import com.ssafy.nuguri.domain.hobby.Hobby;
+import com.ssafy.nuguri.domain.hobby.HobbyHistory;
+import com.ssafy.nuguri.domain.member.Member;
 import com.ssafy.nuguri.domain.s3.AwsS3;
 import com.ssafy.nuguri.dto.hobby.HobbyDto;
 import com.ssafy.nuguri.exception.ex.CustomException;
 import com.ssafy.nuguri.repository.baseaddress.BaseaddressRepository;
 import com.ssafy.nuguri.repository.category.CategoryRepository;
+import com.ssafy.nuguri.repository.hobby.HobbyHistoryRepository;
 import com.ssafy.nuguri.repository.hobby.HobbyRepository;
 import com.ssafy.nuguri.repository.hobby.HobbyRepositoryImpl;
+import com.ssafy.nuguri.repository.member.MemberRepository;
 import com.ssafy.nuguri.service.s3.AwsS3Service;
+import com.ssafy.nuguri.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +34,8 @@ import static com.ssafy.nuguri.exception.ex.ErrorCode.CATEGORY_NOT_FOUND;
 public class HobbyService {
 
     private final HobbyRepository hobbyRepository;
+    private final HobbyHistoryRepository hobbyHistoryRepository;
+    private final MemberRepository memberRepository;
     private final BaseaddressRepository baseaddressRepository;
     private final CategoryRepository categoryRepository;
     private final AwsS3Service awsS3Service;
@@ -48,7 +56,7 @@ public class HobbyService {
     }
 
     @Transactional
-    public Long createHobby(HobbyDto hobbyDto, MultipartFile hobbyImage){ // 취미방 생성
+    public void createHobby(HobbyDto hobbyDto, MultipartFile hobbyImage){ // 취미방 생성
         BaseAddress baseAddress = baseaddressRepository.findById(hobbyDto.getLocalId()).orElseThrow(()->new CustomException(BASEADDRESS_NOT_FOUND));
         Category category = categoryRepository.findById(hobbyDto.getCategoryId()).orElseThrow(()->new CustomException(CATEGORY_NOT_FOUND));
         // 중고거래 이미지
@@ -75,7 +83,21 @@ public class HobbyService {
                 .sexLimit(hobbyDto.getSexLimit())
                 .hobbyImage(hobbyDto.getHobbyImage())
                 .build();
-        return hobbyRepository.save(hobbyEntity).getId();
+        // hobbyhistorySerivice를 생성
+        Hobby hobby = hobbyRepository.save(hobbyEntity);
+        Long memberId = SecurityUtil.getCurrentMemberId();
+
+        // 쿼리를 한번 덜 쓰는 방법, db에는 어차피 id만 있어서
+        Member member = new Member();
+        member.changeMemberId(memberId);
+
+        HobbyHistory hobbyHistoryEntity = HobbyHistory.builder()
+                .member(member)
+                .hobby(hobby)
+                .isPromoter(true)
+                .approveStatus(ApproveStatus.APPROVE)
+                .build();
+        hobbyHistoryRepository.save(hobbyHistoryEntity);
     }
 
 
