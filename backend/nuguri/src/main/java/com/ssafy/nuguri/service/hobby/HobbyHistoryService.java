@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.ssafy.nuguri.domain.alarm.AlarmCode.HOBBY_ALARM;
+import static com.ssafy.nuguri.domain.alarm.AlarmCode.HOBBY_OWNER_ALARM;
 import static java.lang.Boolean.*;
 
 @Service
@@ -61,7 +61,7 @@ public class HobbyHistoryService {
         Long ownerId = hobbyHistoryRepository.findOwnerId(hobby);
         Member alarmReceiver = new Member();
         alarmReceiver.changeMemberId(ownerId);
-        HobbyAlarmEventDto hobbyAlarmEventDto = HobbyAlarmEventDto.builder().content(HOBBY_ALARM.getContent()).title(HOBBY_ALARM.getTitle())
+        HobbyAlarmEventDto hobbyAlarmEventDto = HobbyAlarmEventDto.builder().content(HOBBY_OWNER_ALARM.getContent()).title(HOBBY_OWNER_ALARM.getTitle())
                 .isRead(FALSE).member(alarmReceiver).participantId(member.getId()).participantImage(member.getProfileImage()).build();
         if (ownerId != member.getId()) {
             eventPublisher.publishEvent(hobbyAlarmEventDto);
