@@ -2,6 +2,7 @@ package com.ssafy.nuguri.repository.deal;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.nuguri.domain.deal.QDealFavorite;
 import com.ssafy.nuguri.domain.member.QMember;
@@ -49,10 +50,14 @@ public class DealRepositoryImpl implements DealRepositoryCustom{
                 .innerJoin(deal.category, category)
                 .where(baseAddress.lat.between(Double.toString(lat - 0.01), Double.toString(lat + 0.01))
                         .and(baseAddress.lng.between(Double.toString(lng - 0.01), Double.toString(lng + 0.01)))
-                        .and(category.id.eq(categoryId)))
+                        .and(categoryIdEq(categoryId)))
                 .fetch();
 
         return dealListDtoList;
+    }
+
+    private BooleanExpression categoryIdEq(Long categoryId){
+        return categoryId == null ? null : category.id.eq(categoryId);
     }
 
     @Override

@@ -26,10 +26,11 @@ public class DealController {
     private final DealService dealService;
 
     @ApiOperation(value = "해당 지역, 취미에 대한 중고거래 목록 조회")
-    @GetMapping("/{localId}/{categoryId}/list")
-    public ResponseEntity findLocalCategoryDealList(@PathVariable Long localId, @PathVariable Long categoryId){
+    @PostMapping("/list")
+    public ResponseEntity findLocalCategoryDealList(@RequestBody DealListRequestDto dealListRequestDto){
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseDto(HttpStatus.OK.value(), "중고거래 목록", dealService.findLocalCategoryDealList(localId, categoryId))
+                new ResponseDto(HttpStatus.OK.value(), "중고거래 목록",
+                        dealService.findLocalCategoryDealList(dealListRequestDto.getLocalId(), dealListRequestDto.getCategoryId()))
         );
     }
 
