@@ -15,10 +15,12 @@ import com.ssafy.nuguri.repository.category.CategoryRepository;
 import com.ssafy.nuguri.repository.hobby.HobbyHistoryRepository;
 import com.ssafy.nuguri.repository.hobby.HobbyRepository;
 import com.ssafy.nuguri.repository.member.MemberRepository;
+import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -34,6 +36,7 @@ import static com.ssafy.nuguri.domain.member.QMember.member;
 
 @SpringBootTest
 @Transactional
+@Sql("classpath:tableInit.sql")
 class HobbyHistoryServiceTest {
 
     @Autowired
@@ -105,6 +108,7 @@ class HobbyHistoryServiceTest {
         HobbyHistory hobbyHistory4 = HobbyHistory.builder().member(me).hobby(hobbyEntity1).isPromoter(false).approveStatus(ApproveStatus.APPROVE).build();
         HobbyHistory hobbyHistory5 = HobbyHistory.builder().member(me).hobby(hobbyEntity1).isPromoter(false).approveStatus(ApproveStatus.REJECT).build();
 
+
         em.persist(hobbyEntity1);
         em.persist(hobbyEntity2);
         em.persist(hobbyHistory1);
@@ -112,41 +116,28 @@ class HobbyHistoryServiceTest {
         em.persist(hobbyHistory3);
         em.persist(hobbyHistory4);
         em.persist(hobbyHistory5);
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
+        List<Hobby> result = hobbyRepository.findAll();
+        for (Hobby m :result
+             ) {
+            System.out.println(m.getId());
+        }
     }
 
     public Long createHobbyHistory(HobbyHistoryDto hobbyHistoryDto){ // 취미방 생성 또는 참여신청
         Member member = memberRepository.findById(hobbyHistoryDto.getMemberId()).orElseThrow();
         Hobby hobby = hobbyRepository.findById(hobbyHistoryDto.getHobbyId()).orElseThrow();
 
-        // 조건 미달
-//        if(!hobbyHistoryDto.isPromoter()){
-//            System.out.println("손님임");
-//        };
-//        if(hobby.getCurNum() >= hobby.getMaxNum()){
-//            System.out.println("정원초과");
-//        }
-//        if(hobby.getAgeLimit() > member.getAge()){
-//            System.out.println("나이제한");
-//        }
-//        if(hobby.getSexLimit() ==  member.getSex()){
-//            System.out.println("성별제한");
-//        }
-//        if (LocalDateTime.now().isAfter(hobby.getEndDate())){
-//            System.out.println("만료된 모임");
-//        }
-//        if(hobby.getBaseAddress() != member.getBaseAddress()){
-//            System.out.println("주소가 다름");
-//        }
 
-        if(!hobbyHistoryDto.isPromoter() &&// 방장이 아니면서
-                hobby.getCurNum() >= hobby.getMaxNum() || // 정원초과
-                hobby.getAgeLimit() > member.getAge() || // 나이제한
-                hobby.getSexLimit() ==  member.getSex() || // 성별제한
-                LocalDateTime.now().isAfter(hobby.getEndDate()) || // 만료된 모임
-                hobby.getBaseAddress() != member.getBaseAddress()){ // 주소가 다름
-            System.out.println("입장하실 수 없습니다");
-            return -1L;
-        }
+//        if(!hobbyHistoryDto.isPromoter() &&// 방장이 아니면서
+//                hobby.getCurNum() >= hobby.getMaxNum() || // 정원초과
+//                hobby.getAgeLimit() > member.getAge() || // 나이제한
+//                hobby.getSexLimit() ==  member.getSex() || // 성별제한
+//                LocalDateTime.now().isAfter(hobby.getEndDate()) || // 만료된 모임
+//                hobby.getBaseAddress() != member.getBaseAddress()){ // 주소가 다름
+//            System.out.println("입장하실 수 없습니다");
+//            return -1L;
+//        }
 
         HobbyHistory hobbyHistoryEntity = HobbyHistory.builder()
                 .member(member)
@@ -170,7 +161,7 @@ class HobbyHistoryServiceTest {
 
 
 
-    public boolean changeStatus(Long hobbyHistoryId, ApproveStatus status){ // 취미방 신청을 승인 또는 거절하기
+    public ApproveStatus changeStatus(Long hobbyHistoryId, ApproveStatus status){ // 취미방 신청을 승인 또는 거절하기
         return hobbyHistoryRepository.changeStatus(hobbyHistoryId,status);
     }
 
@@ -206,7 +197,7 @@ class HobbyHistoryServiceTest {
                 .approveStatus(ApproveStatus.READY)
                 .build();
         Long id = createHobbyHistory(hobbyHistoryDto);
-        System.out.println(id);
+        System.out.println(id+"@@@@@@@@@@@@@@@@@@@@@@@@@@2");
         HobbyHistoryDto result = findByIdDto(id);
         System.out.println("생성 결과: "+ result.toString());
     }

@@ -16,6 +16,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
 
 import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
@@ -30,6 +31,7 @@ import static com.ssafy.nuguri.domain.member.QMember.member;
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
+@Sql("classpath:tableInit.sql")
 class HobbyHistoryRepositoryImplTest {
     @Autowired
     EntityManager em;
