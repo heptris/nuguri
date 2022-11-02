@@ -33,7 +33,7 @@ public class HobbyHistoryService {
 
 
     @Transactional
-    public Long createHobbyHistory(Long hobbyId){ // 취미방 생성 또는 참여신청 // 신청만
+    public Long createHobbyHistory(Long hobbyId) { // 취미방 생성 또는 참여신청 // 신청만
         Member member = new Member();
         member.changeMemberId(SecurityUtil.getCurrentMemberId());
 
@@ -50,7 +50,6 @@ public class HobbyHistoryService {
 //            return -1L;
 //        }
 
-
         HobbyHistory hobbyHistoryEntity = HobbyHistory.builder()
                 .member(member)
                 .hobby(hobby)
@@ -65,10 +64,9 @@ public class HobbyHistoryService {
         Member alarmReceiver = new Member();
         alarmReceiver.changeMemberId(ownerId);
         HobbyAlarmEventDto hobbyAlarmEventDto = HobbyAlarmEventDto.builder().content(HOBBY_OWNER_ALARM.getContent()).title(HOBBY_OWNER_ALARM.getTitle())
-                .isRead(FALSE).member(alarmReceiver).participantId(member.getId()).participantImage(member.getProfileImage()).build();
-        if (ownerId != member.getId()) {
-            eventPublisher.publishEvent(hobbyAlarmEventDto);
-        }
+                .isRead(FALSE).member(alarmReceiver).participantId(member.getId()).
+                participantImage(member.getProfileImage()).hobbyId(hobbyId).build();
+        eventPublisher.publishEvent(hobbyAlarmEventDto);
         /**
          * 알람 보내기 끝
          */
@@ -77,27 +75,27 @@ public class HobbyHistoryService {
     }
 
     @Transactional
-    public List<HobbyHistoryDto> findWaitingMemberList(Long hobbyId){ // 해당 취미방 신청 대기자
+    public List<HobbyHistoryDto> findWaitingMemberList(Long hobbyId) { // 해당 취미방 신청 대기자
         return hobbyHistoryRepository.waitingPerson(hobbyId);
     }
 
     @Transactional
-    public List<HobbyHistoryDto> findParticipantList(Long hobbyId){ // 해당 취미방 참여자
+    public List<HobbyHistoryDto> findParticipantList(Long hobbyId) { // 해당 취미방 참여자
         return hobbyHistoryRepository.participant(hobbyId);
     }
 
     @Transactional
-    public ApproveStatus changeStatus(Long hobbyHistoryId, ApproveStatus status){ // 취미방 신청을 승인 또는 거절하기
-        return hobbyHistoryRepository.changeStatus(hobbyHistoryId,status);
+    public ApproveStatus changeStatus(Long hobbyHistoryId, ApproveStatus status) { // 취미방 신청을 승인 또는 거절하기
+        return hobbyHistoryRepository.changeStatus(hobbyHistoryId, status);
     }
 
     @Transactional
-    public List<HobbyStatusDto> findStatusHobbyList(Long userId, ApproveStatus status){ //유저의 참여중인, 대기중인, 만료된 방 목록 보여주기
-        return hobbyHistoryRepository.findByStatus(userId,status);
+    public List<HobbyStatusDto> findStatusHobbyList(Long userId, ApproveStatus status) { //유저의 참여중인, 대기중인, 만료된 방 목록 보여주기
+        return hobbyHistoryRepository.findByStatus(userId, status);
     }
 
     @Transactional
-    public void findByIdDto(Long hobbyHistoryId){
+    public void findByIdDto(Long hobbyHistoryId) {
         hobbyHistoryRepository.findByIdDto(hobbyHistoryId);
     }
 }

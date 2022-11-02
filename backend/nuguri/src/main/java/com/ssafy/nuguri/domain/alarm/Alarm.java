@@ -25,7 +25,6 @@ public class Alarm extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
-
     private String title;
     private String content;
     private Boolean isRead;
@@ -35,9 +34,12 @@ public class Alarm extends BaseEntity {
     // 취미방 참가 신청자 프로필
     private String participantImage;
 
+    // 취미 방 Id
+    private Long hobbyId;
+
     public AlarmDto toAlarmDto() {
         return AlarmDto.builder().alarmId(id).content(content).title(title).isRead(isRead).participantId(participantId)
-                .participantImage(participantImage)
+                .participantImage(participantImage).hobbyId(hobbyId)
                 .build();
     }
 

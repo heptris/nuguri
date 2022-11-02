@@ -23,12 +23,12 @@ import static org.springframework.http.HttpStatus.OK;
 public class AlarmController {
 
     private final AlarmService alarmService;
-    @ApiOperation(value ="읽지 않은 알림에 대한 조회")
+    @ApiOperation(value ="알람 조회")
     @GetMapping
-    public ResponseEntity unReadAlarmList() {
+    public ResponseEntity myAlarmList() {
         Long memberId = SecurityUtil.getCurrentMemberId();
         return ResponseEntity.status(OK).body(
-                new ResponseDto<>(200, "안 읽은 알람 조회", alarmService.myAlarmList(memberId))
+                new ResponseDto<>(200, "알람 조회", alarmService.myAlarmList(memberId))
         );
     }
 
