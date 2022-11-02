@@ -1,18 +1,29 @@
 package com.ssafy.nuguri.alarm.service;
 
+import com.ssafy.nuguri.alarm.dto.AlarmDto;
 import com.ssafy.nuguri.alarm.repository.AlarmRepository;
 import com.ssafy.nuguri.alarm.repository.EmitterRepository;
 import com.ssafy.nuguri.domain.alarm.Alarm;
-import com.ssafy.nuguri.repository.hobby.HobbyRepository;
+import com.ssafy.nuguri.domain.member.Member;
+import com.ssafy.nuguri.exception.ex.CustomException;
+import com.ssafy.nuguri.exception.ex.ErrorCode;
+import com.ssafy.nuguri.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.ssafy.nuguri.exception.ex.ErrorCode.*;
+import static java.lang.Boolean.*;
 
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 @Service
 public class AlarmService {
 
@@ -46,6 +57,33 @@ public class AlarmService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    /**
+     * 내 알람리스트(unRead) 조회
+     */
+    public List<AlarmDto> myAlarmList(Long memberId) {
+        Member member = new Member();
+        member.changeMemberId(memberId);
+
+        List<Alarm> alarmList = alarmRepository.findAllByMemberAndIsRead(member, FALSE);
+        return alarmList.stream().map(Alarm::toAlarmDto).collect(Collectors.toList());
+    }
+
+    /**
+     * 알람 읽기
+     */
+    public void readAlarm(Long alarmId) {
+        Alarm alarm = alarmRepository.findById(alarmId).orElseThrow(
+                () -> new CustomException(ALARM_NOT_FOUND)
+        );
+        alarm.changeIsRead(TRUE);
+    }
+
+    /**
+     * 테스트용 알림 저장
+     */
+    public void saveAll(List<Alarm> alarmList) {
+        alarmRepository.saveAll(alarmList);
     }
 }

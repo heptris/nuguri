@@ -37,4 +37,8 @@ public class Alarm extends BaseEntity {
                 .build();
     }
 
+    public void changeIsRead(Boolean isRead) {
+        this.isRead = isRead;
+    }
+
 }

@@ -94,4 +94,8 @@ public class Member extends BaseEntity {
     public void changeTemperature(Double temperature){
         this.temperature = temperature;
     }
+
+    public void changeMemberId(Long memberId) {
+        this.id = memberId;
+    }
 }
