@@ -32,8 +32,12 @@ public class Alarm extends BaseEntity {
     // 취미방 참가 신청자
     private Long participantId;
 
+    // 취미방 참가 신청자 프로필
+    private String participantImage;
+
     public AlarmDto toAlarmDto() {
         return AlarmDto.builder().alarmId(id).content(content).title(title).isRead(isRead).participantId(participantId)
+                .participantImage(participantImage)
                 .build();
     }
 

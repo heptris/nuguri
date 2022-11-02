@@ -2,6 +2,7 @@ package com.ssafy.nuguri.repository.hobby;
 
 
 import com.ssafy.nuguri.domain.hobby.ApproveStatus;
+import com.ssafy.nuguri.domain.hobby.Hobby;
 import com.ssafy.nuguri.dto.hobby.HobbyHistoryDto;
 import com.ssafy.nuguri.dto.hobby.HobbyStatusDto;
 
@@ -22,4 +23,6 @@ public interface HobbyHistoryRepositoryCustom {
     List<HobbyStatusDto> findByStatus(Long userId, ApproveStatus status);
 
     HobbyHistoryDto findByIdDto(Long hobbyHistoryId);
+
+    Long findOwnerId(Hobby hobby);
 }

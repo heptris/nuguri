@@ -9,5 +9,6 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface HobbyHistoryRepository extends JpaRepository<HobbyHistory,Long>, HobbyHistoryRepositoryCustom{
+public interface HobbyHistoryRepository extends JpaRepository<HobbyHistory, Long>, HobbyHistoryRepositoryCustom {
+
 }

@@ -3,6 +3,7 @@ package com.ssafy.nuguri.repository.hobby;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.nuguri.domain.hobby.ApproveStatus;
+import com.ssafy.nuguri.domain.hobby.Hobby;
 import com.ssafy.nuguri.dto.hobby.HobbyHistoryDto;
 import com.ssafy.nuguri.dto.hobby.HobbyStatusDto;
 
@@ -13,6 +14,7 @@ import static com.ssafy.nuguri.domain.category.QCategory.category;
 import static com.ssafy.nuguri.domain.hobby.QHobby.hobby;
 import static com.ssafy.nuguri.domain.hobby.QHobbyHistory.hobbyHistory;
 import static com.ssafy.nuguri.domain.member.QMember.member;
+import static java.lang.Boolean.*;
 
 public class HobbyHistoryRepositoryImpl implements HobbyHistoryRepositoryCustom{
 
@@ -108,6 +110,16 @@ public class HobbyHistoryRepositoryImpl implements HobbyHistoryRepositoryCustom{
                 .where(hobbyHistory.id.eq(hobbyHistoryId))
                 .fetchOne();
         return hobbyHistoryDto;
+    }
+
+    @Override
+    public Long findOwnerId(Hobby hobby) {
+        Long ownerId = queryFactory
+                .select(hobbyHistory.member.id)
+                .from(hobbyHistory)
+                .where(hobbyHistory.hobby.eq(hobby).and(hobbyHistory.isPromoter.eq(TRUE)))
+                .fetchOne();
+        return ownerId;
     }
 
 
