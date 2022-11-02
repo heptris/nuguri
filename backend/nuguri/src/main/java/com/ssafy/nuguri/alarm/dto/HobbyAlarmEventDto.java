@@ -18,12 +18,13 @@ public class HobbyAlarmEventDto {
     private String content;
     private Boolean isRead;
     private Long participantId;
-
     private String participantImage;
+
+    private Long hobbyId;
 
     public Alarm toAlarm() {
         return Alarm.builder().member(member).title(title).content(content).isRead(isRead).participantId(participantId)
-                .participantImage(participantImage).build();
+                .participantImage(participantImage).hobbyId(hobbyId).build();
     }
 
 }

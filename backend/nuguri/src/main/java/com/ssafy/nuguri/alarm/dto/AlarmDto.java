@@ -17,5 +17,6 @@ public class AlarmDto {
     private Long participantId;
     private Boolean isRead;
     private String participantImage;
+    private Long hobbyId;
 
 }

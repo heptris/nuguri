@@ -60,13 +60,13 @@ public class AlarmService {
     }
 
     /**
-     * 내 알람리스트(unRead) 조회
+     * 내 알람리스트 조회
      */
     public List<AlarmDto> myAlarmList(Long memberId) {
         Member member = new Member();
         member.changeMemberId(memberId);
 
-        List<Alarm> alarmList = alarmRepository.findAllByMemberAndIsRead(member, FALSE);
+        List<Alarm> alarmList = alarmRepository.findAllByMember(member);
         return alarmList.stream().map(Alarm::toAlarmDto).collect(Collectors.toList());
     }
 

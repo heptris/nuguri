@@ -51,6 +51,7 @@ create table if not exists alarm (
                        is_read bit,
                        participant_id bigint,
                        title varchar(255),
+                       participant_image varchar(255),
                        member_id bigint,
                        primary key (alarm_id)
 ) engine=InnoDB;
