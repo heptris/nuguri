@@ -1,6 +1,7 @@
 package com.ssafy.nuguri.repository.hobby;
 
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.nuguri.domain.baseaddress.BaseAddress;
 import com.ssafy.nuguri.domain.category.Category;
@@ -173,13 +174,20 @@ class HobbyRepositoryImplTest {
                 .from(hobby)
                 .innerJoin(hobby.baseAddress, baseAddress)
                 .innerJoin(hobby.category, category)
-                .where(
-                        baseAddress.id.eq(RegionId)
-                                .and(category.id.eq(CategoryId))
+                .where(RegionEq(RegionId),
+                        CategoryEq(CategoryId)
                 )
                 .fetch();
         return hobbyDtoList;
     }
+
+    private BooleanExpression RegionEq(Long RegionId) {
+        return RegionId == null ? null : baseAddress.id.eq(RegionId);
+    }
+    private BooleanExpression CategoryEq(Long CategoryId) {
+        return CategoryId == null ? null : category.id.eq(CategoryId);
+    }
+
     @Test
     public void 지역과_카테고리로_찾기(){
         List<HobbyDto> result = findByRegionAndCategory(1L,1L);

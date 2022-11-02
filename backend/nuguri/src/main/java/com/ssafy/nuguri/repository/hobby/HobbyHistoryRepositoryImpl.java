@@ -5,7 +5,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.nuguri.domain.hobby.ApproveStatus;
 import com.ssafy.nuguri.domain.hobby.Hobby;
 import com.ssafy.nuguri.dto.hobby.HobbyHistoryDto;
-import com.ssafy.nuguri.dto.hobby.HobbyStatusDto;
+import com.ssafy.nuguri.dto.hobby.HobbyHistoryResponseDto;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -25,7 +25,7 @@ public class HobbyHistoryRepositoryImpl implements HobbyHistoryRepositoryCustom{
     }
 
     @Override
-    public List<HobbyHistoryDto> waitingPerson(Long hobbyId) {
+    public List<HobbyHistoryDto> userByStatus(Long hobbyId, ApproveStatus approveStauts) {
         List<HobbyHistoryDto> hobbyHistoryDtoList = queryFactory.select(Projections.constructor(HobbyHistoryDto.class,
                         hobbyHistory.id,
                         hobby.id,
@@ -37,29 +37,10 @@ public class HobbyHistoryRepositoryImpl implements HobbyHistoryRepositoryCustom{
                 .innerJoin(hobbyHistory.hobby,hobby)
                 .innerJoin(hobbyHistory.member,member)
                 .where(hobby.id.eq(hobbyId)
-                        .and(hobbyHistory.approveStatus.eq(ApproveStatus.READY)))
+                        .and(hobbyHistory.approveStatus.eq(approveStauts)))
                 .fetch();
         return hobbyHistoryDtoList;
     }
-
-    @Override
-    public List<HobbyHistoryDto> participant(Long hobbyId) {
-        List<HobbyHistoryDto> hobbyHistoryDtoList = queryFactory.select(Projections.constructor(HobbyHistoryDto.class,
-                        hobbyHistory.id,
-                        hobby.id,
-                        member.id,
-                        hobbyHistory.isPromoter,
-                        hobbyHistory.approveStatus
-                ))
-                .from(hobbyHistory)
-                .innerJoin(hobbyHistory.hobby,hobby)
-                .innerJoin(hobbyHistory.member,member)
-                .where(hobby.id.eq(hobbyId)
-                        .and(hobbyHistory.approveStatus.eq(ApproveStatus.APPROVE)))
-                .fetch();
-        return hobbyHistoryDtoList;
-    }
-
     @Override
     public ApproveStatus changeStatus(Long hobbyHistoryId, ApproveStatus status) {
         queryFactory.selectFrom(hobbyHistory)
@@ -69,11 +50,9 @@ public class HobbyHistoryRepositoryImpl implements HobbyHistoryRepositoryCustom{
         return status;
     }
 
-
     @Override
-    public List<HobbyStatusDto> findByStatus(Long userId, ApproveStatus status) {
-        List<HobbyStatusDto> hobbyStatusDtoList = queryFactory.select(Projections.constructor(HobbyStatusDto.class,
-                        hobby.id,
+    public List<HobbyHistoryResponseDto> findByStatus(Long userId, ApproveStatus status) {
+        List<HobbyHistoryResponseDto> hobbyHistoryResponseDtoList = queryFactory.select(Projections.constructor(HobbyHistoryResponseDto.class,
                         category.id,
                         hobby.title,
                         hobby.endDate,
@@ -88,10 +67,52 @@ public class HobbyHistoryRepositoryImpl implements HobbyHistoryRepositoryCustom{
                 .innerJoin(hobbyHistory.hobby, hobby)
                 .innerJoin(hobby.category, category)
                 .where(hobbyHistory.member.id.eq(userId)
+                        .and(hobby.isClosed.not())
                         .and(hobbyHistory.approveStatus.eq(status)))
                 .fetch();
 
-        return hobbyStatusDtoList;
+        return hobbyHistoryResponseDtoList;
+    }
+
+    @Override
+    public List<HobbyHistoryResponseDto> findOperatings(Long userId) {
+        List<HobbyHistoryResponseDto> hobbyHistoryResponseDtoList = queryFactory.select(Projections.constructor(HobbyHistoryResponseDto.class,
+                        category.id,
+                        hobby.title,
+                        hobby.endDate,
+                        hobby.curNum,
+                        hobby.maxNum,
+                        hobby.curNum, // wishlistNum으로 변경
+                        hobby.curNum, // chatNum으로 변경
+                        hobby.hobbyImage,
+                        hobbyHistory.approveStatus
+                ))
+                .from(hobbyHistory)
+                .innerJoin(hobbyHistory.hobby, hobby)
+                .innerJoin(hobby.category, category)
+                .where(hobbyHistory.member.id.eq(userId)
+                        .and(hobby.isClosed.not()) // 안닺힘
+                        .and(hobbyHistory.isPromoter)) // 방장
+                .fetch();
+        return hobbyHistoryResponseDtoList;
+    }
+
+    public HobbyHistoryDto findByHobbyAndMemberIdDto(Long hobbyId, Long memberId){
+        HobbyHistoryDto hobbyHistoryDto = queryFactory
+                .select(Projections.constructor(HobbyHistoryDto.class,
+                        hobbyHistory.id,
+                        hobby.id,
+                        member.id,
+                        hobbyHistory.isPromoter,
+                        hobbyHistory.approveStatus
+                ))
+                .from(hobbyHistory)
+                .innerJoin(hobbyHistory.hobby,hobby)
+                .innerJoin(hobbyHistory.member,member)
+                .where(hobby.id.eq(hobbyId),
+                        member.id.eq(memberId))
+                .fetchOne(); // one이 아닐수도 있다
+        return hobbyHistoryDto;
     }
 
     @Override

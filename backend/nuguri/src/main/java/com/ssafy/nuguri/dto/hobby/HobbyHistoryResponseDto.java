@@ -13,8 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @Data
-public class HobbyStatusDto {
-    private Long hobbyId;
+public class HobbyHistoryResponseDto {
 
     private Long categoryId;
 

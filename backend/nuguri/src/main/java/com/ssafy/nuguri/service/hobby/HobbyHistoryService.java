@@ -4,9 +4,10 @@ import com.ssafy.nuguri.alarm.dto.HobbyAlarmEventDto;
 import com.ssafy.nuguri.domain.hobby.ApproveStatus;
 import com.ssafy.nuguri.domain.hobby.Hobby;
 import com.ssafy.nuguri.domain.hobby.HobbyHistory;
+import com.ssafy.nuguri.dto.hobby.ChangeStatusRequestDto;
 import com.ssafy.nuguri.dto.hobby.HobbyHistoryDto;
 import com.ssafy.nuguri.domain.member.Member;
-import com.ssafy.nuguri.dto.hobby.HobbyStatusDto;
+import com.ssafy.nuguri.dto.hobby.HobbyHistoryResponseDto;
 import com.ssafy.nuguri.repository.hobby.HobbyHistoryRepository;
 import com.ssafy.nuguri.repository.hobby.HobbyRepository;
 import com.ssafy.nuguri.repository.member.MemberRepository;
@@ -76,26 +77,27 @@ public class HobbyHistoryService {
 
     @Transactional
     public List<HobbyHistoryDto> findWaitingMemberList(Long hobbyId) { // 해당 취미방 신청 대기자
-        return hobbyHistoryRepository.waitingPerson(hobbyId);
+        return hobbyHistoryRepository.userByStatus(hobbyId,ApproveStatus.READY);
     }
 
     @Transactional
     public List<HobbyHistoryDto> findParticipantList(Long hobbyId) { // 해당 취미방 참여자
-        return hobbyHistoryRepository.participant(hobbyId);
+        return hobbyHistoryRepository.userByStatus(hobbyId,ApproveStatus.APPROVE);
     }
 
     @Transactional
-    public ApproveStatus changeStatus(Long hobbyHistoryId, ApproveStatus status) { // 취미방 신청을 승인 또는 거절하기
-        return hobbyHistoryRepository.changeStatus(hobbyHistoryId, status);
+    public ApproveStatus changeStatus(ChangeStatusRequestDto changeStatusRequestDto) { // 취미방 신청을 승인 또는 거절하기
+        Long hobbyHistoryId = hobbyHistoryRepository.findByHobbyAndMemberIdDto(changeStatusRequestDto.getHobbyId(),changeStatusRequestDto.getMemberId()).getHobbyHistoryId();
+        return hobbyHistoryRepository.changeStatus(hobbyHistoryId, changeStatusRequestDto.getApproveStatus());
     }
 
     @Transactional
-    public List<HobbyStatusDto> findStatusHobbyList(Long userId, ApproveStatus status) { //유저의 참여중인, 대기중인, 만료된 방 목록 보여주기
+    public List<HobbyHistoryResponseDto> findStatusHobbyList(Long userId, ApproveStatus status) { //유저의 참여중인, 대기중인, 만료된 방 목록 보여주기
         return hobbyHistoryRepository.findByStatus(userId, status);
     }
 
     @Transactional
-    public void findByIdDto(Long hobbyHistoryId) {
-        hobbyHistoryRepository.findByIdDto(hobbyHistoryId);
+    public HobbyHistoryDto findByIdDto(Long hobbyHistoryId) {
+        return hobbyHistoryRepository.findByIdDto(hobbyHistoryId);
     }
 }

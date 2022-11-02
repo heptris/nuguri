@@ -7,8 +7,7 @@ import com.ssafy.nuguri.domain.deal.DealStatus;
 import com.ssafy.nuguri.domain.hobby.ApproveStatus;
 import com.ssafy.nuguri.domain.member.Member;
 import com.ssafy.nuguri.dto.deal.DealListDto;
-import com.ssafy.nuguri.dto.hobby.HobbyDto;
-import com.ssafy.nuguri.dto.hobby.HobbyStatusDto;
+import com.ssafy.nuguri.dto.hobby.HobbyHistoryResponseDto;
 import com.ssafy.nuguri.dto.member.MemberProfileDto;
 import com.ssafy.nuguri.dto.member.MemberProfileRequestDto;
 import com.ssafy.nuguri.exception.ex.CustomException;
@@ -70,76 +69,76 @@ public class MemberService {
      * 취미 모임방 (대기 중)
      */
     @Transactional
-    public List<HobbyStatusDto> profileHobbyReady(MemberProfileRequestDto requestDto){
-        List<HobbyStatusDto> hobbyStatusDtoList = new ArrayList<>();
+    public List<HobbyHistoryResponseDto> profileHobbyReady(MemberProfileRequestDto requestDto){
+        List<HobbyHistoryResponseDto> hobbyHistoryResponseDtoList = new ArrayList<>();
         if (requestDto.getNickname() != null) {
             Member member = memberRepository.findByNickname(requestDto.getNickname()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
             Long memberId = member.getId();
 
-            hobbyStatusDtoList = hobbyRepository.findByMemberIdAndStatus(memberId, ApproveStatus.READY);
+            hobbyHistoryResponseDtoList = hobbyRepository.findByMemberIdAndStatus(memberId, ApproveStatus.READY);
         } else {
             Long memberId = SecurityUtil.getCurrentMemberId();
 
-            hobbyStatusDtoList = hobbyRepository.findByMemberIdAndStatus(memberId, ApproveStatus.READY);
+            hobbyHistoryResponseDtoList = hobbyRepository.findByMemberIdAndStatus(memberId, ApproveStatus.READY);
         }
-        return hobbyStatusDtoList;
+        return hobbyHistoryResponseDtoList;
     }
 
     /**
      * 취미 모임방 (참여 중)
      */
     @Transactional
-    public List<HobbyStatusDto> profileHobbyParticipation(MemberProfileRequestDto requestDto){
-        List<HobbyStatusDto> hobbyStatusDtoList = new ArrayList<>();
+    public List<HobbyHistoryResponseDto> profileHobbyParticipation(MemberProfileRequestDto requestDto){
+        List<HobbyHistoryResponseDto> hobbyHistoryResponseDtoList = new ArrayList<>();
         if (requestDto.getNickname() != null) {
             Member member = memberRepository.findByNickname(requestDto.getNickname()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
             Long memberId = member.getId();
 
-            hobbyStatusDtoList = hobbyRepository.findByMemberIdAndStatus(memberId, ApproveStatus.APPROVE);
+            hobbyHistoryResponseDtoList = hobbyRepository.findByMemberIdAndStatus(memberId, ApproveStatus.APPROVE);
         } else {
             Long memberId = SecurityUtil.getCurrentMemberId();
 
-            hobbyStatusDtoList = hobbyRepository.findByMemberIdAndStatus(memberId, ApproveStatus.APPROVE);
+            hobbyHistoryResponseDtoList = hobbyRepository.findByMemberIdAndStatus(memberId, ApproveStatus.APPROVE);
         }
-        return hobbyStatusDtoList;
+        return hobbyHistoryResponseDtoList;
     }
 
     /**
      * 취미 모임방 (운영 중)
      */
     @Transactional
-    public List<HobbyStatusDto> profileHobbyManage(MemberProfileRequestDto requestDto){
-        List<HobbyStatusDto> hobbyStatusDtoList = new ArrayList<>();
+    public List<HobbyHistoryResponseDto> profileHobbyManage(MemberProfileRequestDto requestDto){
+        List<HobbyHistoryResponseDto> hobbyHistoryResponseDtoList = new ArrayList<>();
         if (requestDto.getNickname() != null) {
             Member member = memberRepository.findByNickname(requestDto.getNickname()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
             Long memberId = member.getId();
 
-            hobbyStatusDtoList = hobbyRepository.findByMemberIdAndPromoter(memberId, true);
+            hobbyHistoryResponseDtoList = hobbyRepository.findByMemberIdAndPromoter(memberId, true);
         } else {
             Long memberId = SecurityUtil.getCurrentMemberId();
 
-            hobbyStatusDtoList = hobbyRepository.findByMemberIdAndPromoter(memberId, true);
+            hobbyHistoryResponseDtoList = hobbyRepository.findByMemberIdAndPromoter(memberId, true);
         }
-        return hobbyStatusDtoList;
+        return hobbyHistoryResponseDtoList;
     }
 
     /**
      * 취미 모임방 (찜)
      */
     @Transactional
-    public List<HobbyStatusDto> profileHobbyFavorite(MemberProfileRequestDto requestDto){
-        List<HobbyStatusDto> hobbyStatusDtoList = new ArrayList<>();
+    public List<HobbyHistoryResponseDto> profileHobbyFavorite(MemberProfileRequestDto requestDto){
+        List<HobbyHistoryResponseDto> hobbyHistoryResponseDtoList = new ArrayList<>();
         if (requestDto.getNickname() != null) {
             Member member = memberRepository.findByNickname(requestDto.getNickname()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
             Long memberId = member.getId();
 
-            hobbyStatusDtoList = hobbyRepository.findByMemberIdAndFavorite(memberId, true);
+            hobbyHistoryResponseDtoList = hobbyRepository.findByMemberIdAndFavorite(memberId, true);
         } else {
             Long memberId = SecurityUtil.getCurrentMemberId();
 
-            hobbyStatusDtoList = hobbyRepository.findByMemberIdAndFavorite(memberId, true);
+            hobbyHistoryResponseDtoList = hobbyRepository.findByMemberIdAndFavorite(memberId, true);
         }
-        return hobbyStatusDtoList;
+        return hobbyHistoryResponseDtoList;
     }
 
 

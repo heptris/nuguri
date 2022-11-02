@@ -8,10 +8,8 @@ import com.ssafy.nuguri.domain.hobby.ApproveStatus;
 import com.ssafy.nuguri.domain.hobby.Hobby;
 import com.ssafy.nuguri.domain.hobby.HobbyHistory;
 import com.ssafy.nuguri.domain.member.Member;
-import com.ssafy.nuguri.dto.hobby.HobbyDto;
 import com.ssafy.nuguri.dto.hobby.HobbyHistoryDto;
-import com.ssafy.nuguri.dto.hobby.HobbyStatusDto;
-import com.ssafy.nuguri.repository.member.MemberRepository;
+import com.ssafy.nuguri.dto.hobby.HobbyHistoryResponseDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +26,7 @@ import static com.ssafy.nuguri.domain.category.QCategory.category;
 import static com.ssafy.nuguri.domain.hobby.QHobby.hobby;
 import static com.ssafy.nuguri.domain.hobby.QHobbyHistory.hobbyHistory;
 import static com.ssafy.nuguri.domain.member.QMember.member;
-import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest
 @Transactional
 @Sql("classpath:tableInit.sql")
@@ -179,8 +177,8 @@ class HobbyHistoryRepositoryImplTest {
     }
 
 
-    public List<HobbyStatusDto> findByStatus(Long userId, ApproveStatus status) {
-        List<HobbyStatusDto> hobbyStatusDtoList = queryFactory.select(Projections.constructor(HobbyStatusDto.class,
+    public List<HobbyHistoryResponseDto> findByStatus(Long userId, ApproveStatus status) {
+        List<HobbyHistoryResponseDto> hobbyHistoryResponseDtoList = queryFactory.select(Projections.constructor(HobbyHistoryResponseDto.class,
                         hobby.id,
                         category.id,
                         hobby.title,
@@ -199,20 +197,20 @@ class HobbyHistoryRepositoryImplTest {
                         .and(hobbyHistory.approveStatus.eq(status)))
                 .fetch();
 
-        return hobbyStatusDtoList;
+        return hobbyHistoryResponseDtoList;
     }
     @Test
     public void 상태별_취미방_목록(){
-        List<HobbyStatusDto> ready = findByStatus(1L,ApproveStatus.READY);
-        List<HobbyStatusDto> reject = findByStatus(1L,ApproveStatus.REJECT);
-        List<HobbyStatusDto> approve = findByStatus(1L,ApproveStatus.APPROVE);
-        for (HobbyStatusDto data: ready) {
+        List<HobbyHistoryResponseDto> ready = findByStatus(1L,ApproveStatus.READY);
+        List<HobbyHistoryResponseDto> reject = findByStatus(1L,ApproveStatus.REJECT);
+        List<HobbyHistoryResponseDto> approve = findByStatus(1L,ApproveStatus.APPROVE);
+        for (HobbyHistoryResponseDto data: ready) {
             System.out.println("승인 대기중인 신청: "+data);
         }
-        for (HobbyStatusDto data: reject) {
+        for (HobbyHistoryResponseDto data: reject) {
             System.out.println("승인 거절된 신청: "+data);
         }
-        for (HobbyStatusDto data: approve) {
+        for (HobbyHistoryResponseDto data: approve) {
             System.out.println("승인된 신청: "+data);
         }
 

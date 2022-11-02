@@ -1,6 +1,7 @@
 package com.ssafy.nuguri.controller.hobby;
 
 import com.ssafy.nuguri.domain.hobby.ApproveStatus;
+import com.ssafy.nuguri.dto.hobby.ChangeStatusRequestDto;
 import com.ssafy.nuguri.dto.hobby.HobbyHistoryDto;
 import com.ssafy.nuguri.dto.response.ResponseDto;
 import com.ssafy.nuguri.service.hobby.HobbyHistoryService;
@@ -42,9 +43,9 @@ public class HobbyHistoryController {
 
     @ApiOperation(value = "신청자 승인 또는 거절")
     @PutMapping("/changeStatus")
-    public ResponseEntity changeStatus(Long hobbyHistoryId, ApproveStatus status){
+    public ResponseEntity changeStatus(@RequestBody ChangeStatusRequestDto changeStatusRequestDto){
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseDto(HttpStatus.OK.value(), "신청자 승인 또는 거절", hobbyHistoryService.changeStatus(hobbyHistoryId,status))
+                new ResponseDto(HttpStatus.OK.value(), "신청자 승인 또는 거절", hobbyHistoryService.changeStatus(changeStatusRequestDto))
         );
     }
 

@@ -32,7 +32,7 @@ class HobbyServiceTest {
     CategoryRepository categoryRepository;
 
     public List<HobbyDto> findLocalHobbyList(Long regionId){ // 지역으로 취미방 찾기
-        return hobbyRepository.findByRegion(regionId);
+        return hobbyRepository.findByRegionAndCategory(regionId,null);
     }
 
     public List<HobbyDto> findLocalCategoryHobbyList(Long regionId, Long categoryId){ // 지역과 카테고리로 취미방 찾기
