@@ -23,6 +23,9 @@ class DealRepositoryImplTest {
     @Test
     public void 중고거래목록() throws Exception{
         List<DealListDto> localCategoryDealList = dealRepository.findLocalCategoryDealList(2L, 8L);
+//        categoryId가 없을 경우 전체 목록 조회
+//        List<DealListDto> localCategoryDealList = dealRepository.findLocalCategoryDealList(2L, null);
+
         for (DealListDto dealListDto : localCategoryDealList) {
             System.out.println("dealListDto = " + dealListDto);
         }
