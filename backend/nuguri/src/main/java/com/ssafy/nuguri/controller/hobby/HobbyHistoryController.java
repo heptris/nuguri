@@ -18,9 +18,9 @@ public class HobbyHistoryController {
     private final HobbyHistoryService hobbyHistoryService;
     @ApiOperation(value = "취미방 참여 신청")
     @PostMapping("/regist")
-    public ResponseEntity regist(@RequestBody HobbyHistoryDto hobbyHistoryDto){
+    public ResponseEntity regist(@PathVariable Long hobbyId){ // hobbyId만 받아오면 내가 만들어서 저장하면 됨
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseDto(HttpStatus.OK.value(), "취미방 참여", hobbyHistoryService.createHobbyHistory(hobbyHistoryDto))
+                new ResponseDto(HttpStatus.OK.value(), "취미방 참여", hobbyHistoryService.createHobbyHistory(hobbyId))
         );
     }
 
