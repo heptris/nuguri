@@ -26,6 +26,7 @@ public enum ErrorCode {
 
     CHATROOM_NOT_FOUND(404, "존재하지 않는 채팅방입니다."),
     SSE_NOT_FOUND(404, "존재하지 않은 SSE입니다"),
+    ALARM_NOT_FOUND(404, "존재하지 않은 알림입니다"),
 
 
     //409 CONFLICT 중복된 리소스

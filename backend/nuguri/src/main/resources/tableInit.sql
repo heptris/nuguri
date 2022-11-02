@@ -42,4 +42,17 @@ create table if not exists hobby (
                        primary key (hobby_id)
 ) engine=InnoDB;
 
+DROP TABLE ALARM;
+create table if not exists alarm (
+                       alarm_id bigint not null auto_increment,
+                       created_date datetime(6),
+                       last_modified_date datetime(6),
+                       content varchar(255),
+                       is_read bit,
+                       participant_id bigint,
+                       title varchar(255),
+                       member_id bigint,
+                       primary key (alarm_id)
+) engine=InnoDB;
+
 

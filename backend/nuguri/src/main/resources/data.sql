@@ -66,3 +66,4 @@ values (now(), now(), '설명1', DATE_ADD(now(), interval 1 day), 10, null, 3000
        (now(), now(), '설명5', DATE_ADD(now(), interval 1 day), 90, null, 20000, 'url', 2, '제목6', 300, 8, 6),
        (now(), now(), '설명6', DATE_ADD(now(), interval 1 day), 400, null, 15000, 'url', 237, '제목7', 1, 8, 1),
        (now(), now(), '설명7', DATE_ADD(now(), interval 1 day), 2, null, 300, 'url', 0, '제목8', 1, 9, 1);
+

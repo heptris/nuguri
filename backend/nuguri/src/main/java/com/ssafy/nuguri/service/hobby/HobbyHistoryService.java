@@ -1,23 +1,24 @@
 package com.ssafy.nuguri.service.hobby;
 
+import com.ssafy.nuguri.alarm.dto.HobbyAlarmEventDto;
 import com.ssafy.nuguri.domain.hobby.ApproveStatus;
 import com.ssafy.nuguri.domain.hobby.Hobby;
 import com.ssafy.nuguri.domain.hobby.HobbyHistory;
 import com.ssafy.nuguri.dto.hobby.HobbyHistoryDto;
 import com.ssafy.nuguri.domain.member.Member;
 import com.ssafy.nuguri.dto.hobby.HobbyStatusDto;
-import com.ssafy.nuguri.exception.ex.CustomException;
 import com.ssafy.nuguri.repository.hobby.HobbyHistoryRepository;
 import com.ssafy.nuguri.repository.hobby.HobbyRepository;
 import com.ssafy.nuguri.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.ssafy.nuguri.exception.ex.ErrorCode.CATEGORY_NOT_FOUND;
+import static com.ssafy.nuguri.domain.alarm.AlarmCode.HOBBY_ALARM;
+import static java.lang.Boolean.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -26,6 +27,8 @@ public class HobbyHistoryService {
     private final HobbyHistoryRepository hobbyHistoryRepository;
     private final MemberRepository memberRepository;
     private final HobbyRepository hobbyRepository;
+
+    private final ApplicationEventPublisher eventPublisher;
 
 
     @Transactional
@@ -51,6 +54,21 @@ public class HobbyHistoryService {
                 .isPromoter(hobbyHistoryDto.isPromoter())
                 .approveStatus(hobbyHistoryDto.getApproveStatus())
                 .build();
+
+        /**
+         * 알람 보내기 시작
+         */
+        Long ownerId = hobbyHistoryRepository.findOwnerId(hobby);
+        Member alarmReceiver = new Member();
+        alarmReceiver.changeMemberId(ownerId);
+        HobbyAlarmEventDto hobbyAlarmEventDto = HobbyAlarmEventDto.builder().content(HOBBY_ALARM.getContent()).title(HOBBY_ALARM.getTitle())
+                .isRead(FALSE).member(alarmReceiver).participantId(member.getId()).participantImage(member.getProfileImage()).build();
+        if (ownerId != member.getId()) {
+            eventPublisher.publishEvent(hobbyAlarmEventDto);
+        }
+        /**
+         * 알람 보내기 끝
+         */
 
         return hobbyHistoryRepository.save(hobbyHistoryEntity).getId();
     }
