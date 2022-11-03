@@ -10,7 +10,7 @@ import { racconsThemes } from "../../styles/theme";
 import styled from "@emotion/styled";
 
 export const Menu = forwardRef<HTMLDivElement, MenuProps>((props, ref) => {
-  const theme = racconsThemes.darkTheme;
+  const theme = racconsThemes.defaultTheme;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -76,7 +76,7 @@ export const Menu = forwardRef<HTMLDivElement, MenuProps>((props, ref) => {
   );
 });
 
-const theme = racconsThemes.darkTheme;
+const theme = racconsThemes.defaultTheme;
 const MunuItemWrapper = styled(MenuItem)`
   &:hover {
     background-color: ${theme.color.status.disabled};

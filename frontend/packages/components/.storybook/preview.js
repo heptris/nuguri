@@ -1,9 +1,9 @@
 import { GlobalStyle } from "../src/components";
-import { ThemeProvider, useTheme } from "@emotion/react";
+import { theme, ThemeProvider } from "../src/styles/theme";
+import { racconsThemes } from "../src/styles/theme";
 
 export const decorators = [
   Story => {
-    const theme = useTheme();
     return (
       <ThemeProvider theme={theme}>
         <GlobalStyle />
