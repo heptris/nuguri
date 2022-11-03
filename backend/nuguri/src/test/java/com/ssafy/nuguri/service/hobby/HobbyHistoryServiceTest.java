@@ -19,6 +19,7 @@ import com.ssafy.nuguri.repository.hobby.HobbyRepository;
 import com.ssafy.nuguri.repository.member.MemberRepository;
 import com.ssafy.nuguri.util.SecurityUtil;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -44,6 +45,8 @@ import static java.lang.Boolean.FALSE;
 class HobbyHistoryServiceTest {
 
     @Autowired
+    HobbyHistoryService hobbyHistoryService;
+    @Autowired
     HobbyHistoryRepository hobbyHistoryRepository;
     @Autowired
     MemberRepository memberRepository;
@@ -57,9 +60,10 @@ class HobbyHistoryServiceTest {
     @Autowired
     EntityManager em;
     JPAQueryFactory queryFactory;
+
     @Test
     @BeforeEach
-    public void before(){
+    public void before() {
         queryFactory = new JPAQueryFactory(em);
         BaseAddress ba = queryFactory
                 .selectFrom(baseAddress)
@@ -81,7 +85,6 @@ class HobbyHistoryServiceTest {
                 .selectFrom(member)
                 .where(member.id.eq(3L))
                 .fetchOne();
-
 
 
         Hobby hobbyEntity1 = Hobby.builder()
@@ -132,8 +135,8 @@ class HobbyHistoryServiceTest {
         em.persist(hobbyHistory5);
         System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
         List<Hobby> result = hobbyRepository.findAll();
-        for (Hobby m :result
-             ) {
+        for (Hobby m : result
+        ) {
             System.out.println(m.getId());
         }
     }
@@ -154,15 +157,15 @@ class HobbyHistoryServiceTest {
     }
 
     public List<HobbyHistoryDto> findWaitingMemberList(Long hobbyId) { // 해당 취미방 신청 대기자
-        return hobbyHistoryRepository.userByStatus(hobbyId,ApproveStatus.READY);
+        return hobbyHistoryRepository.userByStatus(hobbyId, ApproveStatus.READY);
     }
 
     public List<HobbyHistoryDto> findParticipantList(Long hobbyId) { // 해당 취미방 참여자
-        return hobbyHistoryRepository.userByStatus(hobbyId,ApproveStatus.APPROVE);
+        return hobbyHistoryRepository.userByStatus(hobbyId, ApproveStatus.APPROVE);
     }
 
     public ApproveStatus changeStatus(ChangeStatusRequestDto changeStatusRequestDto) { // 취미방 신청을 승인 또는 거절하기
-        Long hobbyHistoryId = hobbyHistoryRepository.findByHobbyAndMemberIdDto(changeStatusRequestDto.getHobbyId(),changeStatusRequestDto.getMemberId()).getHobbyHistoryId();
+        Long hobbyHistoryId = hobbyHistoryRepository.findByHobbyAndMemberIdDto(changeStatusRequestDto.getHobbyId(), changeStatusRequestDto.getParticipantId()).getHobbyHistoryId();
         return hobbyHistoryRepository.changeStatus(hobbyHistoryId, changeStatusRequestDto.getApproveStatus());
     }
 
@@ -175,79 +178,79 @@ class HobbyHistoryServiceTest {
     }
 
     @Test
-    public void 히스토리_등록(){
+    public void 히스토리_등록() {
 
         Long id = createHobbyHistory(1L);
-        System.out.println(id+"@@@@@@@@@@@@@@@@@@@@@@@@@@2");
+        System.out.println(id + "@@@@@@@@@@@@@@@@@@@@@@@@@@2");
         HobbyHistoryDto result = findByIdDto(id);
-        System.out.println("생성 결과: "+ result.toString());
+        System.out.println("생성 결과: " + result.toString());
     }
 
     @Test
-    public void 취미1_승인_대기자(){
+    public void 취미1_승인_대기자() {
         List<HobbyHistoryDto> result = findWaitingMemberList(1L);
-        for (HobbyHistoryDto h: result
+        for (HobbyHistoryDto h : result
         ) {
-            System.out.println("취미1 승인 대기자: "+h);
+            System.out.println("취미1 승인 대기자: " + h);
         }
 
     }
 
     @Test
-    public void 취미1_참여자(){
+    public void 취미1_참여자() {
         System.out.println("====취미1에 참여중인 사람====");
         List<HobbyHistoryDto> result2 = findParticipantList(1L);
-        for (HobbyHistoryDto h: result2
+        for (HobbyHistoryDto h : result2
         ) {
-            System.out.println("취미1 참여자: "+h);
+            System.out.println("취미1 참여자: " + h);
         }
 
     }
 
     @Test
-    public void 멤버1_참여_현황(){
+    public void 멤버1_참여_현황() {
 
         List<HobbyHistoryResponseDto> result4 = findStatusHobbyList(1L, ApproveStatus.APPROVE);
-        for (HobbyHistoryResponseDto h: result4
+        for (HobbyHistoryResponseDto h : result4
         ) {
-            System.out.println("멤버1의 참여방: "+h);
+            System.out.println("멤버1의 참여방: " + h);
         }
 
     }
+
     @Test
-    public void 멤버1_대기_현황(){
+    public void 멤버1_대기_현황() {
 
         List<HobbyHistoryResponseDto> result4 = findStatusHobbyList(1L, ApproveStatus.READY);
-        for (HobbyHistoryResponseDto h: result4
+        for (HobbyHistoryResponseDto h : result4
         ) {
-            System.out.println("멤버1의 대기방: "+h);
+            System.out.println("멤버1의 대기방: " + h);
         }
 
     }
+
     @Test
-    public void 멤버1_거절_현황(){
+    public void 멤버1_거절_현황() {
         List<HobbyHistoryResponseDto> result5 = findStatusHobbyList(1L, ApproveStatus.REJECT);
-        for (HobbyHistoryResponseDto h: result5
+        for (HobbyHistoryResponseDto h : result5
         ) {
-            System.out.println("멤버1의 거절방: "+h);
+            System.out.println("멤버1의 거절방: " + h);
         }
     }
 
     @Test
-    public void 취미방_정보_변경(){
+    public void 취미방_정보_변경() {
         HobbyHistoryDto before = findByIdDto(1L);
-        System.out.println("변경 전: "+before.toString());
+        System.out.println("변경 전: " + before.toString());
         ChangeStatusRequestDto changeStatusRequestDto = ChangeStatusRequestDto.builder()
                 .hobbyId(before.getHobbyId())
-                .memberId(before.getMemberId())
+                .participantId(before.getMemberId())
                 .approveStatus(ApproveStatus.REJECT)
                 .build();
 
         changeStatus(changeStatusRequestDto);
 
-        System.out.println("변경 후: "+findByIdDto(1L).toString());
+        System.out.println("변경 후: " + findByIdDto(1L).toString());
     }
-
-
 
 }

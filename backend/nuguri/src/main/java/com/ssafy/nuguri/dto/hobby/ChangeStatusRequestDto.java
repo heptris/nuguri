@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @Data
 public class ChangeStatusRequestDto {
     Long hobbyId;
-    Long memberId;
+    Long participantId;
     ApproveStatus approveStatus;
 }

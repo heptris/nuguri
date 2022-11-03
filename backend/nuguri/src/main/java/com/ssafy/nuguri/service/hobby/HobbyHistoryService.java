@@ -8,6 +8,8 @@ import com.ssafy.nuguri.dto.hobby.ChangeStatusRequestDto;
 import com.ssafy.nuguri.dto.hobby.HobbyHistoryDto;
 import com.ssafy.nuguri.domain.member.Member;
 import com.ssafy.nuguri.dto.hobby.HobbyHistoryResponseDto;
+import com.ssafy.nuguri.exception.ex.CustomException;
+import com.ssafy.nuguri.exception.ex.ErrorCode;
 import com.ssafy.nuguri.repository.hobby.HobbyHistoryRepository;
 import com.ssafy.nuguri.repository.hobby.HobbyRepository;
 import com.ssafy.nuguri.repository.member.MemberRepository;
@@ -19,7 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.ssafy.nuguri.domain.alarm.AlarmCode.HOBBY_OWNER_ALARM;
+import static com.ssafy.nuguri.domain.alarm.AlarmCode.*;
+import static com.ssafy.nuguri.exception.ex.ErrorCode.*;
 import static java.lang.Boolean.*;
 
 @Service
@@ -87,7 +90,27 @@ public class HobbyHistoryService {
 
     @Transactional
     public ApproveStatus changeStatus(ChangeStatusRequestDto changeStatusRequestDto) { // 취미방 신청을 승인 또는 거절하기
-        Long hobbyHistoryId = hobbyHistoryRepository.findByHobbyAndMemberIdDto(changeStatusRequestDto.getHobbyId(),changeStatusRequestDto.getMemberId()).getHobbyHistoryId();
+        Long hobbyHistoryId = hobbyHistoryRepository.findByHobbyAndMemberIdDto(changeStatusRequestDto.getHobbyId(), changeStatusRequestDto.getParticipantId()).getHobbyHistoryId();
+        /**
+         * 알람 보내기 시작
+         */
+        Hobby hobby = hobbyRepository.findById(changeStatusRequestDto.getHobbyId()).orElseThrow(
+                () -> new CustomException(HOBBY_NOT_FOUND)
+        );
+        Member alarmReceiver = new Member();
+        alarmReceiver.changeMemberId(changeStatusRequestDto.getParticipantId());
+        HobbyAlarmEventDto hobbyAlarmEventDto = HobbyAlarmEventDto.builder().member(alarmReceiver).isRead(FALSE).build();
+        if (changeStatusRequestDto.getApproveStatus().equals(ApproveStatus.APPROVE)) {
+            hobbyAlarmEventDto.setContent(HOBBY_PARTICIPANT_ALARM_APPROVE.getContent());
+            hobbyAlarmEventDto.setTitle(hobby.getTitle() + HOBBY_PARTICIPANT_ALARM_APPROVE.getTitle());
+        } else if (changeStatusRequestDto.getApproveStatus().equals(ApproveStatus.REJECT)) {
+            hobbyAlarmEventDto.setContent(HOBBY_PARTICIPANT_ALARM_REJECT.getContent());
+            hobbyAlarmEventDto.setTitle(hobby.getTitle() + HOBBY_PARTICIPANT_ALARM_REJECT.getTitle());
+        }
+        eventPublisher.publishEvent(hobbyAlarmEventDto);
+        /**
+         * 알람 보내기 끝
+         */
         return hobbyHistoryRepository.changeStatus(hobbyHistoryId, changeStatusRequestDto.getApproveStatus());
     }
 
