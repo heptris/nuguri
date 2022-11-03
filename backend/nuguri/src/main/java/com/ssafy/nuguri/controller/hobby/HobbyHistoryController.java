@@ -58,7 +58,8 @@ public class HobbyHistoryController {
         );
     }
 
-    @GetMapping
+    @ApiOperation(value = "유저가 운영중인 취미방 리스트")
+    @GetMapping("/{userId}/operatings")
     public ResponseEntity findOperatings(@PathVariable Long userId){
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseDto(HttpStatus.OK.value(),"해당 유저가 운영중인 취미방",hobbyHistoryService.findOperatingsByUserId(userId))
