@@ -33,6 +33,9 @@ import static com.ssafy.nuguri.domain.member.QMember.member;
 class HobbyHistoryRepositoryImplTest {
     @Autowired
     EntityManager em;
+
+    @Autowired
+    HobbyHistoryRepositoryImpl hobbyHistoryRepository;
     JPAQueryFactory queryFactory;
 
 
@@ -104,27 +107,9 @@ class HobbyHistoryRepositoryImplTest {
 
     }
 
-
-
-    public List<HobbyHistoryDto> userByStatus(Long hobbyId, ApproveStatus approveStatus) {
-        List<HobbyHistoryDto> hobbyHistoryDtoList = queryFactory.select(Projections.constructor(HobbyHistoryDto.class,
-                        hobbyHistory.id,
-                        hobby.id,
-                        member.id,
-                        hobbyHistory.isPromoter,
-                        hobbyHistory.approveStatus
-                ))
-                .from(hobbyHistory)
-                .innerJoin(hobbyHistory.hobby,hobby)
-                .innerJoin(hobbyHistory.member,member)
-                .where(hobby.id.eq(hobbyId)
-                        .and(hobbyHistory.approveStatus.eq(approveStatus)))
-                .fetch();
-        return hobbyHistoryDtoList;
-    }
     @Test
     public void 승인_대기자_목록(){
-        List<HobbyHistoryDto> result = userByStatus(1L,ApproveStatus.READY);
+        List<HobbyHistoryDto> result = hobbyHistoryRepository.userByStatus(1L,ApproveStatus.READY);
         for (HobbyHistoryDto m :result
              ) {
             System.out.println("hobbyId 1을 대기중인 멤버: "+ m);
@@ -133,60 +118,30 @@ class HobbyHistoryRepositoryImplTest {
 
     @Test
     public void 취미방_참가자_목록(){
-        List<HobbyHistoryDto> result = userByStatus(1L,ApproveStatus.APPROVE);
+        List<HobbyHistoryDto> result = hobbyHistoryRepository.userByStatus(1L,ApproveStatus.APPROVE);
         for (HobbyHistoryDto m :result
         ) {
             System.out.println("hobbyId 1에 참여중인 멤버: "+ m);
         }
     }
 
-    public ApproveStatus changeStatus(Long hobbyHistoryId, ApproveStatus status) {
-        queryFactory.selectFrom(hobbyHistory)
-                .where(hobbyHistory.id.eq(hobbyHistoryId))
-                .fetchOne()
-                .updateApproveStatus(status);
-        return status;
-    }
     @Test
     public void 취미참여자_상태_변경(){
         HobbyHistory testData = queryFactory.selectFrom(hobbyHistory)
                 .where(hobbyHistory.id.eq(1L))
                 .fetchOne();
         System.out.println("변경 전: "+testData.getApproveStatus());
-        changeStatus(testData.getId(),ApproveStatus.REJECT);
+        hobbyHistoryRepository.changeStatus(testData.getId(),ApproveStatus.REJECT);
         System.out.println("변경 후: "+testData.getApproveStatus());
 
     }
 
-    public List<HobbyHistoryResponseDto> findByStatus(Long userId, ApproveStatus status) {
-        List<HobbyHistoryResponseDto> hobbyHistoryResponseDtoList = queryFactory.select(Projections.constructor(HobbyHistoryResponseDto.class,
-                        category.id,
-                        hobby.title,
-                        hobby.endDate,
-                        hobby.curNum,
-                        hobby.maxNum,
-                        hobby.curNum, // wishlistNum으로 변경
-                        hobby.curNum, // chatNum으로 변경
-                        hobby.hobbyImage,
-                        hobbyHistory.approveStatus
-                ))
-                .from(hobbyHistory)
-                .innerJoin(hobbyHistory.hobby, hobby)
-                .innerJoin(hobby.category, category)
-                .where(hobbyHistory.member.id.eq(userId)
-                        ,hobby.isClosed.eq(false)
-                        ,hobbyHistory.approveStatus.eq(status)
-                )
-                .fetch();
-
-        return hobbyHistoryResponseDtoList;
-    }
 
     @Test
     public void 상태별_취미방_목록(){
-        List<HobbyHistoryResponseDto> ready = findByStatus(1L,ApproveStatus.READY);
-        List<HobbyHistoryResponseDto> reject = findByStatus(1L,ApproveStatus.REJECT);
-        List<HobbyHistoryResponseDto> approve = findByStatus(1L,ApproveStatus.APPROVE);
+        List<HobbyHistoryResponseDto> ready = hobbyHistoryRepository.findByStatus(1L,ApproveStatus.READY);
+        List<HobbyHistoryResponseDto> reject = hobbyHistoryRepository.findByStatus(1L,ApproveStatus.REJECT);
+        List<HobbyHistoryResponseDto> approve = hobbyHistoryRepository.findByStatus(1L,ApproveStatus.APPROVE);
         for (HobbyHistoryResponseDto data: ready) {
             System.out.println("승인 대기중인 신청: "+data);
         }
@@ -199,81 +154,24 @@ class HobbyHistoryRepositoryImplTest {
 
     }
 
-    public List<HobbyHistoryResponseDto> findOperatings(Long userId) {
-        List<HobbyHistoryResponseDto> hobbyHistoryResponseDtoList = queryFactory.select(Projections.constructor(HobbyHistoryResponseDto.class,
-                        category.id,
-                        hobby.title,
-                        hobby.endDate,
-                        hobby.curNum,
-                        hobby.maxNum,
-                        hobby.curNum, // wishlistNum으로 변경
-                        hobby.curNum, // chatNum으로 변경
-                        hobby.hobbyImage,
-                        hobbyHistory.approveStatus
-                ))
-                .from(hobbyHistory)
-                .innerJoin(hobbyHistory.hobby, hobby)
-                .innerJoin(hobby.category, category)
-                .where(hobbyHistory.member.id.eq(userId)
-                        ,hobby.isClosed.eq(false) // 안닺힘
-                        ,hobbyHistory.isPromoter.eq(true)) // 방장
-                .fetch();
-        return hobbyHistoryResponseDtoList;
-    }
     @Test
     public void 자신이_방장인_방들(){
-        List<HobbyHistoryResponseDto> result = findOperatings(1L);
+        List<HobbyHistoryResponseDto> result = hobbyHistoryRepository.findOperatings(1L);
         for (HobbyHistoryResponseDto m :result
         ) {
             System.out.println("유저1이 운영중인(방장인) 취미방: "+ m);
         }
     }
 
-    public HobbyHistoryDto findByHobbyAndMemberIdDto(Long hobbyId, Long memberId){
-        HobbyHistoryDto hobbyHistoryDto = queryFactory
-                .select(Projections.constructor(HobbyHistoryDto.class,
-                        hobbyHistory.id,
-                        hobby.id,
-                        member.id,
-                        hobbyHistory.isPromoter,
-                        hobbyHistory.approveStatus
-                ))
-                .from(hobbyHistory)
-                .innerJoin(hobbyHistory.hobby,hobby)
-                .innerJoin(hobbyHistory.member,member)
-                .where(hobby.id.eq(hobbyId),
-                        member.id.eq(memberId),
-                        hobbyHistory.approveStatus.eq(ApproveStatus.READY))
-                .fetchOne();
-        return hobbyHistoryDto;
-    }
-
     @Test
     void 취미와_멤버로_대기중인_history_찾기(){ // 알람으로 온 신청을 승인 또는 거절할 때 사용됨
-        HobbyHistoryDto result = findByHobbyAndMemberIdDto(1L,1L);
+        HobbyHistoryDto result = hobbyHistoryRepository.findByHobbyAndMemberIdDto(1L,1L);
         System.out.println(result.toString());
     }
 
-
-    public HobbyHistoryDto findByIdDto(Long hobbyHistoryId) {
-        HobbyHistoryDto hobbyHistoryDto = queryFactory
-                .select(Projections.constructor(HobbyHistoryDto.class,
-                        hobbyHistory.id,
-                        hobby.id,
-                        member.id,
-                        hobbyHistory.isPromoter,
-                        hobbyHistory.approveStatus
-                ))
-                .from(hobbyHistory)
-                .innerJoin(hobbyHistory.hobby,hobby)
-                .innerJoin(hobbyHistory.member,member)
-                .where(hobbyHistory.id.eq(hobbyHistoryId))
-                .fetchOne();
-        return hobbyHistoryDto;
-    }
     @Test
     public void Id로_값_찾기(){
-        System.out.println("hobbyHistoryId가 1인 hobbyHistory정보: "+findByIdDto(1L).toString());
+        System.out.println("hobbyHistoryId가 1인 hobbyHistory정보: "+hobbyHistoryRepository.findByIdDto(1L).toString());
     }
 
 

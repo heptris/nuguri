@@ -53,17 +53,23 @@ public class HobbyService {
     }
 
     @Transactional
-    public void createHobby(HobbyCreateRequestDto hobbyCreateRequestDto, MultipartFile hobbyImage){ // 취미방 생성
+    public Long createHobby(HobbyCreateRequestDto hobbyCreateRequestDto, MultipartFile hobbyImage){ // 취미방 생성
         BaseAddress baseAddress = baseaddressRepository.findById(hobbyCreateRequestDto.getLocalId()).orElseThrow(()->new CustomException(BASEADDRESS_NOT_FOUND));
         Category category = categoryRepository.findById(hobbyCreateRequestDto.getCategoryId()).orElseThrow(()->new CustomException(CATEGORY_NOT_FOUND));
         // 중고거래 이미지 -> 여기서 받을지 추후에 넣을지
-        AwsS3 awsS3 = new AwsS3();
-        try {
-            awsS3 = awsS3Service.upload(hobbyImage, "hobbyImage");
-        }catch (IOException e){
-            System.out.println(e);
+        String hobbyImageUrl;
+        if(hobbyImage == null){
+            hobbyImageUrl = "";
+        }else{
+            AwsS3 awsS3 = new AwsS3();
+            try {
+                awsS3 = awsS3Service.upload(hobbyImage, "hobbyImage");
+            }catch (IOException e){
+                System.out.println(e);
+            }
+            hobbyImageUrl = awsS3.getPath();
+
         }
-        String hobbyImageUrl = awsS3.getPath();
 
         Hobby hobbyEntity = Hobby.builder()
                 .baseAddress(baseAddress)
@@ -96,7 +102,10 @@ public class HobbyService {
                 .build();
 
         hobbyHistoryRepository.save(hobbyHistoryEntity);
+
+        return hobbyEntity.getId();
     }
+
 
 
 }
