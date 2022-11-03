@@ -43,7 +43,7 @@ public class HobbyHistoryService {
 //        // 조건 미달
 //        if(!hobbyHistoryDto.isPromoter() // 방장이 아니면서
 //            && hobby.getCurNum() >= hobby.getMaxNum() // 정원초과
-//            || hobby.getAgeLimit() > member.getAge() // 나이제한
+//            || hobby.getAgeLimit() < member.getAge() // 나이제한
 //            || hobby.getSexLimit() ==  member.getSex() // 성별제한
 //            || LocalDateTime.now().isAfter(hobby.getEndDate()) // 만료된 모임
 //            || hobby.getBaseAddress() != member.getBaseAddress()){ // 주소가 다름

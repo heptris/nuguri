@@ -25,7 +25,7 @@ public class HobbyHistoryRepositoryImpl implements HobbyHistoryRepositoryCustom{
     }
 
     @Override
-    public List<HobbyHistoryDto> userByStatus(Long hobbyId, ApproveStatus approveStauts) {
+    public List<HobbyHistoryDto> userByStatus(Long hobbyId, ApproveStatus approveStatus) {
         List<HobbyHistoryDto> hobbyHistoryDtoList = queryFactory.select(Projections.constructor(HobbyHistoryDto.class,
                         hobbyHistory.id,
                         hobby.id,
@@ -37,7 +37,7 @@ public class HobbyHistoryRepositoryImpl implements HobbyHistoryRepositoryCustom{
                 .innerJoin(hobbyHistory.hobby,hobby)
                 .innerJoin(hobbyHistory.member,member)
                 .where(hobby.id.eq(hobbyId)
-                        .and(hobbyHistory.approveStatus.eq(approveStauts)))
+                        .and(hobbyHistory.approveStatus.eq(approveStatus)))
                 .fetch();
         return hobbyHistoryDtoList;
     }
@@ -67,8 +67,9 @@ public class HobbyHistoryRepositoryImpl implements HobbyHistoryRepositoryCustom{
                 .innerJoin(hobbyHistory.hobby, hobby)
                 .innerJoin(hobby.category, category)
                 .where(hobbyHistory.member.id.eq(userId)
-                        .and(hobby.isClosed.not())
-                        .and(hobbyHistory.approveStatus.eq(status)))
+                        ,hobby.isClosed.eq(false)
+                        ,hobbyHistory.approveStatus.eq(status)
+                )
                 .fetch();
 
         return hobbyHistoryResponseDtoList;
@@ -91,8 +92,9 @@ public class HobbyHistoryRepositoryImpl implements HobbyHistoryRepositoryCustom{
                 .innerJoin(hobbyHistory.hobby, hobby)
                 .innerJoin(hobby.category, category)
                 .where(hobbyHistory.member.id.eq(userId)
-                        .and(hobby.isClosed.not()) // 안닺힘
-                        .and(hobbyHistory.isPromoter)) // 방장
+                        ,hobby.isClosed.eq(false) // 안닺힘
+                        ,hobbyHistory.isPromoter.eq(true)) // 방장
+
                 .fetch();
         return hobbyHistoryResponseDtoList;
     }
@@ -110,8 +112,9 @@ public class HobbyHistoryRepositoryImpl implements HobbyHistoryRepositoryCustom{
                 .innerJoin(hobbyHistory.hobby,hobby)
                 .innerJoin(hobbyHistory.member,member)
                 .where(hobby.id.eq(hobbyId),
-                        member.id.eq(memberId))
-                .fetchOne(); // one이 아닐수도 있다
+                        member.id.eq(memberId),
+                        hobbyHistory.approveStatus.eq(ApproveStatus.READY))
+                .fetchOne();
         return hobbyHistoryDto;
     }
 
