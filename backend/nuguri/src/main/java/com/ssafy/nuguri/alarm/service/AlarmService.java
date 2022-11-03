@@ -66,7 +66,7 @@ public class AlarmService {
         Member member = new Member();
         member.changeMemberId(memberId);
 
-        List<Alarm> alarmList = alarmRepository.findAllByMember(member);
+        List<Alarm> alarmList = alarmRepository.findAllByMemberOrderByIdDesc(member);
         return alarmList.stream().map(Alarm::toAlarmDto).collect(Collectors.toList());
     }
 
