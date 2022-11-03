@@ -1,7 +1,8 @@
+/** @jsxImportSource @emotion/react */
 import { forwardRef } from "react";
 
-import { ButtonTypeMap, default as MuiButton } from "@mui/material/Button";
+import { ButtonProps, default as MuiButton } from "@mui/material/Button";
 
-export const Button = forwardRef<HTMLButtonElement, ButtonTypeMap["props"]>((props, ref) => {
-  return <MuiButton {...props} ref={ref} />;
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
+  return <MuiButton variant="contained" {...props} ref={ref} />;
 });
