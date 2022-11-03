@@ -100,4 +100,9 @@ public class HobbyHistoryService {
     public HobbyHistoryDto findByIdDto(Long hobbyHistoryId) {
         return hobbyHistoryRepository.findByIdDto(hobbyHistoryId);
     }
+
+    @Transactional
+    public List<HobbyHistoryResponseDto> findOperatingsByUserId(Long userId){
+        return hobbyHistoryRepository.findOperatings(userId);
+    }
 }

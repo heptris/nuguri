@@ -51,13 +51,19 @@ public class HobbyHistoryController {
 
     @ApiOperation(value = "유저의 Status별 취미방 리스트")
     @GetMapping("/{userId}/{status}/list")
-    public ResponseEntity UserStatusHobbyList(@PathVariable Long userId, @PathVariable ApproveStatus status){
+    public ResponseEntity userStatusHobbyList(@PathVariable Long userId, @PathVariable ApproveStatus status){
         return ResponseEntity.status(HttpStatus.OK).body(
                 // 찜 숫자, 댓글숫자 담은 DTO로 보내주기
                 new ResponseDto(HttpStatus.OK.value(), "상태를 기준으로 취미방 보여주기", hobbyHistoryService.findStatusHobbyList(userId,status))
         );
     }
 
+    @GetMapping
+    public ResponseEntity findOperatings(@PathVariable Long userId){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseDto(HttpStatus.OK.value(),"해당 유저가 운영중인 취미방",hobbyHistoryService.findOperatingsByUserId(userId))
+        );
+    }
 
 
 }
