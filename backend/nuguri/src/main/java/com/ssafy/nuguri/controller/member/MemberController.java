@@ -16,6 +16,7 @@ public class MemberController {
 
     @PostMapping
     public ResponseEntity profile(@RequestBody MemberProfileRequestDto requestDto){
+        System.out.println("profile 조회@@");
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseDto<>(HttpStatus.OK.value(), "회원 프로필 조회", memberService.profile(requestDto))
         );

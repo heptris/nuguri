@@ -7,7 +7,6 @@ import com.ssafy.nuguri.domain.deal.DealStatus;
 import com.ssafy.nuguri.domain.hobby.ApproveStatus;
 import com.ssafy.nuguri.domain.member.Member;
 import com.ssafy.nuguri.dto.deal.DealListDto;
-import com.ssafy.nuguri.dto.hobby.HobbyDto;
 import com.ssafy.nuguri.dto.hobby.HobbyStatusDto;
 import com.ssafy.nuguri.dto.member.MemberProfileDto;
 import com.ssafy.nuguri.dto.member.MemberProfileRequestDto;
@@ -41,21 +40,23 @@ public class MemberService {
 
     @Transactional
     public MemberProfileDto profile(MemberProfileRequestDto requestDto){
-        MemberProfileDto memberProfileDto = new MemberProfileDto();
+        MemberProfileDto memberProfileDto;
 
         // 다른 회원 프로필 조회
         if(requestDto.getNickname() != null){
             Member member = memberRepository.findByNickname(requestDto.getNickname()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
 
-            memberProfileDto = profileCreate(memberProfileDto, member);
+            memberProfileDto = profileCreate(member);
         }
 
         // 본인 프로필 조회
         else {
             Long memberId = SecurityUtil.getCurrentMemberId();
+            System.out.println("11111111111111");
             Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+            System.out.println("22222222222222");
 
-            memberProfileDto = profileCreate(memberProfileDto, member);
+            memberProfileDto = profileCreate(member);
         }
 
         return memberProfileDto;
@@ -71,7 +72,7 @@ public class MemberService {
      */
     @Transactional
     public List<HobbyStatusDto> profileHobbyReady(MemberProfileRequestDto requestDto){
-        List<HobbyStatusDto> hobbyStatusDtoList = new ArrayList<>();
+        List<HobbyStatusDto> hobbyStatusDtoList;
         if (requestDto.getNickname() != null) {
             Member member = memberRepository.findByNickname(requestDto.getNickname()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
             Long memberId = member.getId();
@@ -90,7 +91,7 @@ public class MemberService {
      */
     @Transactional
     public List<HobbyStatusDto> profileHobbyParticipation(MemberProfileRequestDto requestDto){
-        List<HobbyStatusDto> hobbyStatusDtoList = new ArrayList<>();
+        List<HobbyStatusDto> hobbyStatusDtoList;
         if (requestDto.getNickname() != null) {
             Member member = memberRepository.findByNickname(requestDto.getNickname()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
             Long memberId = member.getId();
@@ -109,7 +110,7 @@ public class MemberService {
      */
     @Transactional
     public List<HobbyStatusDto> profileHobbyManage(MemberProfileRequestDto requestDto){
-        List<HobbyStatusDto> hobbyStatusDtoList = new ArrayList<>();
+        List<HobbyStatusDto> hobbyStatusDtoList;
         if (requestDto.getNickname() != null) {
             Member member = memberRepository.findByNickname(requestDto.getNickname()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
             Long memberId = member.getId();
@@ -128,7 +129,7 @@ public class MemberService {
      */
     @Transactional
     public List<HobbyStatusDto> profileHobbyFavorite(MemberProfileRequestDto requestDto){
-        List<HobbyStatusDto> hobbyStatusDtoList = new ArrayList<>();
+        List<HobbyStatusDto> hobbyStatusDtoList;
         if (requestDto.getNickname() != null) {
             Member member = memberRepository.findByNickname(requestDto.getNickname()).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
             Long memberId = member.getId();
@@ -282,8 +283,8 @@ public class MemberService {
                 .build());
     }
 
-    private MemberProfileDto profileCreate(MemberProfileDto memberProfileDto, Member member){
-        memberProfileDto = MemberProfileDto.builder()
+    private MemberProfileDto profileCreate(Member member){
+        MemberProfileDto memberProfileDto = MemberProfileDto.builder()
                 .email(member.getEmail())
                 .name(member.getName())
                 .nickname(member.getNickname())

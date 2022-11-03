@@ -131,7 +131,6 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
                 ))
                 .from(hobby)
                 .innerJoin(hobby.hobbyHistoryList, hobbyHistory)
-                .innerJoin(hobby.hobbyFavoriteList, hobbyFavorite)
                 .innerJoin(hobbyHistory.member, member)
                 .innerJoin(hobby.category, category)
                 .where(
@@ -158,7 +157,6 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
                 ))
                 .from(hobby)
                 .innerJoin(hobby.hobbyHistoryList, hobbyHistory)
-                .innerJoin(hobby.hobbyFavoriteList, hobbyFavorite)
                 .innerJoin(hobbyHistory.member, member)
                 .innerJoin(hobby.category, category)
                 .where(
@@ -184,9 +182,9 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
                         hobbyHistory.approveStatus
                 ))
                 .from(hobby)
-                .innerJoin(hobby.hobbyHistoryList, hobbyHistory)
+                .leftJoin(hobby.hobbyHistoryList, hobbyHistory)
                 .innerJoin(hobby.hobbyFavoriteList, hobbyFavorite)
-                .innerJoin(hobbyHistory.member, member)
+                .innerJoin(hobbyFavorite.member, member)
                 .innerJoin(hobby.category, category)
                 .where(
                         member.id.eq(memberId)
