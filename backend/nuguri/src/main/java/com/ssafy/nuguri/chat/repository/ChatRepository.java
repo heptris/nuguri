@@ -6,9 +6,10 @@ import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 
 import java.util.List;
 
-public interface ChatRepository extends MongoRepository<ChatMessage, String> {
+public interface ChatRepository extends MongoRepository<ChatMessage, String>, ChatRepositoryCustom {
 
     public List<ChatMessage> findAll();
 
-    public List<ChatMessage> findChatMessageByRoomId(String roomId);
+    public List<ChatMessage> findChatMessageByRoomIdOrderByCreatedDate(String roomId);
+
 }

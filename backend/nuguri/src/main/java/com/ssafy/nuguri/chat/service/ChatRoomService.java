@@ -2,6 +2,7 @@ package com.ssafy.nuguri.chat.service;
 
 import com.ssafy.nuguri.chat.domain.ChatMessage;
 import com.ssafy.nuguri.chat.domain.ChatRoom;
+import com.ssafy.nuguri.chat.dto.ChatRoomResponseDto;
 import com.ssafy.nuguri.chat.dto.CreateChatRoomDto;
 import com.ssafy.nuguri.chat.dto.JoinChatRoomDto;
 import com.ssafy.nuguri.chat.repository.ChatRepository;
@@ -10,8 +11,6 @@ import com.ssafy.nuguri.exception.ex.CustomException;
 import com.ssafy.nuguri.exception.ex.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,20 +24,41 @@ import java.util.stream.Stream;
 @Service
 public class ChatRoomService {
 
-    @Autowired
-    private MongoTemplate mongoTemplate;
     private final ChatRoomRepository chatRoomRepository;
     private final ChatRepository chatRepository;
 
     public List<ChatRoom> findAll() {
-        return mongoTemplate.findAll(ChatRoom.class);
+        List<ChatRoom> chatRoomList= chatRoomRepository.findAll();
+        List<ChatRoomResponseDto> chatRoomResponseDtoList = new ArrayList<>();
+        chatRoomList.forEach(chatRoom -> {
+            ChatMessage chatMessage = chatRepository.lastChatMessage(chatRoom.getRoomId());
+            ChatRoomResponseDto chatRoomResponseDto = ChatRoomResponseDto.builder().roomName(chatRoom.getRoomName())
+                    .roomId(chatRoom.getRoomId()).lastChatMessage(chatMessage.getMessage())
+                    .lastChatTime(chatMessage.getCreatedDate()).build();
+            chatRoomResponseDtoList.add(chatRoomResponseDto);
+        });
+
+        Collections.sort(chatRoomResponseDtoList);
+        chatRoomResponseDtoList.forEach(chatRoomResponseDto -> System.out.println(chatRoomResponseDto));
+        return chatRoomList;
     }
 
     /**
      * 내가 속해있는 채팅방 조회
      */
-    public List<ChatRoom> findMyRoomList(Long memberId) {
-        return chatRoomRepository.findAllByUserListIn(memberId);
+    public List<ChatRoomResponseDto> findMyRoomList(Long memberId) {
+        List<ChatRoom> chatRoomList = chatRoomRepository.findAllByUserListIn(memberId);
+        List<ChatRoomResponseDto> chatRoomResponseDtoList = new ArrayList<>();
+        chatRoomList.forEach(chatRoom -> {
+            ChatMessage chatMessage = chatRepository.lastChatMessage(chatRoom.getRoomId());
+            ChatRoomResponseDto chatRoomResponseDto = ChatRoomResponseDto.builder().roomName(chatRoom.getRoomName())
+                    .roomId(chatRoom.getRoomId()).lastChatMessage(chatMessage.getMessage())
+                    .lastChatTime(chatMessage.getCreatedDate()).build();
+            chatRoomResponseDtoList.add(chatRoomResponseDto);
+        });
+
+        Collections.sort(chatRoomResponseDtoList);
+        return chatRoomResponseDtoList;
     }
 
     /**
@@ -106,7 +126,7 @@ public class ChatRoomService {
             chatRoom.getUserList().add(joinChatRoomDto.getReceiverId());
         }
         chatRoomRepository.save(chatRoom);
-        List<ChatMessage> chatMessages = chatRepository.findChatMessageByRoomId(chatRoom.getRoomId());
+        List<ChatMessage> chatMessages = chatRepository.findChatMessageByRoomIdOrderByCreatedDate(chatRoom.getRoomId());
         return chatMessages;
     }
 
@@ -129,7 +149,7 @@ public class ChatRoomService {
      * 테스트용도
      */
     public void joinTest(String roomId) {
-        List<ChatMessage> chatMessages = chatRepository.findChatMessageByRoomId(roomId);
+        List<ChatMessage> chatMessages = chatRepository.findChatMessageByRoomIdOrderByCreatedDate(roomId);
         chatMessages.forEach(chatMessage -> {
             System.out.println(chatMessage);
         });

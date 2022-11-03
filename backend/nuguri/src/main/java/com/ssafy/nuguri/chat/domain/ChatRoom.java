@@ -6,6 +6,7 @@ import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Id;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Data
@@ -30,5 +31,4 @@ public class ChatRoom {
     private Boolean isOneToOne;
     private Long senderId;
     private Long receiverId;
-
 }
