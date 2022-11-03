@@ -17,6 +17,10 @@ import java.time.LocalDateTime;
 @Document(collection = "chat")
 public class ChatMessage {
 
+    public enum MessageType {
+        TALK, ENTER, LEAVE
+    }
+
     @Id
     private String id;
 
@@ -24,4 +28,5 @@ public class ChatMessage {
     private String message;
     private LocalDateTime createdDate;
     private String roomId;
+    private MessageType messageType;
 }

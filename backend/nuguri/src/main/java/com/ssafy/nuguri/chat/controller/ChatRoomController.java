@@ -2,6 +2,7 @@ package com.ssafy.nuguri.chat.controller;
 
 import com.ssafy.nuguri.chat.domain.ChatMessage;
 import com.ssafy.nuguri.chat.domain.ChatRoom;
+import com.ssafy.nuguri.chat.dto.ChatRoomResponseDto;
 import com.ssafy.nuguri.chat.dto.CreateChatRoomDto;
 import com.ssafy.nuguri.chat.dto.JoinChatRoomDto;
 import com.ssafy.nuguri.chat.service.ChatRoomService;
@@ -12,7 +13,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/room")
+@RequestMapping("/chat/room")
 public class ChatRoomController {
 
     private final ChatRoomService chatRoomService;
@@ -44,10 +45,10 @@ public class ChatRoomController {
     }
 
     /**
-     *  내 채팅방 조회 
+     * 내 채팅방 조회
      */
     @GetMapping("/{memberId}")
-    public List<ChatRoom> getMyRoomList(@PathVariable Long memberId) {
+    public List<ChatRoomResponseDto> getMyRoomList(@PathVariable Long memberId) {
         return chatRoomService.findMyRoomList(memberId);
     }
 }

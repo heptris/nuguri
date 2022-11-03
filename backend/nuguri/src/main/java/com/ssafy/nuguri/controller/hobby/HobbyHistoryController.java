@@ -18,6 +18,7 @@ public class HobbyHistoryController {
 
     private final HobbyHistoryService hobbyHistoryService;
     @ApiOperation(value = "취미방 참여 신청")
+
     @PostMapping("/regist")
     public ResponseEntity regist(Long hobbyId){
         return ResponseEntity.status(HttpStatus.OK).body(

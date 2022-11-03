@@ -23,6 +23,7 @@ public enum ErrorCode {
     CATEGORY_NOT_FOUND(404, "존재하지 않는 카테고리입니다."),
     BASEADDRESS_NOT_FOUND(404, "존재하지 않는 지역입니다."),
     DEAL_HISTORY_NOT_FOUND(404, "존재하지 않는 중고거래 기록입니다."),
+    HOBBY_NOT_FOUND(404, "존재하지 않은 취미 방입니다."),
 
     CHATROOM_NOT_FOUND(404, "존재하지 않는 채팅방입니다."),
     SSE_NOT_FOUND(404, "존재하지 않은 SSE입니다"),
