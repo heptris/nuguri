@@ -35,6 +35,8 @@ export const GlobalStyle = () => (
         --vividBlue: #2258ed;
         --vividGreen: #84cd70;
         --vividPink: #e22e71;
+        --main: #5a3d1c;
+        --disabled: #ad9e8e;
 
         /* 기본 팔레트 */
         --grey50: #f9fafb;
