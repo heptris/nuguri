@@ -4,7 +4,7 @@ import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import SearchIcon from "@mui/icons-material/Search";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
-import MenuIcon from "@mui/icons-material/Menu";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { IconButton } from "@mui/material";
 
 import React from "react";
@@ -32,7 +32,7 @@ export const Icon = (props: IconProps) => {
       ) : mode === "MYLOCATION" ? (
         <MyLocationIcon />
       ) : mode === "MENU" ? (
-        <MenuIcon />
+        <MoreVertIcon />
       ) : (
         <></>
       )}
