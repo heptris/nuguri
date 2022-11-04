@@ -1,6 +1,7 @@
 package com.ssafy.nuguri.service.member;
 
 import com.ssafy.nuguri.config.jwt.TokenProvider;
+import com.ssafy.nuguri.config.redis.RedisService;
 import com.ssafy.nuguri.domain.baseaddress.BaseAddress;
 import com.ssafy.nuguri.domain.member.Member;
 import com.ssafy.nuguri.dto.auth.MemberJoinDto;
@@ -33,6 +34,8 @@ public class AuthService {
     private final TokenProvider tokenProvider;
     private final AwsS3Service awsS3Service;
 
+    private final RedisService redisService;
+
     /**
      * 회원가입
      */
@@ -52,6 +55,7 @@ public class AuthService {
         member.changeTemperature(36.5);
         memberRepository.save(member);
 
+        redisService.setValues(String.valueOf(member.getId()), member.getNickname());
         return new MemberJoinResponseDto(member.getEmail());
     }
 

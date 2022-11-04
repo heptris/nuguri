@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.HttpStatus.OK;
 
-@RequestMapping("/alarm")
+@RequestMapping("/app/alarm")
 @Slf4j
 @RequiredArgsConstructor
 @RestController
