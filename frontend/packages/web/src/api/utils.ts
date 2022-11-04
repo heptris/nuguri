@@ -1,0 +1,3 @@
+const REFRESH_TOKEN = "rT";
+const ACCESS_TOKEN = "aT";
+export { ACCESS_TOKEN, REFRESH_TOKEN };
