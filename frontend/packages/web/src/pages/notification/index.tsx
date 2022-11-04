@@ -1,15 +1,8 @@
-import { headerState } from "@/store";
-import React, { useEffect } from "react";
-import { useRecoilState } from "recoil";
+import { useHeader } from "@/hooks";
 
 const NotificationPage = () => {
-  const [header, setHeader] = useRecoilState(headerState);
-  useEffect(() => {
-    setHeader({ mode: "ITEM", headingText: "알림" });
-    return () => {
-      setHeader({ ...header, headingText: undefined });
-    };
-  }, []);
+  useHeader({ mode: "ITEM", headingText: "알림" });
+
   return <div>NotificationPage</div>;
 };
 

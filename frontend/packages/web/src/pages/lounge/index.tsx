@@ -1,15 +1,8 @@
-import { headerState } from "@/store";
-import React, { useEffect } from "react";
-import { useRecoilState } from "recoil";
+import { useHeader } from "@/hooks";
 
 const LoungePage = () => {
-  const [header, setHeader] = useRecoilState(headerState);
-  useEffect(() => {
-    setHeader({ mode: "LIST", headingText: "너구리 라운지" });
-    return () => {
-      setHeader({ ...header, headingText: undefined });
-    };
-  }, []);
+  useHeader({ mode: "LIST", headingText: "너구리 라운지" });
+
   return <div>LoungePage</div>;
 };
 

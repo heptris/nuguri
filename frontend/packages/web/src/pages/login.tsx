@@ -1,11 +1,8 @@
 import Link from "@/components/Link";
 import { ROUTES } from "@/constant";
-import { useForm } from "@/hooks";
-import { headerState } from "@/store";
+import { useForm, useHeader } from "@/hooks";
 import { Button, LabelInput } from "@common/components";
 import { css } from "@emotion/react";
-import React, { useEffect } from "react";
-import { useRecoilState } from "recoil";
 
 type LoginFormType = {
   email: string;
@@ -14,18 +11,11 @@ type LoginFormType = {
 const { SIGNUP } = ROUTES;
 
 const LoginPage = () => {
-  const [header, setHeader] = useRecoilState(headerState);
+  useHeader({ mode: "LOGIN", headingText: "로그인" });
   const {
     form: { email, password },
     onChangeForm,
   } = useForm<LoginFormType>({ email: "", password: "" });
-
-  useEffect(() => {
-    setHeader({ mode: "LOGIN", headingText: "로그인" });
-    return () => {
-      setHeader({ ...header, headingText: undefined });
-    };
-  }, []);
 
   return (
     <form
