@@ -1,5 +1,6 @@
 package com.ssafy.nuguri.service.member;
 
+import com.ssafy.nuguri.config.redis.RedisService;
 import com.ssafy.nuguri.domain.deal.Deal;
 import com.ssafy.nuguri.domain.deal.DealFavorite;
 import com.ssafy.nuguri.domain.deal.DealHistory;
@@ -38,6 +39,8 @@ public class MemberService {
     private final DealFavoriteRepository dealFavoriteRepository;
     private final DealHistoryRepository dealHistoryRepository;
 
+    private final RedisService redisService;
+
     /**
      * 회원 프로필 조회
      */
@@ -69,6 +72,7 @@ public class MemberService {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
 
         member.modify(requestDto.getNickname());
+        redisService.setValues(String.valueOf(memberId), requestDto.getNickname());
         return new MemberModifyDto(requestDto.getNickname());
     }
 
