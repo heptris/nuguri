@@ -4,9 +4,12 @@ import com.ssafy.nuguri.alarm.dto.HobbyAlarmEventDto;
 import com.ssafy.nuguri.domain.hobby.ApproveStatus;
 import com.ssafy.nuguri.domain.hobby.Hobby;
 import com.ssafy.nuguri.domain.hobby.HobbyHistory;
+import com.ssafy.nuguri.dto.hobby.ChangeStatusRequestDto;
 import com.ssafy.nuguri.dto.hobby.HobbyHistoryDto;
 import com.ssafy.nuguri.domain.member.Member;
-import com.ssafy.nuguri.dto.hobby.HobbyStatusDto;
+import com.ssafy.nuguri.dto.hobby.HobbyHistoryResponseDto;
+import com.ssafy.nuguri.exception.ex.CustomException;
+import com.ssafy.nuguri.exception.ex.ErrorCode;
 import com.ssafy.nuguri.repository.hobby.HobbyHistoryRepository;
 import com.ssafy.nuguri.repository.hobby.HobbyRepository;
 import com.ssafy.nuguri.repository.member.MemberRepository;
@@ -18,7 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.ssafy.nuguri.domain.alarm.AlarmCode.HOBBY_OWNER_ALARM;
+import static com.ssafy.nuguri.domain.alarm.AlarmCode.*;
+import static com.ssafy.nuguri.exception.ex.ErrorCode.*;
 import static java.lang.Boolean.*;
 
 @Service
@@ -42,7 +46,7 @@ public class HobbyHistoryService {
 //        // 조건 미달
 //        if(!hobbyHistoryDto.isPromoter() // 방장이 아니면서
 //            && hobby.getCurNum() >= hobby.getMaxNum() // 정원초과
-//            || hobby.getAgeLimit() > member.getAge() // 나이제한
+//            || hobby.getAgeLimit() < member.getAge() // 나이제한
 //            || hobby.getSexLimit() ==  member.getSex() // 성별제한
 //            || LocalDateTime.now().isAfter(hobby.getEndDate()) // 만료된 모임
 //            || hobby.getBaseAddress() != member.getBaseAddress()){ // 주소가 다름
@@ -76,26 +80,52 @@ public class HobbyHistoryService {
 
     @Transactional
     public List<HobbyHistoryDto> findWaitingMemberList(Long hobbyId) { // 해당 취미방 신청 대기자
-        return hobbyHistoryRepository.waitingPerson(hobbyId);
+        return hobbyHistoryRepository.userByStatus(hobbyId,ApproveStatus.READY);
     }
 
     @Transactional
     public List<HobbyHistoryDto> findParticipantList(Long hobbyId) { // 해당 취미방 참여자
-        return hobbyHistoryRepository.participant(hobbyId);
+        return hobbyHistoryRepository.userByStatus(hobbyId,ApproveStatus.APPROVE);
     }
 
     @Transactional
-    public ApproveStatus changeStatus(Long hobbyHistoryId, ApproveStatus status) { // 취미방 신청을 승인 또는 거절하기
-        return hobbyHistoryRepository.changeStatus(hobbyHistoryId, status);
+    public ApproveStatus changeStatus(ChangeStatusRequestDto changeStatusRequestDto) { // 취미방 신청을 승인 또는 거절하기
+        Long hobbyHistoryId = hobbyHistoryRepository.findByHobbyAndMemberIdDto(changeStatusRequestDto.getHobbyId(), changeStatusRequestDto.getParticipantId()).getHobbyHistoryId();
+        /**
+         * 알람 보내기 시작
+         */
+        Hobby hobby = hobbyRepository.findById(changeStatusRequestDto.getHobbyId()).orElseThrow(
+                () -> new CustomException(HOBBY_NOT_FOUND)
+        );
+        Member alarmReceiver = new Member();
+        alarmReceiver.changeMemberId(changeStatusRequestDto.getParticipantId());
+        HobbyAlarmEventDto hobbyAlarmEventDto = HobbyAlarmEventDto.builder().member(alarmReceiver).isRead(FALSE).build();
+        if (changeStatusRequestDto.getApproveStatus().equals(ApproveStatus.APPROVE)) {
+            hobbyAlarmEventDto.setContent(HOBBY_PARTICIPANT_ALARM_APPROVE.getContent());
+            hobbyAlarmEventDto.setTitle(hobby.getTitle() + HOBBY_PARTICIPANT_ALARM_APPROVE.getTitle());
+        } else if (changeStatusRequestDto.getApproveStatus().equals(ApproveStatus.REJECT)) {
+            hobbyAlarmEventDto.setContent(HOBBY_PARTICIPANT_ALARM_REJECT.getContent());
+            hobbyAlarmEventDto.setTitle(hobby.getTitle() + HOBBY_PARTICIPANT_ALARM_REJECT.getTitle());
+        }
+        eventPublisher.publishEvent(hobbyAlarmEventDto);
+        /**
+         * 알람 보내기 끝
+         */
+        return hobbyHistoryRepository.changeStatus(hobbyHistoryId, changeStatusRequestDto.getApproveStatus());
     }
 
     @Transactional
-    public List<HobbyStatusDto> findStatusHobbyList(Long userId, ApproveStatus status) { //유저의 참여중인, 대기중인, 만료된 방 목록 보여주기
+    public List<HobbyHistoryResponseDto> findStatusHobbyList(Long userId, ApproveStatus status) { //유저의 참여중인, 대기중인, 만료된 방 목록 보여주기
         return hobbyHistoryRepository.findByStatus(userId, status);
     }
 
     @Transactional
-    public void findByIdDto(Long hobbyHistoryId) {
-        hobbyHistoryRepository.findByIdDto(hobbyHistoryId);
+    public HobbyHistoryDto findByIdDto(Long hobbyHistoryId) {
+        return hobbyHistoryRepository.findByIdDto(hobbyHistoryId);
+    }
+
+    @Transactional
+    public List<HobbyHistoryResponseDto> findOperatingsByUserId(Long userId){
+        return hobbyHistoryRepository.findOperatings(userId);
     }
 }

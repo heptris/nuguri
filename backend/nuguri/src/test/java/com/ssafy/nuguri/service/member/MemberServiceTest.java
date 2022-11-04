@@ -23,6 +23,6 @@ class MemberServiceTest {
     public void 테스트(){
         Optional<Member> member = memberRepository.findById(1L);
         if(member.get().getDealList().isEmpty()) System.out.println("나 비었어요~~~~~!!!");
-//        System.out.println("member.get().getDealList().get(0).getTitle() = " + member.get().getDealList());
+        System.out.println("member.get().getDealList().get(0).getTitle() = " + member.get().getDealList());
     }
 }

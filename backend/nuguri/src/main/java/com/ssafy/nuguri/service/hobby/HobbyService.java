@@ -7,6 +7,7 @@ import com.ssafy.nuguri.domain.hobby.Hobby;
 import com.ssafy.nuguri.domain.hobby.HobbyHistory;
 import com.ssafy.nuguri.domain.member.Member;
 import com.ssafy.nuguri.domain.s3.AwsS3;
+import com.ssafy.nuguri.dto.hobby.HobbyCreateRequestDto;
 import com.ssafy.nuguri.dto.hobby.HobbyDto;
 import com.ssafy.nuguri.exception.ex.CustomException;
 import com.ssafy.nuguri.repository.baseaddress.BaseaddressRepository;
@@ -40,10 +41,6 @@ public class HobbyService {
     private final CategoryRepository categoryRepository;
     private final AwsS3Service awsS3Service;
 
-    @Transactional
-    public List<HobbyDto> findLocalHobbyList(Long regionId){ // 지역으로 취미방 찾기
-        return hobbyRepository.findByRegion(regionId);
-    }
 
     @Transactional
     public List<HobbyDto> findLocalCategoryHobbyList(Long regionId, Long categoryId){ // 지역과 카테고리로 취미방 찾기
@@ -56,38 +53,44 @@ public class HobbyService {
     }
 
     @Transactional
-    public void createHobby(HobbyDto hobbyDto, MultipartFile hobbyImage){ // 취미방 생성
-        BaseAddress baseAddress = baseaddressRepository.findById(hobbyDto.getLocalId()).orElseThrow(()->new CustomException(BASEADDRESS_NOT_FOUND));
-        Category category = categoryRepository.findById(hobbyDto.getCategoryId()).orElseThrow(()->new CustomException(CATEGORY_NOT_FOUND));
-        // 중고거래 이미지
-        AwsS3 awsS3 = new AwsS3();
-        try {
-            awsS3 = awsS3Service.upload(hobbyImage, "hobbyImage");
-        }catch (IOException e){
-            System.out.println(e);
+    public Long createHobby(HobbyCreateRequestDto hobbyCreateRequestDto, MultipartFile hobbyImage){ // 취미방 생성
+        BaseAddress baseAddress = baseaddressRepository.findById(hobbyCreateRequestDto.getLocalId()).orElseThrow(()->new CustomException(BASEADDRESS_NOT_FOUND));
+        Category category = categoryRepository.findById(hobbyCreateRequestDto.getCategoryId()).orElseThrow(()->new CustomException(CATEGORY_NOT_FOUND));
+        // 중고거래 이미지 -> 여기서 받을지 추후에 넣을지
+        String hobbyImageUrl;
+        if(hobbyImage == null){
+            hobbyImageUrl = "";
+        }else{
+            AwsS3 awsS3 = new AwsS3();
+            try {
+                awsS3 = awsS3Service.upload(hobbyImage, "hobbyImage");
+            }catch (IOException e){
+                System.out.println(e);
+            }
+            hobbyImageUrl = awsS3.getPath();
+
         }
-        String dealImageUrl = awsS3.getPath();
 
         Hobby hobbyEntity = Hobby.builder()
                 .baseAddress(baseAddress)
                 .category(category)
-                .title(hobbyDto.getTitle())
-                .content(hobbyDto.getContent())
-                .endDate(hobbyDto.getEndDate())
-                .meetingPlace(hobbyDto.getMeetingPlace())
-                .isClosed(hobbyDto.isClosed())
-                .curNum(hobbyDto.getCurNum())
-                .maxNum(hobbyDto.getMaxNum())
-                .fee(hobbyDto.getFee())
-                .ageLimit(hobbyDto.getAgeLimit())
-                .sexLimit(hobbyDto.getSexLimit())
-                .hobbyImage(hobbyDto.getHobbyImage())
+                .title(hobbyCreateRequestDto.getTitle())
+                .content(hobbyCreateRequestDto.getContent())
+                .endDate(hobbyCreateRequestDto.getEndDate())
+                .meetingPlace(hobbyCreateRequestDto.getMeetingPlace())
+                .isClosed(false)
+                .curNum(1)
+                .maxNum(hobbyCreateRequestDto.getMaxNum())
+                .fee(hobbyCreateRequestDto.getFee())
+                .ageLimit(hobbyCreateRequestDto.getAgeLimit())
+                .sexLimit(hobbyCreateRequestDto.getSexLimit())
+                .hobbyImage(hobbyImageUrl)
                 .build();
-        // hobbyhistorySerivice를 생성
+
+        // hobby를 생성하면서 hobbyHistory도 같이 생성
         Hobby hobby = hobbyRepository.save(hobbyEntity);
         Long memberId = SecurityUtil.getCurrentMemberId();
 
-        // 쿼리를 한번 덜 쓰는 방법, db에는 어차피 id만 있어서
         Member member = new Member();
         member.changeMemberId(memberId);
 
@@ -97,8 +100,12 @@ public class HobbyService {
                 .isPromoter(true)
                 .approveStatus(ApproveStatus.APPROVE)
                 .build();
+
         hobbyHistoryRepository.save(hobbyHistoryEntity);
+
+        return hobbyEntity.getId();
     }
+
 
 
 }

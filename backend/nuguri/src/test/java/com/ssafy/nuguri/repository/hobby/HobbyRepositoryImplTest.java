@@ -1,12 +1,15 @@
 package com.ssafy.nuguri.repository.hobby;
 
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.nuguri.domain.baseaddress.BaseAddress;
 import com.ssafy.nuguri.domain.category.Category;
+import com.ssafy.nuguri.domain.hobby.ApproveStatus;
 import com.ssafy.nuguri.domain.hobby.Hobby;
 import com.ssafy.nuguri.domain.hobby.HobbyHistory;
 import com.ssafy.nuguri.dto.hobby.HobbyDto;
+import com.ssafy.nuguri.dto.hobby.HobbyHistoryResponseDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,9 @@ import java.util.List;
 import static com.ssafy.nuguri.domain.baseaddress.QBaseAddress.baseAddress;
 import static com.ssafy.nuguri.domain.category.QCategory.category;
 import static com.ssafy.nuguri.domain.hobby.QHobby.hobby;
+import static com.ssafy.nuguri.domain.hobby.QHobbyFavorite.hobbyFavorite;
+import static com.ssafy.nuguri.domain.hobby.QHobbyHistory.hobbyHistory;
+import static com.ssafy.nuguri.domain.member.QMember.member;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -27,6 +33,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class HobbyRepositoryImplTest {
     @Autowired
     EntityManager em;
+    @Autowired
+    HobbyRepositoryImpl hobbyRepository;
     JPAQueryFactory queryFactory;
 
     @Test
@@ -121,110 +129,31 @@ class HobbyRepositoryImplTest {
         em.persist(hobbyEntity3);
         em.persist(hobbyEntity4);
     }
-    public List<HobbyDto> findByRegion(Long RegionId) {
-        List<HobbyDto> hobbyDtoList = queryFactory.select(Projections.constructor(HobbyDto.class,
-                        hobby.id,
-                        baseAddress.id,
-                        category.id,
-                        hobby.title,
-                        hobby.content,
-                        hobby.endDate,
-                        hobby.meetingPlace,
-                        hobby.isClosed,
-                        hobby.curNum,
-                        hobby.maxNum,
-                        hobby.fee,
-                        hobby.ageLimit,
-                        hobby.sexLimit,
-                        hobby.hobbyImage
-                ))
-                .from(hobby)
-                .innerJoin(hobby.baseAddress, baseAddress)
-                .innerJoin(hobby.category, category)
-                .where(baseAddress.id.eq(RegionId))
-                .fetch();
-        return hobbyDtoList;
-    }
+
+
     @Test
     public void 지역으로_찾기(){
-        List<HobbyDto> result = findByRegion(1L);
+        List<HobbyDto> result = hobbyRepository.findByRegionAndCategory(1L,null);
         for (HobbyDto a: result) {
             System.out.println("결과값: " + a.toString());
         }
     }
 
-    public List<HobbyDto> findByRegionAndCategory(Long RegionId, Long CategoryId) {
-        List<HobbyDto> hobbyDtoList = queryFactory.select(Projections.constructor(HobbyDto.class,
-                        hobby.id,
-                        baseAddress.id,
-                        category.id,
-                        hobby.title,
-                        hobby.content,
-                        hobby.endDate,
-                        hobby.meetingPlace,
-                        hobby.isClosed,
-                        hobby.curNum,
-                        hobby.maxNum,
-                        hobby.fee,
-                        hobby.ageLimit,
-                        hobby.sexLimit,
-                        hobby.hobbyImage
-                ))
-                .from(hobby)
-                .innerJoin(hobby.baseAddress, baseAddress)
-                .innerJoin(hobby.category, category)
-                .where(
-                        baseAddress.id.eq(RegionId)
-                                .and(category.id.eq(CategoryId))
-                )
-                .fetch();
-        return hobbyDtoList;
-    }
     @Test
     public void 지역과_카테고리로_찾기(){
-        List<HobbyDto> result = findByRegionAndCategory(1L,1L);
+        List<HobbyDto> result = hobbyRepository.findByRegionAndCategory(1L,1L);
         for (HobbyDto a: result) {
             System.out.println("결과값: " + a.toString());
         }
     }
 
-    public List<HobbyDto> findMultipleRegionAndCategory(List<Long> RegionIds, List<Long> CategoryIds) {
-        return null;
-    }
-
-
-    public HobbyDto hobbyDetail(Long hobbyId) {
-        HobbyDto hobbyDto = queryFactory.select(Projections.constructor(HobbyDto.class,
-                        hobby.id,
-                        baseAddress.id,
-                        category.id,
-                        hobby.title,
-                        hobby.content,
-                        hobby.endDate,
-                        hobby.meetingPlace,
-                        hobby.isClosed,
-                        hobby.curNum,
-                        hobby.maxNum,
-                        hobby.fee,
-                        hobby.ageLimit,
-                        hobby.sexLimit,
-                        hobby.hobbyImage
-                ))
-                .from(hobby)
-                .innerJoin(hobby.baseAddress, baseAddress)
-                .innerJoin(hobby.category, category)
-                .where(
-                        hobby.id.eq(hobbyId)
-                )
-                .fetchOne();
-        return hobbyDto;
-    }
 
     @Test
     public void 취미방_상세보기(){
-        HobbyDto result = hobbyDetail(1L);
+        HobbyDto result = hobbyRepository.hobbyDetail(1L);
         if(result!=null){
             System.out.println("취미방 상세보기: "+ result.toString());
         }
     }
+
 }

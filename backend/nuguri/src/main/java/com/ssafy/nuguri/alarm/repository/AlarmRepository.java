@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface AlarmRepository extends JpaRepository<Alarm, Long>, AlarmRepositoryCustom {
 
-    List<Alarm> findAllByMember(Member member);
+    List<Alarm> findAllByMemberOrderByIdDesc(Member member);
 }
