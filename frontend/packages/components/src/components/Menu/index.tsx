@@ -20,7 +20,11 @@ export const Menu = forwardRef<HTMLDivElement, MenuProps>((props, ref) => {
     setAnchorEl(null);
   };
   return (
-    <div>
+    <div
+      css={css`
+        margin-bottom: 2rem;
+      `}
+    >
       <Button
         css={css`
           background-color: ${theme.color.background.main};
