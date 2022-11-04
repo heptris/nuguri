@@ -1,16 +1,16 @@
 import React from "react";
 
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import { Card } from "../components/Card";
+import { HobbyCard } from "../components/Card/HobbyCard";
 
 export default {
   title: "Card",
-  component: Card,
-} as ComponentMeta<typeof Card>;
+  component: HobbyCard,
+} as ComponentMeta<typeof HobbyCard>;
 
-const Template = args => <Card {...args} />;
+const Template = args => <HobbyCard {...args} />;
 
-export const Default: ComponentStory<typeof Card> = Template.bind({});
+export const Default: ComponentStory<typeof HobbyCard> = Template.bind({});
 
 Default.args = {
   variant: "outlined",
