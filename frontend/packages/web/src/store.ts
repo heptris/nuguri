@@ -7,9 +7,6 @@ type SearchBarType = {
   placeholder: string;
   value: string;
 };
-type AuthType = {
-  isLogined: boolean;
-};
 
 const headerState = atom<HeaderType>({
   key: "headerState",
@@ -26,11 +23,5 @@ const searchBarState = atom<SearchBarType>({
     value: "",
   },
 });
-const authState = atom<AuthType>({
-  key: "authState",
-  default: {
-    isLogined: false,
-  },
-});
 
-export { headerState, regionState, searchBarState, authState };
+export { headerState, regionState, searchBarState };

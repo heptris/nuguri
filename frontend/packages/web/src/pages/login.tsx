@@ -1,21 +1,17 @@
 import Link from "@/components/Link";
 import { ROUTES } from "@/constant";
-import { useForm, useHeader } from "@/hooks";
+import { useAuth, useForm, useHeader } from "@/hooks";
+import { LoginFormType } from "@/types";
 import { Button, LabelInput } from "@common/components";
 import { css } from "@emotion/react";
 
-type LoginFormType = {
-  email: string;
-  password: string;
-};
 const { SIGNUP } = ROUTES;
 
 const LoginPage = () => {
   useHeader({ mode: "LOGIN", headingText: "로그인" });
-  const {
-    form: { email, password },
-    onChangeForm,
-  } = useForm<LoginFormType>({ email: "", password: "" });
+  const { form, onChangeForm } = useForm<LoginFormType>({ email: "", password: "" });
+  const { email, password } = form;
+  const { handleLogin } = useAuth();
 
   return (
     <form
@@ -56,6 +52,7 @@ const LoginPage = () => {
           width: 100%;
           margin-top: 2rem;
         `}
+        onClick={() => handleLogin(form)}
       >
         로그인
       </Button>

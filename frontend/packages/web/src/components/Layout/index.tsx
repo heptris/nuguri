@@ -6,13 +6,12 @@ import { BottomNavbar, BottomNavbarItem } from "@common/components";
 import Link from "@/components/Link";
 import { ROUTES } from "@/constant";
 import Header from "./Header";
-import { useRecoilState } from "recoil";
-import { authState } from "@/store";
+import { useAuth } from "@/hooks";
 
 const { HOME, CHAT, LOUNGE, PROFILE, LOGIN } = ROUTES;
 
 const Layout = ({ children }) => {
-  const [{ isLogined }] = useRecoilState(authState);
+  const { isLogined } = useAuth();
   const router = useRouter();
   return (
     <>
