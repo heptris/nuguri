@@ -9,4 +9,5 @@ export const ROUTES = {
   REGION: "/region",
   SEARCH: "/search",
   LOCATION: "/location",
+  POST: "/post",
 };
