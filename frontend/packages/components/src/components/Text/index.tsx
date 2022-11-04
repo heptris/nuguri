@@ -13,7 +13,7 @@ function Text<T extends ElementType = "span">({ typography = "content", as, ...p
   const target = as ?? "span";
   const Component = target;
 
-  const theme = racconsThemes.darkTheme;
+  const theme = racconsThemes.defaultTheme;
 
   return (
     <Component

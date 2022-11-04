@@ -1,37 +1,14 @@
 /* 테마 모듈 */
 
-export interface RacconsTheme {
-  name: string;
-  color: {
-    background: {
-      main: string;
-      submain: string;
-      emphasis: string;
-      page: string;
-      card: string;
-      item: string;
-    };
-    hover: {
-      main: string;
-      emphasis: string;
-    };
-    text: {
-      main: string;
-      sub: string;
-      hover: string;
-    };
-    status: {
-      success: string;
-      fail: string;
-      disabled: string;
-    };
-    border: {
-      main: string;
-    };
-  };
-}
-const darkTheme: RacconsTheme = {
-  name: "darkTheme",
+import { createTheme, ThemeProvider } from "@mui/material";
+
+const defaultTheme = {
+  name: "light",
+  palette: {
+    primary: {
+      main: "#5a3d1c",
+    },
+  },
   color: {
     background: {
       main: "var(--main)",
@@ -60,4 +37,9 @@ const darkTheme: RacconsTheme = {
     },
   },
 };
-export const racconsThemes = { darkTheme };
+
+const racconsThemes = { defaultTheme };
+
+const theme = createTheme(defaultTheme);
+
+export { theme, ThemeProvider, racconsThemes };
