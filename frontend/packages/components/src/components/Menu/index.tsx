@@ -4,21 +4,27 @@ import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 
 import { MenuProps, default as MuiMenu } from "@mui/material/Menu";
+import { ButtonProps } from "@mui/material/Button";
 import Text from "../Text";
 import { css } from "@emotion/react";
 import { racconsThemes } from "../../styles/theme";
 import styled from "@emotion/styled";
 
-export const Menu = forwardRef<HTMLDivElement, MenuProps>((props, ref) => {
+export type MenuButtomProps = MenuProps &
+  ButtonProps & {
+    onClickHandler: (selectedMenu: HTMLElement) => void;
+    onCloseHandler: () => void;
+  };
+
+export const Menu = forwardRef<HTMLDivElement, MenuButtomProps>((props, ref) => {
   const theme = racconsThemes.defaultTheme;
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
+  const onHandleClose = () => {
+    props.onCloseHandler();
   };
-  const handleClose = () => {
-    setAnchorEl(null);
+  const onHandleClick = event => {
+    props.onClickHandler(event.currentTarget);
   };
+
   return (
     <div
       css={css`
@@ -33,10 +39,10 @@ export const Menu = forwardRef<HTMLDivElement, MenuProps>((props, ref) => {
           }
         `}
         id="basic-button"
-        aria-controls={open ? "basic-menu" : undefined}
+        aria-controls={props.open ? "basic-menu" : undefined}
         aria-haspopup="true"
-        aria-expanded={open ? "true" : undefined}
-        onClick={handleClick}
+        aria-expanded={props.open ? "true" : undefined}
+        onClick={onHandleClick}
       >
         <Text
           css={css`
@@ -50,29 +56,29 @@ export const Menu = forwardRef<HTMLDivElement, MenuProps>((props, ref) => {
         {...props}
         ref={ref}
         id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
+        anchorEl={props.anchorEl}
+        open={props.open}
+        onClose={onHandleClose}
         MenuListProps={{
           "aria-labelledby": "basic-button",
         }}
       >
-        <MunuItemWrapper onClick={handleClose}>
+        <MunuItemWrapper onClick={onHandleClose}>
           <Text>문화, 예술</Text>
         </MunuItemWrapper>
-        <MunuItemWrapper onClick={handleClose}>
+        <MunuItemWrapper onClick={onHandleClose}>
           <Text>운동, 액티비티</Text>
         </MunuItemWrapper>
-        <MunuItemWrapper onClick={handleClose}>
+        <MunuItemWrapper onClick={onHandleClose}>
           <Text>푸드, 드링크</Text>
         </MunuItemWrapper>
-        <MunuItemWrapper onClick={handleClose}>
+        <MunuItemWrapper onClick={onHandleClose}>
           <Text>여행, 나들이</Text>
         </MunuItemWrapper>
-        <MunuItemWrapper onClick={handleClose}>
+        <MunuItemWrapper onClick={onHandleClose}>
           <Text>창작</Text>
         </MunuItemWrapper>
-        <MunuItemWrapper onClick={handleClose}>
+        <MunuItemWrapper onClick={onHandleClose}>
           <Text>성장, 자기계발</Text>
         </MunuItemWrapper>
       </MuiMenu>
