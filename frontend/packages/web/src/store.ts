@@ -1,10 +1,14 @@
+import { ReactNode } from "react";
 import { atom } from "recoil";
 
-type HeaderType = { mode: "EDIT" | "ITEM" | "MAIN" | "LIST" | "SEARCH" | "LOGIN"; headingText?: string };
+export type HeaderType = { mode: "EDIT" | "ITEM" | "MAIN" | "LIST" | "SEARCH" | "LOGIN" | "POST" | "DEFAULT"; headingText?: string; HeaderRight?: ReactNode };
 type RegionType = string;
 type SearchBarType = {
   placeholder: string;
   value: string;
+};
+type AuthType = {
+  isLogined: boolean;
 };
 
 const headerState = atom<HeaderType>({
@@ -22,5 +26,11 @@ const searchBarState = atom<SearchBarType>({
     value: "",
   },
 });
+const authState = atom<AuthType>({
+  key: "authState",
+  default: {
+    isLogined: false,
+  },
+});
 
-export { headerState, regionState, searchBarState };
+export { headerState, regionState, searchBarState, authState };
