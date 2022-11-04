@@ -14,5 +14,5 @@ public class MemberProfileDto {
     private String description;
     private Double temperature;
     private String profileImage;
-    private BaseAddress baseAddress;
+    private String baseAddress;
 }

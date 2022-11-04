@@ -98,4 +98,8 @@ public class Member extends BaseEntity {
     public void changeMemberId(Long memberId) {
         this.id = memberId;
     }
+
+    public void modify(String nickname) {
+        this.nickname = nickname;
+    }
 }

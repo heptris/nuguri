@@ -1,5 +1,6 @@
 package com.ssafy.nuguri.controller.member;
 
+import com.ssafy.nuguri.dto.member.MemberModifyDto;
 import com.ssafy.nuguri.dto.member.MemberProfileRequestDto;
 import com.ssafy.nuguri.dto.response.ResponseDto;
 import com.ssafy.nuguri.service.member.MemberService;
@@ -16,9 +17,15 @@ public class MemberController {
 
     @PostMapping
     public ResponseEntity profile(@RequestBody MemberProfileRequestDto requestDto){
-        System.out.println("profile 조회@@");
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseDto<>(HttpStatus.OK.value(), "회원 프로필 조회", memberService.profile(requestDto))
+        );
+    }
+
+    @PostMapping("/modify")
+    public ResponseEntity profileModify(@RequestBody MemberModifyDto requestDto){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseDto<>(HttpStatus.OK.value(), "회원 프로필 수정", memberService.profileModify(requestDto))
         );
     }
 

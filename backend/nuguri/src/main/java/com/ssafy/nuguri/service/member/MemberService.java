@@ -8,6 +8,7 @@ import com.ssafy.nuguri.domain.hobby.ApproveStatus;
 import com.ssafy.nuguri.domain.member.Member;
 import com.ssafy.nuguri.dto.deal.DealListDto;
 import com.ssafy.nuguri.dto.hobby.HobbyStatusDto;
+import com.ssafy.nuguri.dto.member.MemberModifyDto;
 import com.ssafy.nuguri.dto.member.MemberProfileDto;
 import com.ssafy.nuguri.dto.member.MemberProfileRequestDto;
 import com.ssafy.nuguri.exception.ex.CustomException;
@@ -38,6 +39,9 @@ public class MemberService {
     private final DealFavoriteRepository dealFavoriteRepository;
     private final DealHistoryRepository dealHistoryRepository;
 
+    /**
+     * 회원 프로필 조회
+     */
     @Transactional
     public MemberProfileDto profile(MemberProfileRequestDto requestDto){
         MemberProfileDto memberProfileDto;
@@ -52,14 +56,21 @@ public class MemberService {
         // 본인 프로필 조회
         else {
             Long memberId = SecurityUtil.getCurrentMemberId();
-            System.out.println("11111111111111");
             Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
-            System.out.println("22222222222222");
 
             memberProfileDto = profileCreate(member);
         }
 
         return memberProfileDto;
+    }
+
+    @Transactional
+    public MemberModifyDto profileModify(MemberModifyDto requestDto){
+        Long memberId = SecurityUtil.getCurrentMemberId();
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+
+        member.modify(requestDto.getNickname());
+        return new MemberModifyDto(requestDto.getNickname());
     }
 
 //    @Transactional
@@ -291,7 +302,7 @@ public class MemberService {
                 .description(member.getDescription())
                 .temperature(member.getTemperature())
                 .profileImage(member.getProfileImage())
-                .baseAddress(member.getBaseAddress())
+                .baseAddress(member.getBaseAddress().getSido() + " " + member.getBaseAddress().getGugun() + " " + member.getBaseAddress().getDong())
                 .build();
         return memberProfileDto;
     }
