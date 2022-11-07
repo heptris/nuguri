@@ -1,6 +1,6 @@
 import { ROUTES } from "@/constant";
 import { headerState, regionState, searchBarState } from "@/store";
-import { AppBar, Button, Icon, LabelInput, Text } from "@common/components";
+import { AppBar, Icon, LabelInput, Text } from "@common/components";
 import { css } from "@emotion/react";
 import { useRouter } from "next/router";
 import React, { useMemo } from "react";
@@ -41,7 +41,7 @@ const Header = () => {
         );
       case "MAIN":
         return (
-          <Link href={LOCATION}>
+          <Link href={LOCATION} noLinkStyle>
             <Icon mode={"MYLOCATION"} />
             <Text>{region}</Text>
           </Link>
