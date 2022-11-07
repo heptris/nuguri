@@ -35,7 +35,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       secure: true,
       sameSite: "strict",
     });
-    req.headers.authorization = `Bearer ${accessToken}`;
+
     res.status(200).json(clientData);
   };
 
@@ -65,7 +65,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       });
 
       const cookieMap = new Map<string, string>(arr);
-      const accessToken = req.headers.authorization?.split(" ")[1];
+      const accessToken = cookieMap.get(ACCESS_TOKEN);
       const refreshToken = cookieMap.get(REFRESH_TOKEN);
       console.log(cookieMap);
       await axios
@@ -82,9 +82,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         })
         .catch(e => {
           const { response } = e;
-          const { status, data } = response;
-          console.log(status, data);
-          res.status(status).json(data);
+          res.status(response?.status ?? 404).json("다시 로그인하세요.");
         });
       break;
   }
