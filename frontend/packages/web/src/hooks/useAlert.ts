@@ -13,12 +13,12 @@ const alertState = atom<AlertType>({
 });
 
 export const useAlert = () => {
-  const [, setAlert] = useRecoilState(alertState);
+  const [alertInfo, setAlertInfo] = useRecoilState(alertState);
 
-  const handleAlertOpen = (time = 2000, message = "404 에러 잘못된 요청입니다", isSuccess = false) => {
-    setAlert({ message, isSuccess, isOpened: true });
-    setTimeout(() => setAlert({ isOpened: false }), time);
+  const handleAlertOpen = (message = "404 에러 잘못된 요청입니다", isSuccess = false, time = 2000) => {
+    setAlertInfo({ message, isSuccess, isOpened: true });
+    setTimeout(() => setAlertInfo({ isOpened: false }), time);
   };
 
-  return { handleAlertOpen };
+  return { alertInfo, handleAlertOpen };
 };
