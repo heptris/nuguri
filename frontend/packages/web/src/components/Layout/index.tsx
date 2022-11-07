@@ -1,20 +1,33 @@
-import { useRouter } from "next/router";
-import { HomeOutlined, ChatBubbleOutlineOutlined, AddBoxOutlined, PersonOutlineOutlined, LoginOutlined } from "@mui/icons-material";
 import { css } from "@emotion/react";
-import { BottomNavbar, BottomNavbarItem } from "@common/components";
+import { Alert } from "@common/components";
 
-import Link from "@/components/Link";
-import { ROUTES } from "@/constant";
+import { useAlert, useLoading } from "@/hooks";
 import Header from "./Header";
-import { useAuth } from "@/hooks";
-
-const { HOME, CHAT, LOUNGE, PROFILE, LOGIN } = ROUTES;
+import BottomNavigation from "./BottomNavigation";
 
 const Layout = ({ children }) => {
-  const { isLogined } = useAuth();
-  const router = useRouter();
+  const {
+    alertInfo: { isOpened, isSuccess, message },
+  } = useAlert();
+  const { pageLoading } = useLoading();
+
   return (
     <>
+      {pageLoading && (
+        <div
+          css={css`
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(255, 255, 255, 0.8);
+            z-index: 1000;
+          `}
+        >
+          Loading...
+        </div>
+      )}
       <Header />
       <main
         css={css`
@@ -22,18 +35,10 @@ const Layout = ({ children }) => {
           top: 4rem;
         `}
       >
+        {isOpened && <Alert color={isSuccess ? "success" : "error"}>{message}</Alert>}
         {children}
       </main>
-      <BottomNavbar value={router.pathname}>
-        <BottomNavbarItem label={"홈"} value={HOME} icon={<HomeOutlined />} component={Link} noLinkStyle href={HOME} />
-        <BottomNavbarItem label={"채팅"} value={CHAT} icon={<ChatBubbleOutlineOutlined />} component={Link} noLinkStyle href={CHAT} />
-        <BottomNavbarItem label={"라운지"} value={LOUNGE} icon={<AddBoxOutlined />} component={Link} noLinkStyle href={LOUNGE} />
-        {isLogined ? (
-          <BottomNavbarItem label={"프로필"} value={PROFILE} icon={<PersonOutlineOutlined />} component={Link} noLinkStyle href={PROFILE} />
-        ) : (
-          <BottomNavbarItem label={"로그인"} value={LOGIN} icon={<LoginOutlined />} component={Link} noLinkStyle href={LOGIN} />
-        )}
-      </BottomNavbar>
+      <BottomNavigation />
     </>
   );
 };
