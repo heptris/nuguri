@@ -28,16 +28,17 @@ export type AllCardProps = CardProps & {
   maxPeople?: number;
   nowPeople?: number;
   price?: number;
+  imgUrl?: string;
 };
 
 export const Card = forwardRef<HTMLDivElement, AllCardProps>((props, ref) => {
   const theme = racconsThemes.defaultTheme;
-  const promiseDate = props.promiseDate;
+  const promisedate = props.promiseDate;
   const week = new Array("일", "월", "화", "수", "목", "금", "토");
-  const DayOfWeek = week[promiseDate.getDay()];
-  const Month = promiseDate.getMonth() + 1;
-  const Day = promiseDate.getDate();
-  const hours = promiseDate.getHours();
+  const DayOfWeek = week[promisedate?.getDay()];
+  const Month = promisedate?.getMonth() + 1;
+  const Day = promisedate?.getDate();
+  const hours = promisedate?.getHours();
   let hour;
   if (hours > 12) hour = "오후 " + (hours - 12);
   else if (hours === 12) hour = "오후 " + hours;
@@ -45,53 +46,122 @@ export const Card = forwardRef<HTMLDivElement, AllCardProps>((props, ref) => {
   else hour = "오전 " + hours;
 
   return (
-    <MuiCard {...props} ref={ref} sx={{ maxWidth: 345, maxHeight: 500 }}>
-      <CardMedia component="img" height="194" image="/assets/hobby/coding.jpg" alt="Coding" />
+    <MuiCard
+      {...props}
+      ref={ref}
+      sx={{ maxWidth: 345, maxHeight: 500 }}
+      css={css`
+        @media screen and (max-width: 1799px) {
+          /* 모바일 가로, 타블렛 세로 */
+          flex-grow: 0;
+          flex-shrink: 0;
+          flex-basis: 100%;
+        }
+        @media screen and (max-width: 899px) {
+          /* 모바일 가로, 타블렛 세로 */
+          flex-grow: 0;
+          flex-shrink: 0;
+          flex-basis: 80%;
+        }
+        @media screen and (max-width: 599px) {
+          flex-grow: 0;
+          flex-shrink: 0;
+          flex-basis: 45%;
+        }
+        margin-left: 0.5rem;
+        margin-right: 0.5rem;
+        &:hover {
+          background-color: ${theme.color.text.hover};
+          cursor: pointer;
+        }
+        margin-bottom: 3rem;
+      `}
+    >
+      <CardMedia component="img" height="194" image={props.imgUrl} alt="Coding" />
       <CardContent>
-        <span
+        <ButtonDiv
           css={css`
-            background-color: ${theme.color.background.card};
-            border: 1px solid ${theme.color.text.hover};
-            border-radius: 10px;
+            margin-bottom: 1rem;
           `}
         >
           <Text
             css={css`
               color: ${theme.color.background.submain};
-              padding: 0.5rem;
+              padding: 0.3rem 0.5rem;
+              @media screen and (max-width: 599px) {
+                font-size: 0.6rem;
+                padding: 0.1rem;
+              }
             `}
           >
             성장,자기계발
           </Text>
-        </span>
+        </ButtonDiv>
         <Text
           as="h1"
           css={css`
-            font-size: 2rem;
-            font-weight: 700;
+            font-size: 1.2rem;
+            @media screen and (max-width: 599px) {
+              font-size: 1rem;
+              flex-basis: 45%;
+            }
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            margin-bottom: 0.5rem;
           `}
         >
           홍대카페에서 모각코 하실분 구해요
         </Text>
-        <DateDiv>
-          <CalendarMonthIcon color="disabled" />
+        {props.price && (
           <Text
-            as="span"
+            as="h1"
             css={css`
-              margin-right: 1rem;
+              font-size: 1.2rem;
+              @media screen and (max-width: 599px) {
+                font-size: 1rem;
+              }
+
+              font-weight: 700;
+              margin-bottom: 1rem;
             `}
           >
-            {Month}.{Day}({DayOfWeek}) {hour}시
+            {props.price.toLocaleString("ko-KR")}원
           </Text>
-          <PeopleAltIcon color="disabled" />
-          <Text as="span">{props.nowPeople + "/" + props.maxPeople}</Text>
-        </DateDiv>
+        )}
+        {props.promiseDate && (
+          <DateDiv
+            css={css`
+              @media screen and (max-width: 599px) {
+                font-size: 0.8rem;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+              }
+            `}
+          >
+            <CalendarMonthIcon color="disabled" />
+            <Text
+              as="span"
+              css={css`
+                margin-right: 1rem;
+              `}
+            >
+              {Month}.{Day}({DayOfWeek}) {hour}시
+            </Text>
+            <PeopleAltIcon color="disabled" />
+            <Text as="span">{props.nowPeople + "/" + props.maxPeople}</Text>
+          </DateDiv>
+        )}
       </CardContent>
       <CardActions
         disableSpacing
         css={css`
           display: flex;
           justify-content: space-between;
+          @media screen and (max-width: 599px) {
+            font-size: 0.6rem;
+          }
         `}
       >
         <div>
@@ -104,9 +174,25 @@ export const Card = forwardRef<HTMLDivElement, AllCardProps>((props, ref) => {
           </IconButton>
           <Text as="span">5</Text>
         </div>
-        <Button variant="contained" color="inherit" size="small" disabled>
-          마감완료
-        </Button>
+        <ButtonDiv
+          css={css`
+            border-radius: 0.5rem;
+            background-color: ${theme.color.text.sub};
+          `}
+        >
+          <Text
+            css={css`
+              color: ${theme.color.background.submain};
+              padding: 0.2rem 0.5rem;
+              @media screen and (max-width: 599px) {
+                font-size: 0.6rem;
+                padding: 0.1rem;
+              }
+            `}
+          >
+            {props.price ? "판매" : "마감"}완료
+          </Text>
+        </ButtonDiv>
       </CardActions>
     </MuiCard>
   );
@@ -117,4 +203,15 @@ const DateDiv = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  box-sizing: border-box;
+`;
+
+const ButtonDiv = styled.div`
+  display: inline-flex;
+  width: auto;
+  padding: 0.3rem;
+  background-color: ${racconsThemes.defaultTheme.color.background.card};
+  border: 1px solid ${racconsThemes.defaultTheme.color.text.hover};
+  border-radius: 1.5rem;
+  box-sizing: border-box;
 `;
