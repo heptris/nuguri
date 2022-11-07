@@ -91,6 +91,7 @@ const Layout = ({ children }) => {
         css={css`
           position: relative;
           top: 4rem;
+          padding-bottom: 4rem;
         `}
       >
         {children}
