@@ -1,4 +1,5 @@
 import { useHeader } from "@/hooks";
+import withAuth from "@/utils/withAuth";
 import { Button } from "@common/components";
 import React, { useState } from "react";
 
@@ -17,4 +18,4 @@ const PostPage = () => {
   return <div>PostPage</div>;
 };
 
-export default PostPage;
+export default withAuth(PostPage);

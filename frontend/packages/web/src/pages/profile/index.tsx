@@ -1,4 +1,5 @@
 import { useHeader } from "@/hooks";
+import withAuth from "@/utils/withAuth";
 
 const ProfilePage = () => {
   useHeader({ mode: "ITEM", headingText: undefined });
@@ -6,4 +7,4 @@ const ProfilePage = () => {
   return <div>ProfilePage</div>;
 };
 
-export default ProfilePage;
+export default withAuth(ProfilePage);

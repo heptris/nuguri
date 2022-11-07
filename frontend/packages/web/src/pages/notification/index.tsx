@@ -1,4 +1,5 @@
 import { useHeader } from "@/hooks";
+import withAuth from "@/utils/withAuth";
 
 const NotificationPage = () => {
   useHeader({ mode: "ITEM", headingText: "알림" });
@@ -6,4 +7,4 @@ const NotificationPage = () => {
   return <div>NotificationPage</div>;
 };
 
-export default NotificationPage;
+export default withAuth(NotificationPage);

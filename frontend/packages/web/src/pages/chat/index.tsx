@@ -1,6 +1,7 @@
 import { List } from "@common/components";
 import ChatListItem from "@/components/ChatListItem";
 import { useHeader } from "@/hooks";
+import withAuth from "@/utils/withAuth";
 
 const ChatListPage = () => {
   useHeader({ mode: "ITEM", headingText: "채팅" });
@@ -11,4 +12,4 @@ const ChatListPage = () => {
   );
 };
 
-export default ChatListPage;
+export default withAuth(ChatListPage);
