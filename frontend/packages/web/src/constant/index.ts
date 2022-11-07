@@ -9,4 +9,7 @@ export const ROUTES = {
   REGION: "/region",
   SEARCH: "/search",
   LOCATION: "/location",
+  HOBBYLIST: "/list/hobby",
+  DEALLIST: "/list/deal",
+  GROUPDEALLIST: "/list/groupdeal",
 };
