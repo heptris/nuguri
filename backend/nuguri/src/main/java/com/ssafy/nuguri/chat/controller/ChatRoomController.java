@@ -1,7 +1,7 @@
 package com.ssafy.nuguri.chat.controller;
 
-import com.ssafy.nuguri.chat.domain.ChatMessage;
 import com.ssafy.nuguri.chat.domain.ChatRoom;
+import com.ssafy.nuguri.chat.dto.ChatMessageResponseDto;
 import com.ssafy.nuguri.chat.dto.ChatRoomResponseDto;
 import com.ssafy.nuguri.chat.dto.CreateChatRoomDto;
 import com.ssafy.nuguri.chat.dto.JoinChatRoomDto;
@@ -32,7 +32,7 @@ public class ChatRoomController {
      * @return
      */
     @PostMapping("/join")
-    public List<ChatMessage> joinChatRoom(@RequestBody JoinChatRoomDto joinChatRoomDto) {
+    public List<ChatMessageResponseDto> joinChatRoom(@RequestBody JoinChatRoomDto joinChatRoomDto) {
         return chatRoomService.join(joinChatRoomDto);
     }
 

@@ -1,5 +1,6 @@
 package com.ssafy.nuguri.chat.domain;
 
+import com.ssafy.nuguri.chat.dto.ChatMessageResponseDto;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
@@ -24,9 +25,14 @@ public class ChatMessage {
     @Id
     private String id;
 
-    private String sender;  // 보내는 사람 닉네임
+    private Long senderId;  // 보내는 사람 Id
     private String message;
     private LocalDateTime createdDate;
     private String roomId;
     private MessageType messageType;
+
+    public ChatMessageResponseDto toChatMessageResponseDto() {
+        return ChatMessageResponseDto.builder().message(message).messageType(messageType).chatTime(createdDate)
+                .build();
+    }
 }

@@ -2,11 +2,13 @@ package com.ssafy.nuguri.chat.service;
 
 import com.ssafy.nuguri.chat.domain.ChatMessage;
 import com.ssafy.nuguri.chat.domain.ChatRoom;
+import com.ssafy.nuguri.chat.dto.ChatMessageResponseDto;
 import com.ssafy.nuguri.chat.dto.ChatRoomResponseDto;
 import com.ssafy.nuguri.chat.dto.CreateChatRoomDto;
 import com.ssafy.nuguri.chat.dto.JoinChatRoomDto;
 import com.ssafy.nuguri.chat.repository.ChatRepository;
 import com.ssafy.nuguri.chat.repository.ChatRoomRepository;
+import com.ssafy.nuguri.config.redis.RedisService;
 import com.ssafy.nuguri.exception.ex.CustomException;
 import com.ssafy.nuguri.exception.ex.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,8 @@ public class ChatRoomService {
 
     private final ChatRoomRepository chatRoomRepository;
     private final ChatRepository chatRepository;
+
+    private final RedisService redisService;
 
     public List<ChatRoom> findAll() {
         List<ChatRoom> chatRoomList= chatRoomRepository.findAll();
@@ -117,7 +121,7 @@ public class ChatRoomService {
      *
      * @return
      */
-    public List<ChatMessage> join(JoinChatRoomDto joinChatRoomDto) {
+    public List<ChatMessageResponseDto> join(JoinChatRoomDto joinChatRoomDto) {
         ChatRoom chatRoom = chatRoomRepository.findChatRoomByRoomId(joinChatRoomDto.getRoomId()).orElseThrow(
                 () -> new CustomException(ErrorCode.CHATROOM_NOT_FOUND)
         );
@@ -127,7 +131,13 @@ public class ChatRoomService {
         }
         chatRoomRepository.save(chatRoom);
         List<ChatMessage> chatMessages = chatRepository.findChatMessageByRoomIdOrderByCreatedDate(chatRoom.getRoomId());
-        return chatMessages;
+        List<ChatMessageResponseDto> chatMessageResponseDtoList = new ArrayList<>();
+        chatMessages.forEach(chatMessage -> {
+            ChatMessageResponseDto chatMessageResponseDto = chatMessage.toChatMessageResponseDto();
+            chatMessageResponseDto.setSender(redisService.getValues(String.valueOf(chatMessage.getSenderId())));
+            chatMessageResponseDtoList.add(chatMessageResponseDto);
+        });
+        return chatMessageResponseDtoList;
     }
 
     public ChatRoom findChatRoom(String roomId) {

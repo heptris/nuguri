@@ -2,8 +2,10 @@ package com.ssafy.nuguri.chat.controller;
 
 import com.ssafy.nuguri.chat.domain.ChatMessage;
 import com.ssafy.nuguri.chat.dto.ChatMessageDto;
+import com.ssafy.nuguri.chat.dto.ChatMessageResponseDto;
 import com.ssafy.nuguri.chat.repository.ChatRepository;
 import com.ssafy.nuguri.chat.service.ChatService;
+import com.ssafy.nuguri.config.redis.RedisService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,8 @@ public class ChatController {
     private final ChatService chatService;
     private final SimpMessagingTemplate template;
 
+    private final RedisService redisService;
+
     @GetMapping()
     public List<ChatMessage> chatLog() {
         return chatService.getChatLog();
@@ -32,13 +36,17 @@ public class ChatController {
     @MessageMapping
     public void save(@RequestBody ChatMessageDto message)
     {
+        String sender = redisService.getValues(String.valueOf(message.getSenderId()));
         if (message.getMessageType().equals(ENTER)) {
-            message.setMessage(message.getSender()+ "님이 입장하셨습니다.");
+            message.setMessage(sender + " 님이 입장하셨습니다.");
         } else if (message.getMessageType().equals(LEAVE)) {
-            message.setMessage(message.getSender() + "님이 나갔습니다");
+            message.setMessage(sender + "님이 나갔습니다");
         }
-        chatService.save(message);
-        template.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
+
+        ChatMessage chatMessage = chatService.save(message);
+        ChatMessageResponseDto chatMessageResponseDto = chatMessage.toChatMessageResponseDto();
+        chatMessageResponseDto.setSender(sender);
+        template.convertAndSend("/sub/chat/room/" + message.getRoomId(), chatMessageResponseDto);
     }
 
 

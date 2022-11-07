@@ -35,8 +35,8 @@ public class ChatService {
         return chatRepository.findAll();
     }
 
-    public void save(ChatMessageDto chatMessageDto) {
+    public ChatMessage save(ChatMessageDto chatMessageDto) {
         ChatMessage chatMessage = chatMessageDto.toChatMessage();
-        chatRepository.save(chatMessage);
+        return chatRepository.save(chatMessage);
     }
 }
