@@ -12,12 +12,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     res.status(404).end();
   }
 
-  const onLoginProcess = (data: { accessToken: string; refreshToken: string; accessTokenExpiresIn: number }) => {
-    const accessToken = data.accessToken;
-    const refreshToken = data.refreshToken;
-    const accessTokenExpiresIn = data.accessTokenExpiresIn;
+  const onLoginProcess = (data: { accessToken: string; refreshToken: string; accessTokenExpiresIn: number; nickname: string }) => {
+    const { accessToken, refreshToken, accessTokenExpiresIn, nickname } = data;
     const clientData = {
       accessTokenExpiresIn,
+      nickname,
     };
     console.log(new Date(accessTokenExpiresIn), new Date(Date.now()));
 
@@ -82,6 +81,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         })
         .catch(e => {
           const { response } = e;
+          console.error(e);
           res.status(response?.status ?? 404).json("다시 로그인하세요.");
         });
       break;
