@@ -59,7 +59,6 @@ public class HobbyService {
     public Long createHobby(HobbyCreateRequestDto hobbyCreateRequestDto, MultipartFile hobbyImage){ // 취미방 생성
         BaseAddress baseAddress = baseaddressRepository.findById(hobbyCreateRequestDto.getLocalId()).orElseThrow(()->new CustomException(BASEADDRESS_NOT_FOUND));
         Category category = categoryRepository.findById(hobbyCreateRequestDto.getCategoryId()).orElseThrow(()->new CustomException(CATEGORY_NOT_FOUND));
-        // 중고거래 이미지 -> 여기서 받을지 추후에 넣을지
         String hobbyImageUrl;
         if(hobbyImage == null){
             hobbyImageUrl = "";

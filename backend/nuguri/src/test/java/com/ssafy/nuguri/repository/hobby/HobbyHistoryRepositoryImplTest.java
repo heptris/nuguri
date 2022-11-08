@@ -6,6 +6,7 @@ import com.ssafy.nuguri.domain.baseaddress.BaseAddress;
 import com.ssafy.nuguri.domain.category.Category;
 import com.ssafy.nuguri.domain.hobby.ApproveStatus;
 import com.ssafy.nuguri.domain.hobby.Hobby;
+import com.ssafy.nuguri.domain.hobby.HobbyFavorite;
 import com.ssafy.nuguri.domain.hobby.HobbyHistory;
 import com.ssafy.nuguri.domain.member.Member;
 import com.ssafy.nuguri.dto.hobby.HobbyHistoryDto;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.jdbc.Sql;
 
 import javax.persistence.EntityManager;
@@ -96,6 +98,8 @@ class HobbyHistoryRepositoryImplTest {
         HobbyHistory hobbyHistory3 = HobbyHistory.builder().member(me).hobby(hobbyEntity1).isPromoter(true).approveStatus(ApproveStatus.APPROVE).build();
         HobbyHistory hobbyHistory4 = HobbyHistory.builder().member(me).hobby(hobbyEntity1).isPromoter(false).approveStatus(ApproveStatus.APPROVE).build();
         HobbyHistory hobbyHistory5 = HobbyHistory.builder().member(me).hobby(hobbyEntity1).isPromoter(false).approveStatus(ApproveStatus.REJECT).build();
+        HobbyFavorite hobbyFavorite1 = HobbyFavorite.builder().member(me).hobby(hobbyEntity1).isFavorite(true).build();
+        HobbyFavorite hobbyFavorite2 = HobbyFavorite.builder().member(me).hobby(hobbyEntity1).isFavorite(true).build();
 
         em.persist(hobbyEntity1);
         em.persist(hobbyEntity2);
@@ -104,7 +108,8 @@ class HobbyHistoryRepositoryImplTest {
         em.persist(hobbyHistory3);
         em.persist(hobbyHistory4);
         em.persist(hobbyHistory5);
-
+        em.persist(hobbyFavorite1);
+        em.persist(hobbyFavorite2);
     }
 
     @Test

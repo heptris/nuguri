@@ -22,13 +22,13 @@ public class HobbyHistoryResponseDto {
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime endDate;
 
-    private int curNum;
+    private Integer curNum;
 
-    private int maxNum;
+    private Integer maxNum;
 
-    private int wishlistNum;
+    private Long wishlistNum;
 
-    private int chatNum;
+    private Integer chatNum;
 
     private String imageurl;
 
