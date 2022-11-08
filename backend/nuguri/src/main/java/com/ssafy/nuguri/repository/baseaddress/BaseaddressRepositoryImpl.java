@@ -4,8 +4,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.nuguri.domain.baseaddress.BaseAddress;
 import com.ssafy.nuguri.domain.baseaddress.QBaseAddress;
-import com.ssafy.nuguri.dto.baseaddress.BaseAddressResponseDto;
-import com.ssafy.nuguri.dto.baseaddress.BaseAddressSearchDto;
+import com.ssafy.nuguri.dto.baseaddress.*;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
@@ -42,5 +41,62 @@ public class BaseaddressRepositoryImpl implements BaseaddressRepositoryCustom{
         }
 
         return list;
+    }
+
+    @Override
+    public List<BaseAddressSidoDto> findSidoList() {
+        List<BaseAddressSidoDto> baseAddressSidoDtoList = queryFactory
+                .select(Projections.constructor(BaseAddressSidoDto.class,
+                        baseAddress.sido
+                ))
+                .from(baseAddress)
+                .groupBy(baseAddress.sido)
+                .fetch();
+
+        return baseAddressSidoDtoList;
+    }
+
+    @Override
+    public List<BaseAddressGugunDto> findGugunList(String sido) {
+        List<BaseAddressGugunDto> baseAddressGugunDtoList = queryFactory
+                .select(Projections.constructor(BaseAddressGugunDto.class,
+                        baseAddress.gugun
+                ))
+                .from(baseAddress)
+                .where(baseAddress.sido.eq(sido))
+                .groupBy(baseAddress.gugun)
+                .fetch();
+
+        return baseAddressGugunDtoList;
+    }
+
+    @Override
+    public List<BaseAddressDongDto> findDongList(String gugun) {
+        List<BaseAddressDongDto> baseAddressDongDtoList = queryFactory
+                .select(Projections.constructor(BaseAddressDongDto.class,
+                        baseAddress.id,
+                        baseAddress.dong
+                ))
+                .from(baseAddress)
+                .where(baseAddress.gugun.eq(gugun))
+                .fetch();
+
+        return baseAddressDongDtoList;
+    }
+
+    @Override
+    public List<BaseAddressDto> findAllBaseAddress() {
+        List<BaseAddressDto> baseAddressDtoList = queryFactory
+                .select(Projections.constructor(BaseAddressDto.class,
+                        baseAddress.id,
+                        baseAddress.sido,
+                        baseAddress.gugun,
+                        baseAddress.dong,
+                        baseAddress.lat,
+                        baseAddress.lng
+                ))
+                .from(baseAddress)
+                .fetch();
+        return baseAddressDtoList;
     }
 }
