@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { ROUTES } from "./../constant/index";
 import { useRouter } from "next/router";
 import { useMutation } from "@tanstack/react-query";
@@ -8,18 +8,23 @@ import axios from "axios";
 import { atom, useRecoilState } from "recoil";
 import { deleteCookie, getCookie } from "cookies-next";
 
-type AuthType = { isLogined: boolean };
+type AuthType = { isLogined: boolean; nickname?: string };
 const authState = atom<AuthType>({
   key: "authState",
-  default: { isLogined: null },
+  default: { isLogined: null, nickname: null },
 });
 const { HOME } = ROUTES;
 
 export const useAuth = () => {
-  const [{ isLogined }, setAuthState] = useRecoilState(authState);
+  const [{ isLogined, nickname }, setAuthState] = useRecoilState(authState);
   const { replace } = useRouter();
+  const isRefreshed = useRef(false);
+
   useEffect(() => {
     setAuthState({ isLogined: !!getCookie(ACCESS_TOKEN) });
+    console.log(isRefreshed);
+    isRefreshed.current || (!isLogined && handleSilentRefresh());
+    isRefreshed.current = true;
   }, []);
 
   const postLogin = async (form: LoginFormType) => {
@@ -29,14 +34,19 @@ export const useAuth = () => {
   };
 
   const handleSilentRefresh = () => {
-    axios.get(ENDPOINT_BFF + "/login").then(data => {
-      console.log(data);
-      handleLoginProcess(data.data.accessTokenExpiresIn);
-    });
+    axios
+      .get(ENDPOINT_BFF + "/login")
+      .then(res => {
+        console.log(res);
+        handleLoginProcess(res.data);
+      })
+      .catch(e => {
+        console.error(e);
+      });
   };
 
-  const handleLoginProcess = (expiresIn: number) => {
-    setAuthState({ isLogined: true });
+  const handleLoginProcess = ({ expiresIn, nickname }: { expiresIn: number; nickname: string }) => {
+    setAuthState({ isLogined: true, nickname });
     setTimeout(handleSilentRefresh, expiresIn - Date.now());
   };
 
@@ -46,7 +56,7 @@ export const useAuth = () => {
     isLoading: isLoginLoading,
   } = useMutation(postLogin, {
     onSuccess: data => {
-      handleLoginProcess(data.accessTokenExpiresIn);
+      handleLoginProcess(data);
       replace(HOME);
     },
   });
@@ -57,5 +67,5 @@ export const useAuth = () => {
     deleteCookie(REFRESH_TOKEN);
   };
 
-  return { isLogined, handleLogin, isLoginError, isLoginLoading, handleLogout };
+  return { isLogined, nickname, handleLogin, isLoginError, isLoginLoading, handleLogout, handleSilentRefresh };
 };
