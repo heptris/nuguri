@@ -212,4 +212,12 @@ class HobbyHistoryServiceTest {
         System.out.println("변경 후: "+hobbyHistoryService.findByIdDto(1L).toString());
     }
 
+    @Test
+    public void 운영중인_방_찾기(){
+        List<HobbyHistoryResponseDto> result = hobbyHistoryService.findOperatingsByUserId(1L);
+        for (HobbyHistoryResponseDto hobbyHistoryResponseDto:result
+             ) {
+            System.out.println("hobbyHistoryResponseDto = " + hobbyHistoryResponseDto);
+        }
+    }
 }
