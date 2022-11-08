@@ -47,7 +47,7 @@ export const useAuth = () => {
 
   const handleLoginProcess = ({ accessTokenExpiresIn, nickname }: { accessTokenExpiresIn: number; nickname: string }) => {
     setAuthState({ isLogined: true, nickname });
-    setTimeout(handleSilentRefresh, accessTokenExpiresIn - Date.now());
+    setTimeout(handleSilentRefresh, accessTokenExpiresIn - Date.now() - 1000 * 60 * 5);
   };
 
   const {
@@ -62,7 +62,7 @@ export const useAuth = () => {
   });
 
   const handleLogout = () => {
-    setAuthState({ isLogined: false });
+    setAuthState({ isLogined: false, nickname: null });
     deleteCookie(ACCESS_TOKEN);
     deleteCookie(REFRESH_TOKEN);
   };
