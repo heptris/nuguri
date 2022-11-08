@@ -9,6 +9,7 @@ import com.ssafy.nuguri.domain.member.Member;
 import com.ssafy.nuguri.domain.s3.AwsS3;
 import com.ssafy.nuguri.dto.hobby.HobbyCreateRequestDto;
 import com.ssafy.nuguri.dto.hobby.HobbyDto;
+import com.ssafy.nuguri.dto.hobby.HobbyListRequestDto;
 import com.ssafy.nuguri.exception.ex.CustomException;
 import com.ssafy.nuguri.repository.baseaddress.BaseaddressRepository;
 import com.ssafy.nuguri.repository.category.CategoryRepository;
@@ -43,8 +44,8 @@ public class HobbyService {
 
 
     @Transactional
-    public List<HobbyDto> findLocalCategoryHobbyList(Long regionId, Long categoryId){ // 지역과 카테고리로 취미방 찾기
-        return hobbyRepository.findByRegionAndCategory(regionId,categoryId);
+    public List<HobbyDto> findLocalCategoryHobbyList(HobbyListRequestDto hobbyListRequestDto){ // 지역과 카테고리로 취미방 찾기
+        return hobbyRepository.findByRegionAndCategory(hobbyListRequestDto.getRegionId(),hobbyListRequestDto.getCategoryId());
     }
 
     @Transactional
