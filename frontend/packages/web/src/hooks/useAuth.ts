@@ -45,9 +45,9 @@ export const useAuth = () => {
       });
   };
 
-  const handleLoginProcess = ({ expiresIn, nickname }: { expiresIn: number; nickname: string }) => {
+  const handleLoginProcess = ({ accessTokenExpiresIn, nickname }: { accessTokenExpiresIn: number; nickname: string }) => {
     setAuthState({ isLogined: true, nickname });
-    setTimeout(handleSilentRefresh, expiresIn - Date.now());
+    setTimeout(handleSilentRefresh, accessTokenExpiresIn - Date.now());
   };
 
   const {

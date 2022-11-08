@@ -4,3 +4,4 @@ export * from "./useHeader";
 export * from "./useAlert";
 export * from "./useLoading";
 export * from "./useSearchBar";
+export * from "./useLocation";
