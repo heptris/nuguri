@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("app/hobby/history")
+@RequestMapping("/app/hobby/history")
 public class HobbyHistoryController {
 
     private final HobbyHistoryService hobbyHistoryService;

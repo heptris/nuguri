@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("app/hobby")
+@RequestMapping("/app/hobby")
 public class HobbyController {
     private final HobbyService hobbyService;
 
