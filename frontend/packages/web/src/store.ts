@@ -2,8 +2,11 @@ import { ReactNode } from "react";
 import { atom } from "recoil";
 
 export type HeaderType = { mode: "EDIT" | "ITEM" | "MAIN" | "LIST" | "SEARCH" | "LOGIN" | "POST" | "DEFAULT"; headingText?: string; HeaderRight?: ReactNode };
-type RegionType = string;
-type SearchBarType = {
+export type RegionType = {
+  regionName: string;
+  regionId: number;
+};
+export type SearchBarType = {
   placeholder: string;
   value: string;
 };
@@ -14,7 +17,10 @@ const headerState = atom<HeaderType>({
 });
 const regionState = atom<RegionType>({
   key: "regionState",
-  default: "전국",
+  default: {
+    regionName: "전국",
+    regionId: null,
+  },
 });
 const searchBarState = atom<SearchBarType>({
   key: "searchBarState",
