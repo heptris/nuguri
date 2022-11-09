@@ -307,6 +307,7 @@ public class MemberService {
                 .temperature(member.getTemperature())
                 .profileImage(member.getProfileImage())
                 .baseAddress(member.getBaseAddress().getSido() + " " + member.getBaseAddress().getGugun() + " " + member.getBaseAddress().getDong())
+                .localId(member.getBaseAddress().getId())
                 .build();
         return memberProfileDto;
     }
