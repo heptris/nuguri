@@ -90,8 +90,8 @@ public class ChatRoomService {
         /**
          * 중고거래 채팅일 시
          */
-        if (createChatRoomDto.getDealId() != null) {
-            Optional<ChatRoom> chatRoomOptional = chatRoomRepository.findChatRoomByDealId(createChatRoomDto.getDealId());
+        if (createChatRoomDto.getDealHistoryId() != null) {
+            Optional<ChatRoom> chatRoomOptional = chatRoomRepository.findChatRoomByDealHistoryId(createChatRoomDto.getDealHistoryId());
             if (chatRoomOptional.isPresent()) { // 이미 채팅방이 생성돼어 있을 경우
                 return chatRoomOptional.get().getRoomId();
             } else {

@@ -24,7 +24,7 @@ public class ChatRoom {
 
     private String roomName;
 
-    private Long dealId;    // 중고거래를 위한 dealId
+    private Long dealHistoryId;    // 중고거래를 위한 dealId
     private Long hobbyId;   // 취미 모임 채팅을 위한 hobbyId
 
     // 순수 1대1 채팅일 경우

@@ -26,9 +26,6 @@ import static com.ssafy.nuguri.exception.ex.ErrorCode.CHATROOM_NOT_FOUND;
 @Transactional
 @Service
 public class ChatService {
-
-    @Autowired
-    private MongoTemplate mongoTemplate;
     private final ChatRepository chatRepository;
 
     public List<ChatMessage> getChatLog() {
