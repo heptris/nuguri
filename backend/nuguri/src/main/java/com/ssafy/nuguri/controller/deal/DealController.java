@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/ap/deal")
+@RequestMapping("/app/deal")
 public class DealController {
 
     private final DealService dealService;

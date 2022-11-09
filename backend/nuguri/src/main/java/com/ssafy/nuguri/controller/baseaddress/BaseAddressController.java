@@ -24,4 +24,41 @@ public class BaseAddressController {
                         baseaddressService.findBaseaddressByDong(keyword))
         );
     }
+
+    @ApiOperation(value = "시/도 목록")
+    @GetMapping("/sido")
+    public ResponseEntity sidoList(){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseDto(HttpStatus.OK.value(), "시/도 목록",
+                        baseaddressService.sidoList())
+        );
+    }
+
+    @ApiOperation(value = "구군 목록")
+    @GetMapping("/gugun")
+    public ResponseEntity gugunList(String sido){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseDto(HttpStatus.OK.value(), "구군 목록",
+                        baseaddressService.gugunList(sido))
+        );
+    }
+
+    @ApiOperation(value = "동 목록")
+    @GetMapping("/dong")
+    public ResponseEntity dongList(String gugun){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseDto(HttpStatus.OK.value(), "동 목록",
+                        baseaddressService.dongList(gugun))
+        );
+    }
+
+    @ApiOperation(value = "전체 지역 목록")
+    @GetMapping("/list")
+    public ResponseEntity allList(){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseDto(HttpStatus.OK.value(), "전체 지역 목록",
+                        baseaddressService.findAllBaseAddress())
+        );
+    }
+
 }

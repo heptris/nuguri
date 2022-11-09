@@ -72,7 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         configuration.setAllowedOriginPatterns(
                 Arrays.asList("http://localhost:3000",
                         "https://i7a702.p.ssafy.io:3000",
-                        "https://i7a702.p.ssafy.io"));
+                        "https://7a702.p.ssafy.io"));
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);

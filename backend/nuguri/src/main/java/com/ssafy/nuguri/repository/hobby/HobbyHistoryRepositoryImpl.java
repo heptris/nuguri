@@ -4,6 +4,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.nuguri.domain.hobby.ApproveStatus;
 import com.ssafy.nuguri.domain.hobby.Hobby;
+import com.ssafy.nuguri.domain.hobby.QHobbyFavorite;
 import com.ssafy.nuguri.dto.hobby.HobbyHistoryDto;
 import com.ssafy.nuguri.dto.hobby.HobbyHistoryResponseDto;
 
@@ -74,6 +75,10 @@ public class HobbyHistoryRepositoryImpl implements HobbyHistoryRepositoryCustom{
 
         return hobbyHistoryResponseDtoList;
     }
+
+//    private int favoriteCnt(Long hobbyId) {
+//        queryFactory.selectFrom().fetchCount();
+//    }
 
     @Override
     public List<HobbyHistoryResponseDto> findOperatings(Long userId) {

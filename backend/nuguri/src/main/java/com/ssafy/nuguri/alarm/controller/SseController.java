@@ -15,7 +15,7 @@ public class SseController {
 
     private final AlarmService alarmService;
 
-    @GetMapping(value = "/sub", produces = "text/event-stream")
+    @GetMapping(value = "/sub/{memberId}", produces = "text/event-stream")
     public SseEmitter subscribe(@PathVariable Long memberId) {
         return alarmService.subscribe(memberId);
     }
