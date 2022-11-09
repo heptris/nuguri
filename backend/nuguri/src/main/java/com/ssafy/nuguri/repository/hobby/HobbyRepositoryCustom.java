@@ -13,10 +13,7 @@ public interface HobbyRepositoryCustom {
 
     // hobbyId로 취미방 찾기(취미방 상세보기 클릭 시)
     HobbyDto hobbyDetail(Long hobbyId);
-
-
-
-
+    List<HobbyDto> findAllDto();
     List<HobbyHistoryResponseDto> findByMemberIdAndStatus(Long memberId, ApproveStatus approveStatus);
     List<HobbyHistoryResponseDto> findByMemberIdAndPromoter(Long memberId, boolean isPromoter);
     List<HobbyHistoryResponseDto> findByMemberIdAndFavorite(Long memberId, boolean isFavorite);

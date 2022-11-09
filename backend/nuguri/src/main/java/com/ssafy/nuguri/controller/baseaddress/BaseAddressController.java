@@ -1,6 +1,5 @@
 package com.ssafy.nuguri.controller.baseaddress;
 
-import com.ssafy.nuguri.dto.deal.DealListRequestDto;
 import com.ssafy.nuguri.dto.response.ResponseDto;
 import com.ssafy.nuguri.service.baseaddress.BaseaddressService;
 import io.swagger.annotations.ApiOperation;

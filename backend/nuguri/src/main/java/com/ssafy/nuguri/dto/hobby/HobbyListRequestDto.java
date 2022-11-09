@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 public class HobbyListRequestDto {
-    private Long regionId;
+    private Long localId;
     private Long categoryId;
 }

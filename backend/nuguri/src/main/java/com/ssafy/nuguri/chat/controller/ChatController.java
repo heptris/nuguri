@@ -20,7 +20,6 @@ import static com.ssafy.nuguri.chat.domain.ChatMessage.MessageType.*;
 
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/chat")
 @RestController
 public class ChatController {
     private final ChatService chatService;
@@ -33,9 +32,10 @@ public class ChatController {
         return chatService.getChatLog();
     }
 
-    @MessageMapping
-    public void save(@RequestBody ChatMessageDto message)
-    {
+    @MessageMapping(value = "/chat")
+    public void save(@RequestBody ChatMessageDto message) {
+
+        log.info("message : {}", message);
         String sender = redisService.getValues(String.valueOf(message.getSenderId()) + ".");
         if (message.getMessageType().equals(ENTER)) {
             message.setMessage(sender + " 님이 입장하셨습니다.");

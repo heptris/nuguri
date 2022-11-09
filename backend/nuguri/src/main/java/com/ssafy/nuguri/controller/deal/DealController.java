@@ -1,6 +1,6 @@
 package com.ssafy.nuguri.controller.deal;
 
-import com.ssafy.nuguri.dto.deal.DealListRequestDto;
+import com.ssafy.nuguri.dto.deal.DealListRequestCondition;
 import com.ssafy.nuguri.dto.deal.DealRegistRequestDto;
 import com.ssafy.nuguri.dto.deal.DealUpdateDto;
 import com.ssafy.nuguri.dto.response.ResponseDto;
@@ -9,6 +9,7 @@ import com.ssafy.nuguri.util.SecurityUtil;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,12 +26,17 @@ public class DealController {
 
     private final DealService dealService;
 
-    @ApiOperation(value = "해당 지역, 취미에 대한 중고거래 목록 조회 + categoryId는 null 넣으면 근처 지역 중고거래 전체 조회")
-    @PostMapping("/list")
-    public ResponseEntity findLocalCategoryDealList(@RequestBody DealListRequestDto dealListRequestDto){
+    @ApiOperation(value = "해당 지역, 취미에 대한 중고거래 목록 조회 + localId, categoryId는 null 넣으면 조건에 맞는 중고거래 전체 조회")
+    @GetMapping("/list")
+    public ResponseEntity findLocalCategoryDealList(@RequestParam(required = false) Long localId,
+                                                    @RequestParam(required = false) Long categoryId,
+                                                    @RequestParam Integer size,
+                                                    @RequestParam Integer page){
+        Pageable pageable = Pageable.ofSize(size).withPage(page);
+        DealListRequestCondition condition = new DealListRequestCondition(localId, categoryId);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseDto(HttpStatus.OK.value(), "중고거래 목록",
-                        dealService.findLocalCategoryDealList(dealListRequestDto.getLocalId(), dealListRequestDto.getCategoryId()))
+                        dealService.findLocalCategoryDealList(condition, pageable))
         );
     }
 

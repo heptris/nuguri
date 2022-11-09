@@ -31,6 +31,13 @@ public class HobbyController {
         );
     }
 
+    @ApiOperation(value="전체 취미방 조회")
+    @GetMapping("/all")
+    public ResponseEntity findAll(){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseDto(HttpStatus.OK.value(), "취미방 상세정보",hobbyService.findAllDto())
+        );
+    }
 
     @ApiOperation(value="취미방 상세페이지 조회")
     @GetMapping("/{hobbyId}/detail")
