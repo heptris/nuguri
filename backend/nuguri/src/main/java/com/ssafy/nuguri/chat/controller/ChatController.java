@@ -34,8 +34,9 @@ public class ChatController {
     }
 
     @MessageMapping
-    public void save(@RequestBody ChatMessageDto message)
-    {
+    public void save(@RequestBody ChatMessageDto message) {
+
+        log.info("message : {}", message);
         String sender = redisService.getValues(String.valueOf(message.getSenderId()) + ".");
         if (message.getMessageType().equals(ENTER)) {
             message.setMessage(sender + " 님이 입장하셨습니다.");
