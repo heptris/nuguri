@@ -20,7 +20,6 @@ import static com.ssafy.nuguri.chat.domain.ChatMessage.MessageType.*;
 
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/chat")
 @RestController
 public class ChatController {
     private final ChatService chatService;
@@ -33,7 +32,7 @@ public class ChatController {
         return chatService.getChatLog();
     }
 
-    @MessageMapping
+    @MessageMapping(value = "/chat")
     public void save(@RequestBody ChatMessageDto message) {
 
         log.info("message : {}", message);
