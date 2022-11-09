@@ -33,19 +33,20 @@ public class ChatRoomService {
     private final RedisService redisService;
 
     public List<ChatRoom> findAll() {
-        List<ChatRoom> chatRoomList= chatRoomRepository.findAll();
-        List<ChatRoomResponseDto> chatRoomResponseDtoList = new ArrayList<>();
-        chatRoomList.forEach(chatRoom -> {
-            ChatMessage chatMessage = chatRepository.lastChatMessage(chatRoom.getRoomId());
-            ChatRoomResponseDto chatRoomResponseDto = ChatRoomResponseDto.builder().roomName(chatRoom.getRoomName())
-                    .roomId(chatRoom.getRoomId()).lastChatMessage(chatMessage.getMessage())
-                    .lastChatTime(chatMessage.getCreatedDate()).build();
-            chatRoomResponseDtoList.add(chatRoomResponseDto);
-        });
-
-        Collections.sort(chatRoomResponseDtoList);
-        chatRoomResponseDtoList.forEach(chatRoomResponseDto -> System.out.println(chatRoomResponseDto));
-        return chatRoomList;
+        return chatRoomRepository.findAll();
+//        List<ChatRoom> chatRoomList= chatRoomRepository.findAll();
+//        List<ChatRoomResponseDto> chatRoomResponseDtoList = new ArrayList<>();
+//        chatRoomList.forEach(chatRoom -> {
+//            ChatMessage chatMessage = chatRepository.lastChatMessage(chatRoom.getRoomId());
+//            ChatRoomResponseDto chatRoomResponseDto = ChatRoomResponseDto.builder().roomName(chatRoom.getRoomName())
+//                    .roomId(chatRoom.getRoomId()).lastChatMessage(chatMessage.getMessage())
+//                    .lastChatTime(chatMessage.getCreatedDate()).build();
+//            chatRoomResponseDtoList.add(chatRoomResponseDto);
+//        });
+//
+//        Collections.sort(chatRoomResponseDtoList);
+//        chatRoomResponseDtoList.forEach(chatRoomResponseDto -> System.out.println(chatRoomResponseDto));
+//        return chatRoomList;
     }
 
     /**

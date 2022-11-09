@@ -9,7 +9,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 @Slf4j
-//@Controller
+@Controller
 @RequiredArgsConstructor
 public class StompChatController {
 
