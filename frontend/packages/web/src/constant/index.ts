@@ -9,6 +9,7 @@ export const ROUTES = {
   REGION: "/region",
   SEARCH: "/search",
   LOCATION: "/location",
+  POST: "/post",
   HOBBYLIST: "/list/hobby",
   DEALLIST: "/list/deal",
   GROUPDEALLIST: "/list/groupdeal",

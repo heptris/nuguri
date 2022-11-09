@@ -1,18 +1,30 @@
-import { headerState, searchBarState } from "@/store";
-import React, { useEffect } from "react";
-import { useRecoilState } from "recoil";
+import { useEffect } from "react";
+import { useSearchBar, useHeader, useLocation } from "@/hooks";
 
 const LocationPage = () => {
-  const [, setHeader] = useRecoilState(headerState);
-  const [{ value }, setSearchBar] = useRecoilState(searchBarState);
+  useHeader({ mode: "SEARCH", headingText: undefined });
+  const { searchedValue } = useSearchBar("내 동네 이름(동, 읍, 면)으로 검색");
+  const { handleSearchAddress, searchedData, isSearching, handleSelectAddress } = useLocation();
   useEffect(() => {
-    setHeader({ mode: "SEARCH", headingText: undefined });
-    setSearchBar({ value, placeholder: "내 동네 이름(동, 읍, 면)으로 검색" });
-    return () => {
-      setSearchBar({ value: "", placeholder: "" });
-    };
-  }, []);
-  return <div>LocationPage</div>;
+    handleSearchAddress(searchedValue);
+  }, [searchedValue]);
+
+  if (isSearching) return <div>Loading...</div>;
+
+  return (
+    <>
+      <div>{searchedData?.message}</div>
+      <div>
+        {searchedData?.data.map(({ baseAddress, localId }) => {
+          return (
+            <div key={localId} onClick={() => handleSelectAddress(baseAddress)}>
+              {baseAddress}
+            </div>
+          );
+        })}
+      </div>
+    </>
+  );
 };
 
 export default LocationPage;

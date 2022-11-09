@@ -1,6 +1,7 @@
+import { ReactNode } from "react";
 import { atom } from "recoil";
 
-type HeaderType = { mode: "EDIT" | "ITEM" | "MAIN" | "LIST" | "SEARCH" | "LOGIN"; headingText?: string };
+export type HeaderType = { mode: "EDIT" | "ITEM" | "MAIN" | "LIST" | "SEARCH" | "LOGIN" | "POST" | "DEFAULT"; headingText?: string; HeaderRight?: ReactNode };
 type RegionType = string;
 type SearchBarType = {
   placeholder: string;

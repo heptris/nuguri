@@ -1,31 +1,25 @@
 import Link from "@/components/Link";
 import { ROUTES } from "@/constant";
-import { useForm } from "@/hooks";
-import { headerState } from "@/store";
+import { useAlert, useAuth, useForm, useHeader } from "@/hooks";
+import { LoginFormType } from "@/types";
 import { Button, LabelInput } from "@common/components";
 import { css } from "@emotion/react";
-import React, { useEffect } from "react";
-import { useRecoilState } from "recoil";
+import { useEffect } from "react";
 
-type LoginFormType = {
-  email: string;
-  password: string;
-};
 const { SIGNUP } = ROUTES;
 
 const LoginPage = () => {
-  const [header, setHeader] = useRecoilState(headerState);
+  useHeader({ mode: "LOGIN", headingText: "로그인" });
   const {
     form: { email, password },
     onChangeForm,
   } = useForm<LoginFormType>({ email: "", password: "" });
+  const { handleLogin, isLoginError } = useAuth();
+  const { handleAlertOpen } = useAlert();
 
   useEffect(() => {
-    setHeader({ mode: "LOGIN", headingText: "로그인" });
-    return () => {
-      setHeader({ ...header, headingText: undefined });
-    };
-  }, []);
+    isLoginError && handleAlertOpen("이메일 또는 비밀번호가 잘못됐습니다.", false, 5000);
+  }, [isLoginError]);
 
   return (
     <form
@@ -48,6 +42,7 @@ const LoginPage = () => {
         name={"email"}
         value={email}
         onChange={onChangeForm}
+        error={isLoginError}
       />
       <LabelInput
         label={"비밀번호"}
@@ -60,12 +55,14 @@ const LoginPage = () => {
         name={"password"}
         value={password}
         onChange={onChangeForm}
+        error={isLoginError}
       />
       <Button
         css={css`
           width: 100%;
           margin-top: 2rem;
         `}
+        onClick={() => handleLogin({ email, password })}
       >
         로그인
       </Button>

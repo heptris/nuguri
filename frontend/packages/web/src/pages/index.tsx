@@ -1,8 +1,6 @@
-import { headerState } from "@/store";
+import { useHeader } from "@/hooks";
 import * as React from "react";
 import { Card, Menu, Text } from "@common/components";
-import { useEffect } from "react";
-import { useRecoilState } from "recoil";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import Link from "@/components/Link";
@@ -10,7 +8,7 @@ import { ROUTES } from "@/constant";
 const { HOBBYLIST, DEALLIST, GROUPDEALLIST } = ROUTES;
 
 const HomePage = () => {
-  const [, setHeader] = useRecoilState(headerState);
+  useHeader({ mode: "MAIN", headingText: undefined });
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (selectedMenu: HTMLElement) => {
@@ -19,9 +17,7 @@ const HomePage = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  useEffect(() => {
-    setHeader({ mode: "MAIN", headingText: undefined });
-  }, [anchorEl]);
+
   const newDate = new Date("2022-10-15 15:00:37");
   return (
     <ContainerWrapper>
