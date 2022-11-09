@@ -7,6 +7,7 @@ import { LoginFormType } from "@/types";
 import axios from "axios";
 import { atom, useRecoilState } from "recoil";
 import { deleteCookie, getCookie } from "cookies-next";
+import { useAlert } from "./useAlert";
 
 type AuthType = { isLogined: boolean; nickname?: string };
 const authState = atom<AuthType>({
@@ -19,10 +20,10 @@ export const useAuth = () => {
   const [{ isLogined, nickname }, setAuthState] = useRecoilState(authState);
   const { replace } = useRouter();
   const isRefreshed = useRef(false);
+  const { handleAlertOpen } = useAlert();
 
   useEffect(() => {
     setAuthState({ isLogined: !!getCookie(ACCESS_TOKEN) });
-    console.log(isRefreshed);
     isRefreshed.current || (!isLogined && handleSilentRefresh());
     isRefreshed.current = true;
   }, []);
@@ -37,7 +38,6 @@ export const useAuth = () => {
     axios
       .get(ENDPOINT_BFF + "/login")
       .then(res => {
-        console.log(res);
         handleLoginProcess(res.data);
       })
       .catch(e => {
@@ -56,6 +56,7 @@ export const useAuth = () => {
     isLoading: isLoginLoading,
   } = useMutation(postLogin, {
     onSuccess: data => {
+      handleAlertOpen("로그인에 성공했습니다.", true, 1000);
       handleLoginProcess(data);
       replace(HOME);
     },
