@@ -20,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @Slf4j
-@RequestMapping("/chat/room")
+@RequestMapping("/app/chat/room")
 public class ChatRoomController {
 
     private final ChatRoomService chatRoomService;

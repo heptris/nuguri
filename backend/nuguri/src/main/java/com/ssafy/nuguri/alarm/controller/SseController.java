@@ -9,7 +9,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 @CrossOrigin
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/sse")
+@RequestMapping("/app/sse")
 @RestController
 public class SseController {
 
