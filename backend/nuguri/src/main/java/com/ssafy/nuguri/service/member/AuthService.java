@@ -76,6 +76,7 @@ public class AuthService {
 
         // 3. 인증 정보를 기반으로 JWT 토큰 생성
         TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
+        tokenDto.setNickname(member.getNickname());
         // 5. 토큰 발급
         return tokenDto;
     }
@@ -90,18 +91,31 @@ public class AuthService {
             throw new CustomException(INVALID_REFRESH_TOKEN);
         }
 
+
         // 2. Access Token 에서 Member ID 가져오기
         Authentication authentication = tokenProvider.getAuthentication(tokenRequestDto.getAccessToken());
 
         // redis에 있는 refreshToken과 비교
         tokenProvider.checkRefreshToken(authentication.getName(), tokenRequestDto.getRefreshToken());
 
+        Member member = memberRepository.findById(Long.parseLong(authentication.getName())).orElseThrow(() ->
+                new CustomException(MEMBER_EMAIL_NOT_FOUND));
+
         // 5. 새로운 토큰 생성
         TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
-
+        tokenDto.setNickname(member.getNickname());
 
         // 토큰 발급
         return tokenDto;
+    }
+
+    /**
+     * 로그아웃
+     */
+    @Transactional
+    public void logout(String accessToken) {
+        Authentication authentication = tokenProvider.getAuthentication(accessToken);
+        tokenProvider.logout(authentication.getName(), accessToken);
     }
 
     /**

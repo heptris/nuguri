@@ -1,7 +1,6 @@
 package com.ssafy.nuguri.service.baseaddress;
 
-import com.ssafy.nuguri.dto.baseaddress.BaseAddressResponseDto;
-import com.ssafy.nuguri.dto.baseaddress.BaseAddressSearchDto;
+import com.ssafy.nuguri.dto.baseaddress.*;
 import com.ssafy.nuguri.repository.baseaddress.BaseaddressRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,5 +17,21 @@ public class BaseaddressService {
 
     public List<BaseAddressResponseDto> findBaseaddressByDong(String keyword){
         return baseaddressRepository.findBaseaddressByDong(keyword);
+    }
+
+    public List<BaseAddressSidoDto> sidoList(){
+        return baseaddressRepository.findSidoList();
+    }
+
+    public List<BaseAddressGugunDto> gugunList(String sido){
+        return baseaddressRepository.findGugunList(sido);
+    }
+
+    public List<BaseAddressDongDto> dongList(String gugun){
+        return baseaddressRepository.findDongList(gugun);
+    }
+
+    public List<BaseAddressDto> findAllBaseAddress(){
+        return baseaddressRepository.findAllBaseAddress();
     }
 }
