@@ -55,7 +55,7 @@ public class AuthService {
         member.changeTemperature(36.5);
         memberRepository.save(member);
 
-        redisService.setValues(String.valueOf(member.getId()), member.getNickname());
+        redisService.setValues(String.valueOf(member.getId()) + ".", member.getNickname());
         return new MemberJoinResponseDto(member.getEmail());
     }
 

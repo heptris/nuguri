@@ -24,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,7 +73,7 @@ public class MemberService {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
 
         member.modify(requestDto.getNickname());
-        redisService.setValues(String.valueOf(memberId), requestDto.getNickname());
+        redisService.setValues(String.valueOf(memberId) + ".", requestDto.getNickname());
         return new MemberModifyDto(requestDto.getNickname());
     }
 
@@ -314,6 +315,18 @@ public class MemberService {
     @Transactional
     public boolean existsByNickname(String nickName){
         return memberRepository.existsByNickname(nickName);
+    }
+
+    @PostConstruct
+    public void init() {
+      //  System.out.println("실행됨??");
+        List<Member> memberList = memberRepository.findAll();
+        System.out.println(memberList.size());
+        memberList.forEach(member -> {
+            System.out.println("@@@@@@@@@@");
+            System.out.println(member.getId());
+            redisService.setValues(String.valueOf(member.getId()) + ".", member.getNickname());
+        });
     }
 
 }

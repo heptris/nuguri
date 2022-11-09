@@ -21,7 +21,7 @@ public interface ChatRoomRepository extends MongoRepository<ChatRoom, String>, C
     /**
      * 중고거래 했던 채팅방 찾기
      */
-    Optional<ChatRoom> findChatRoomByDealId(Long dealId);
+    Optional<ChatRoom> findChatRoomByDealHistoryId(Long dealHistoryId);
 
     /**
      * 취미모임 채팅방 찾기

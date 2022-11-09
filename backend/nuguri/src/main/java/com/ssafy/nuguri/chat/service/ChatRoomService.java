@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -89,8 +90,8 @@ public class ChatRoomService {
         /**
          * 중고거래 채팅일 시
          */
-        if (createChatRoomDto.getDealId() != null) {
-            Optional<ChatRoom> chatRoomOptional = chatRoomRepository.findChatRoomByDealId(createChatRoomDto.getDealId());
+        if (createChatRoomDto.getDealHistoryId() != null) {
+            Optional<ChatRoom> chatRoomOptional = chatRoomRepository.findChatRoomByDealHistoryId(createChatRoomDto.getDealHistoryId());
             if (chatRoomOptional.isPresent()) { // 이미 채팅방이 생성돼어 있을 경우
                 return chatRoomOptional.get().getRoomId();
             } else {
@@ -130,13 +131,14 @@ public class ChatRoomService {
             chatRoom.getUserList().add(joinChatRoomDto.getReceiverId());
         }
         chatRoomRepository.save(chatRoom);
-        List<ChatMessage> chatMessages = chatRepository.findChatMessageByRoomIdOrderByCreatedDate(chatRoom.getRoomId());
+        List<ChatMessage> chatMessages = chatRepository.findChatMessageByRoomIdOrderByCreatedDateDesc(chatRoom.getRoomId());
         List<ChatMessageResponseDto> chatMessageResponseDtoList = new ArrayList<>();
         chatMessages.forEach(chatMessage -> {
             ChatMessageResponseDto chatMessageResponseDto = chatMessage.toChatMessageResponseDto();
-            chatMessageResponseDto.setSender(redisService.getValues(String.valueOf(chatMessage.getSenderId())));
+            chatMessageResponseDto.setSender(redisService.getValues(String.valueOf(chatMessage.getSenderId()) + "."));
             chatMessageResponseDtoList.add(chatMessageResponseDto);
         });
+
         return chatMessageResponseDtoList;
     }
 
@@ -159,9 +161,10 @@ public class ChatRoomService {
      * 테스트용도
      */
     public void joinTest(String roomId) {
-        List<ChatMessage> chatMessages = chatRepository.findChatMessageByRoomIdOrderByCreatedDate(roomId);
+        List<ChatMessage> chatMessages = chatRepository.findChatMessageByRoomIdOrderByCreatedDateDesc(roomId);
         chatMessages.forEach(chatMessage -> {
             System.out.println(chatMessage);
         });
     }
+
 }

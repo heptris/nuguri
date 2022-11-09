@@ -16,6 +16,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -25,11 +26,7 @@ import static com.ssafy.nuguri.exception.ex.ErrorCode.CHATROOM_NOT_FOUND;
 @Transactional
 @Service
 public class ChatService {
-
-    @Autowired
-    private MongoTemplate mongoTemplate;
     private final ChatRepository chatRepository;
-    private final ChatRoomRepository chatRoomRepository;
 
     public List<ChatMessage> getChatLog() {
         return chatRepository.findAll();
