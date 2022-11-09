@@ -108,6 +108,7 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
                         hobby.hobbyImage
                 ))
                 .from(hobby)
+                .where(hobby.isClosed.eq(Boolean.FALSE))
                 .fetch();
 
     }
