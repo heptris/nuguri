@@ -47,7 +47,7 @@ public class HobbyService {
 
     @Transactional
     public List<HobbyDto> findLocalCategoryHobbyList(HobbyListRequestDto hobbyListRequestDto){ // 지역과 카테고리로 취미방 찾기
-        return hobbyRepository.findByRegionAndCategory(hobbyListRequestDto.getRegionId(),hobbyListRequestDto.getCategoryId());
+        return hobbyRepository.findByRegionAndCategory(hobbyListRequestDto.getLocalId(),hobbyListRequestDto.getCategoryId());
     }
 
     @Transactional
@@ -105,5 +105,9 @@ public class HobbyService {
         hobbyHistoryRepository.save(hobbyHistoryEntity);
 
         return hobbyEntity.getId();
+    }
+
+    public List<HobbyDto> findAllDto() {
+        return hobbyRepository.findAllDto();
     }
 }

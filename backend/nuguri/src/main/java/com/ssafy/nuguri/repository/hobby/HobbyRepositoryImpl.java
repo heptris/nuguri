@@ -90,6 +90,29 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
     }
 
     @Override
+    public List<HobbyDto> findAllDto() {
+        return queryFactory.select(Projections.constructor(HobbyDto.class,
+                        hobby.id,
+                        baseAddress.id,
+                        category.id,
+                        hobby.title,
+                        hobby.content,
+                        hobby.endDate,
+                        hobby.meetingPlace,
+                        hobby.isClosed,
+                        hobby.curNum,
+                        hobby.maxNum,
+                        hobby.fee,
+                        hobby.ageLimit,
+                        hobby.sexLimit,
+                        hobby.hobbyImage
+                ))
+                .from(hobby)
+                .fetch();
+
+    }
+
+    @Override
     public List<HobbyHistoryResponseDto> findByMemberIdAndStatus(Long memberId, ApproveStatus approveStatus) {
         List<HobbyHistoryResponseDto> hobbyHistoryResponseDtoList = queryFactory.select(Projections.constructor(HobbyHistoryResponseDto.class,
                         category.id,

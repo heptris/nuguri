@@ -42,7 +42,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class HobbyServiceTest {
     @Autowired
     HobbyService hobbyService;
-
     @Autowired
     HobbyRepository hobbyRepository;
     @Autowired
@@ -129,8 +128,16 @@ class HobbyServiceTest {
     }
 
     @Test
+    public void 전체_취미방(){
+        List<HobbyDto> result = hobbyService.findAllDto();
+        for (HobbyDto h:result
+        ) {
+            System.out.println(h);
+        }
+    }
+    @Test
     public void 지역으로_취미방_찾기(){
-        HobbyListRequestDto hobbyListRequestDto = HobbyListRequestDto.builder().regionId(10L).categoryId(null).build();
+        HobbyListRequestDto hobbyListRequestDto = HobbyListRequestDto.builder().localId(10L).categoryId(null).build();
         List<HobbyDto> result = hobbyService.findLocalCategoryHobbyList(hobbyListRequestDto);
         for (HobbyDto h:result
         ) {
@@ -140,7 +147,7 @@ class HobbyServiceTest {
 
     @Test
     public void 지역과_카테고리로_취미방_찾기(){
-        HobbyListRequestDto hobbyListRequestDto = HobbyListRequestDto.builder().regionId(10L).categoryId(2L).build();
+        HobbyListRequestDto hobbyListRequestDto = HobbyListRequestDto.builder().localId(10L).categoryId(2L).build();
         List<HobbyDto> result2 = hobbyService.findLocalCategoryHobbyList(hobbyListRequestDto);
         for (HobbyDto h:result2
         ) {
