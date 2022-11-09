@@ -48,7 +48,8 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
 //                .innerJoin(hobby.baseAddress, baseAddress)
 //                .innerJoin(hobby.category, category)
                 .where(RegionEq(RegionId),
-                        CategoryEq(CategoryId)
+                        CategoryEq(CategoryId),
+                        hobby.isClosed.eq(Boolean.FALSE)
                 )
                 .fetch();
         return hobbyDtoList;
@@ -80,13 +81,37 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
                         hobby.hobbyImage
                 ))
                 .from(hobby)
-//                .innerJoin(hobby.baseAddress, baseAddress)
-//                .innerJoin(hobby.category, category)
+                .innerJoin(hobby.baseAddress, baseAddress)
+                .innerJoin(hobby.category, category)
                 .where(
                         hobby.id.eq(hobbyId)
                 )
                 .fetchOne();
         return hobbyDto;
+    }
+
+    @Override
+    public List<HobbyDto> findAllDto() {
+        return queryFactory.select(Projections.constructor(HobbyDto.class,
+                        hobby.id,
+                        baseAddress.id,
+                        category.id,
+                        hobby.title,
+                        hobby.content,
+                        hobby.endDate,
+                        hobby.meetingPlace,
+                        hobby.isClosed,
+                        hobby.curNum,
+                        hobby.maxNum,
+                        hobby.fee,
+                        hobby.ageLimit,
+                        hobby.sexLimit,
+                        hobby.hobbyImage
+                ))
+                .from(hobby)
+                .where(hobby.isClosed.eq(Boolean.FALSE))
+                .fetch();
+
     }
 
     @Override
@@ -103,9 +128,9 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
                         hobbyHistory.approveStatus
                 ))
                 .from(hobby)
-//                .innerJoin(hobby.hobbyHistoryList, hobbyHistory)
-//                .innerJoin(hobbyHistory.member, member)
-//                .innerJoin(hobby.category, category)
+                .innerJoin(hobby.hobbyHistoryList, hobbyHistory)
+                .innerJoin(hobbyHistory.member, member)
+                .innerJoin(hobby.category, category)
                 .where(
                         member.id.eq(memberId)
                                 .and(hobbyHistory.approveStatus.eq(approveStatus))
@@ -128,9 +153,9 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
                         hobbyHistory.approveStatus
                 ))
                 .from(hobby)
-//                .innerJoin(hobby.hobbyHistoryList, hobbyHistory)
-//                .innerJoin(hobbyHistory.member, member)
-//                .innerJoin(hobby.category, category)
+                .innerJoin(hobby.hobbyHistoryList, hobbyHistory)
+                .innerJoin(hobbyHistory.member, member)
+                .innerJoin(hobby.category, category)
                 .where(
                         member.id.eq(memberId)
                                 .and(hobbyHistory.isPromoter.eq(isPromoter))

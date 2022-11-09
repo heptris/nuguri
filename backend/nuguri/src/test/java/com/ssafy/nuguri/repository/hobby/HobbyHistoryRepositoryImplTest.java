@@ -6,6 +6,7 @@ import com.ssafy.nuguri.domain.baseaddress.BaseAddress;
 import com.ssafy.nuguri.domain.category.Category;
 import com.ssafy.nuguri.domain.hobby.ApproveStatus;
 import com.ssafy.nuguri.domain.hobby.Hobby;
+import com.ssafy.nuguri.domain.hobby.HobbyFavorite;
 import com.ssafy.nuguri.domain.hobby.HobbyHistory;
 import com.ssafy.nuguri.domain.member.Member;
 import com.ssafy.nuguri.dto.hobby.HobbyHistoryDto;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.jdbc.Sql;
 
 import javax.persistence.EntityManager;
@@ -29,7 +31,7 @@ import static com.ssafy.nuguri.domain.member.QMember.member;
 
 @SpringBootTest
 @Transactional
-@Sql("classpath:tableInit.sql")
+//@Sql("classpath:tableInit.sql")
 class HobbyHistoryRepositoryImplTest {
     @Autowired
     EntityManager em;
@@ -39,73 +41,78 @@ class HobbyHistoryRepositoryImplTest {
     JPAQueryFactory queryFactory;
 
 
-    @Test
-    @BeforeEach
-//    @Commit
-    public void before(){
-
-        queryFactory = new JPAQueryFactory(em);
-
-        BaseAddress ba = queryFactory
-                .selectFrom(baseAddress)
-                .where(baseAddress.id.eq(1L))
-                .fetchOne();
-        Category ca = queryFactory
-                .selectFrom(category)
-                .where(category.id.eq(1L))
-                .fetchOne();
-        Member me = queryFactory
-                .selectFrom(member)
-                .where(member.id.eq(1L))
-                .fetchOne();
-
-        Hobby hobbyEntity1 = Hobby.builder()
-                .baseAddress(ba)
-                .category(ca)
-                .title("취미방 1")
-                .content("1번방 입니다")
-                .endDate(LocalDateTime.now())
-                .meetingPlace("서울에서 모여요")
-                .isClosed(false)
-                .curNum(10)
-                .maxNum(10)
-                .fee(10)
-                .ageLimit(10)
-                .sexLimit((char)1)
-                .hobbyImage("aa")
-                .build();
-
-        Hobby hobbyEntity2 = Hobby.builder()
-                .baseAddress(ba)
-                .category(ca)
-                .title("취미방 2")
-                .content("2번방 입니다")
-                .endDate(LocalDateTime.now())
-                .meetingPlace("부산에서 모여요")
-                .isClosed(false)
-                .curNum(20)
-                .maxNum(20)
-                .fee(20)
-                .ageLimit(20)
-                .sexLimit((char)2)
-                .hobbyImage("bb")
-                .build();
-
-        HobbyHistory hobbyHistory1 = HobbyHistory.builder().member(me).hobby(hobbyEntity1).isPromoter(true).approveStatus(ApproveStatus.READY).build();
-        HobbyHistory hobbyHistory2 = HobbyHistory.builder().member(me).hobby(hobbyEntity1).isPromoter(false).approveStatus(ApproveStatus.REJECT).build();
-        HobbyHistory hobbyHistory3 = HobbyHistory.builder().member(me).hobby(hobbyEntity1).isPromoter(true).approveStatus(ApproveStatus.APPROVE).build();
-        HobbyHistory hobbyHistory4 = HobbyHistory.builder().member(me).hobby(hobbyEntity1).isPromoter(false).approveStatus(ApproveStatus.APPROVE).build();
-        HobbyHistory hobbyHistory5 = HobbyHistory.builder().member(me).hobby(hobbyEntity1).isPromoter(false).approveStatus(ApproveStatus.REJECT).build();
-
-        em.persist(hobbyEntity1);
-        em.persist(hobbyEntity2);
-        em.persist(hobbyHistory1);
-        em.persist(hobbyHistory2);
-        em.persist(hobbyHistory3);
-        em.persist(hobbyHistory4);
-        em.persist(hobbyHistory5);
-
-    }
+//    @Test
+//    @BeforeEach
+////    @Commit
+//    public void before(){
+//
+//        queryFactory = new JPAQueryFactory(em);
+//
+//        BaseAddress ba = queryFactory
+//                .selectFrom(baseAddress)
+//                .where(baseAddress.id.eq(1L))
+//                .fetchOne();
+//        Category ca = queryFactory
+//                .selectFrom(category)
+//                .where(category.id.eq(1L))
+//                .fetchOne();
+//        Member me = queryFactory
+//                .selectFrom(member)
+//                .where(member.id.eq(1L))
+//                .fetchOne();
+//
+//        Hobby hobbyEntity1 = Hobby.builder()
+//                .baseAddress(ba)
+//                .category(ca)
+//                .title("취미방 1")
+//                .content("1번방 입니다")
+//                .endDate(LocalDateTime.now())
+//                .meetingPlace("서울에서 모여요")
+//                .isClosed(false)
+//                .curNum(10)
+//                .maxNum(10)
+//                .fee(10)
+//                .ageLimit(10)
+//                .sexLimit((char)1)
+//                .hobbyImage("aa")
+//                .build();
+//
+//        Hobby hobbyEntity2 = Hobby.builder()
+//                .baseAddress(ba)
+//                .category(ca)
+//                .title("취미방 2")
+//                .content("2번방 입니다")
+//                .endDate(LocalDateTime.now())
+//                .meetingPlace("부산에서 모여요")
+//                .isClosed(false)
+//                .curNum(20)
+//                .maxNum(20)
+//                .fee(20)
+//                .ageLimit(20)
+//                .sexLimit((char)2)
+//                .hobbyImage("bb")
+//                .build();
+//
+//        HobbyHistory hobbyHistory1 = HobbyHistory.builder().member(me).hobby(hobbyEntity1).isPromoter(true).approveStatus(ApproveStatus.READY).build();
+//        HobbyHistory hobbyHistory2 = HobbyHistory.builder().member(me).hobby(hobbyEntity1).isPromoter(false).approveStatus(ApproveStatus.REJECT).build();
+//        HobbyHistory hobbyHistory3 = HobbyHistory.builder().member(me).hobby(hobbyEntity1).isPromoter(true).approveStatus(ApproveStatus.APPROVE).build();
+//        HobbyHistory hobbyHistory4 = HobbyHistory.builder().member(me).hobby(hobbyEntity1).isPromoter(false).approveStatus(ApproveStatus.APPROVE).build();
+//        HobbyHistory hobbyHistory5 = HobbyHistory.builder().member(me).hobby(hobbyEntity1).isPromoter(false).approveStatus(ApproveStatus.REJECT).build();
+//        HobbyFavorite hobbyFavorite1 = HobbyFavorite.builder().member(me).hobby(hobbyEntity1).isFavorite(true).build();
+//        HobbyFavorite hobbyFavorite2 = HobbyFavorite.builder().member(me).hobby(hobbyEntity1).isFavorite(true).build();
+//
+//
+//
+//        em.persist(hobbyEntity1);
+//        em.persist(hobbyEntity2);
+//        em.persist(hobbyHistory1);
+//        em.persist(hobbyHistory2);
+//        em.persist(hobbyHistory3);
+//        em.persist(hobbyHistory4);
+//        em.persist(hobbyHistory5);
+//        em.persist(hobbyFavorite1);
+//        em.persist(hobbyFavorite2);
+//    }
 
     @Test
     public void 승인_대기자_목록(){

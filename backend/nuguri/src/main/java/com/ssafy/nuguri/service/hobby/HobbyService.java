@@ -47,7 +47,7 @@ public class HobbyService {
 
     @Transactional
     public List<HobbyDto> findLocalCategoryHobbyList(HobbyListRequestDto hobbyListRequestDto){ // 지역과 카테고리로 취미방 찾기
-        return hobbyRepository.findByRegionAndCategory(hobbyListRequestDto.getRegionId(),hobbyListRequestDto.getCategoryId());
+        return hobbyRepository.findByRegionAndCategory(hobbyListRequestDto.getLocalId(),hobbyListRequestDto.getCategoryId());
     }
 
     @Transactional
@@ -59,7 +59,6 @@ public class HobbyService {
     public Long createHobby(HobbyCreateRequestDto hobbyCreateRequestDto, MultipartFile hobbyImage){ // 취미방 생성
         BaseAddress baseAddress = baseaddressRepository.findById(hobbyCreateRequestDto.getLocalId()).orElseThrow(()->new CustomException(BASEADDRESS_NOT_FOUND));
         Category category = categoryRepository.findById(hobbyCreateRequestDto.getCategoryId()).orElseThrow(()->new CustomException(CATEGORY_NOT_FOUND));
-        // 중고거래 이미지 -> 여기서 받을지 추후에 넣을지
         String hobbyImageUrl;
         if(hobbyImage == null){
             hobbyImageUrl = "";
@@ -106,5 +105,9 @@ public class HobbyService {
         hobbyHistoryRepository.save(hobbyHistoryEntity);
 
         return hobbyEntity.getId();
+    }
+
+    public List<HobbyDto> findAllDto() {
+        return hobbyRepository.findAllDto();
     }
 }
