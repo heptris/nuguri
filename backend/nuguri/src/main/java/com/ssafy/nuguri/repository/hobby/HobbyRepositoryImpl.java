@@ -80,8 +80,8 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
                         hobby.hobbyImage
                 ))
                 .from(hobby)
-//                .innerJoin(hobby.baseAddress, baseAddress)
-//                .innerJoin(hobby.category, category)
+                .innerJoin(hobby.baseAddress, baseAddress)
+                .innerJoin(hobby.category, category)
                 .where(
                         hobby.id.eq(hobbyId)
                 )
@@ -103,9 +103,9 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
                         hobbyHistory.approveStatus
                 ))
                 .from(hobby)
-//                .innerJoin(hobby.hobbyHistoryList, hobbyHistory)
-//                .innerJoin(hobbyHistory.member, member)
-//                .innerJoin(hobby.category, category)
+                .innerJoin(hobby.hobbyHistoryList, hobbyHistory)
+                .innerJoin(hobbyHistory.member, member)
+                .innerJoin(hobby.category, category)
                 .where(
                         member.id.eq(memberId)
                                 .and(hobbyHistory.approveStatus.eq(approveStatus))
@@ -128,9 +128,9 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
                         hobbyHistory.approveStatus
                 ))
                 .from(hobby)
-//                .innerJoin(hobby.hobbyHistoryList, hobbyHistory)
-//                .innerJoin(hobbyHistory.member, member)
-//                .innerJoin(hobby.category, category)
+                .innerJoin(hobby.hobbyHistoryList, hobbyHistory)
+                .innerJoin(hobbyHistory.member, member)
+                .innerJoin(hobby.category, category)
                 .where(
                         member.id.eq(memberId)
                                 .and(hobbyHistory.isPromoter.eq(isPromoter))

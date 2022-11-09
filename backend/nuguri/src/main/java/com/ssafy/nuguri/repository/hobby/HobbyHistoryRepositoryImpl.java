@@ -97,7 +97,7 @@ public class HobbyHistoryRepositoryImpl implements HobbyHistoryRepositoryCustom{
                                         .where(
                                                 hobbyFavorite.hobby.id.eq(hobby.id)
                                         ),"wishlistNum"
-                        ), // 서브쿼리를 이용한 즐겨찾기 수 구하기 -> hobby에 변수를 가지도록 변경하는 방식으로 바꿀 예정
+                        ), // 서브쿼리를 이용한 즐겨찾기 수 구하기 -> hobby에 즐겨찾기 숫자 변수를 가지도록 변경하는 방식으로 바꿀 예정
                         hobby.curNum, // chatNum으로 변경
                         hobby.hobbyImage,
                         hobbyHistory.approveStatus
@@ -118,16 +118,16 @@ public class HobbyHistoryRepositoryImpl implements HobbyHistoryRepositoryCustom{
         HobbyHistoryDto hobbyHistoryDto = queryFactory
                 .select(Projections.constructor(HobbyHistoryDto.class,
                         hobbyHistory.id,
-                        hobby.id,
-                        member.id,
+                        hobbyHistory.hobby.id,
+                        hobbyHistory.member.id,
                         hobbyHistory.isPromoter,
                         hobbyHistory.approveStatus
                 ))
                 .from(hobbyHistory)
-                .innerJoin(hobbyHistory.hobby,hobby)
-                .innerJoin(hobbyHistory.member,member)
-                .where(hobby.id.eq(hobbyId),
-                        member.id.eq(memberId),
+//                .innerJoin(hobbyHistory.hobby,hobby)
+//                .innerJoin(hobbyHistory.member,member)
+                .where(hobbyHistory.hobby.id.eq(hobbyId),
+                        hobbyHistory.member.id.eq(memberId),
                         hobbyHistory.approveStatus.eq(ApproveStatus.READY))
                 .fetchOne();
         return hobbyHistoryDto;
