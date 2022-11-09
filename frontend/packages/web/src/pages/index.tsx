@@ -20,118 +20,110 @@ const HomePage = () => {
 
   const newDate = new Date("2022-10-15 15:00:37");
   return (
-    <ContainerWrapper>
-      <MainWrapper>
-        <Menu open={open} anchorEl={anchorEl} onCloseHandler={handleClose} onClickHandler={handleClick} />
-        <CategorytWrapper>
-          <TitleWrapper>
+    <MainWrapper>
+      <Menu open={open} anchorEl={anchorEl} onCloseHandler={handleClose} onClickHandler={handleClick} />
+      <CategorytWrapper>
+        <TitleWrapper>
+          <Text
+            css={css`
+              font-size: 1.2rem;
+              font-weight: 700;
+            `}
+          >
+            취미모임
+          </Text>
+          <Link href={HOBBYLIST}>
             <Text
               css={css`
-                font-size: 1.2rem;
-                font-weight: 700;
+                color: #5e6272;
+                &:hover {
+                  color: #999daf;
+                  cursor: pointer;
+                }
               `}
             >
-              취미모임
+              더보기
             </Text>
-            <Link href={HOBBYLIST}>
-              <Text
-                css={css`
-                  color: #5e6272;
-                  &:hover {
-                    color: #999daf;
-                    cursor: pointer;
-                  }
-                `}
-              >
-                더보기
-              </Text>
-            </Link>
-          </TitleWrapper>
-          <CardWapper>
-            <Card promiseDate={newDate} nowPeople={2} maxPeople={5} imgUrl={"/public/coding.jpg"} />
-            <Card promiseDate={newDate} nowPeople={2} maxPeople={5} imgUrl={"/public/coding.jpg"} />
-            <Card promiseDate={newDate} nowPeople={2} maxPeople={5} imgUrl={"/public/coding.jpg"} />
-            <Card promiseDate={newDate} nowPeople={2} maxPeople={5} imgUrl={"/public/coding.jpg"} />
-          </CardWapper>
-        </CategorytWrapper>
-        <CategorytWrapper>
-          <TitleWrapper>
+          </Link>
+        </TitleWrapper>
+        <CardWapper>
+          <Card promiseDate={newDate} nowPeople={2} maxPeople={5} imgUrl={"/public/coding.jpg"} />
+          <Card promiseDate={newDate} nowPeople={2} maxPeople={5} imgUrl={"/public/coding.jpg"} />
+          <Card promiseDate={newDate} nowPeople={2} maxPeople={5} imgUrl={"/public/coding.jpg"} />
+          <Card promiseDate={newDate} nowPeople={2} maxPeople={5} imgUrl={"/public/coding.jpg"} />
+        </CardWapper>
+      </CategorytWrapper>
+      <CategorytWrapper>
+        <TitleWrapper>
+          <Text
+            as="p"
+            css={css`
+              text-align: left;
+              font-size: 1.2rem;
+              font-weight: 700;
+            `}
+          >
+            중고거래
+          </Text>
+          <Link href={DEALLIST}>
             <Text
-              as="p"
               css={css`
-                text-align: left;
-                font-size: 1.2rem;
-                font-weight: 700;
+                color: #5e6272;
+                &:hover {
+                  color: #999daf;
+                  cursor: pointer;
+                }
               `}
             >
-              중고거래
+              더보기
             </Text>
-            <Link href={DEALLIST}>
-              <Text
-                css={css`
-                  color: #5e6272;
-                  &:hover {
-                    color: #999daf;
-                    cursor: pointer;
-                  }
-                `}
-              >
-                더보기
-              </Text>
-            </Link>
-          </TitleWrapper>
-          <CardWapper>
-            <Card price={1000000} imgUrl={"/public/coding.jpg"} />
-            <Card price={1000000} imgUrl={"/public/coding.jpg"} />
-            <Card price={1000000} imgUrl={"/public/coding.jpg"} />
-            <Card price={1000000} imgUrl={"/public/coding.jpg"} />
-          </CardWapper>
-        </CategorytWrapper>
-        <CategorytWrapper>
-          <TitleWrapper>
+          </Link>
+        </TitleWrapper>
+        <CardWapper>
+          <Card price={1000000} imgUrl={"/public/coding.jpg"} />
+          <Card price={1000000} imgUrl={"/public/coding.jpg"} />
+          <Card price={1000000} imgUrl={"/public/coding.jpg"} />
+          <Card price={1000000} imgUrl={"/public/coding.jpg"} />
+        </CardWapper>
+      </CategorytWrapper>
+      <CategorytWrapper>
+        <TitleWrapper>
+          <Text
+            as="p"
+            css={css`
+              text-align: left;
+              font-size: 1.2rem;
+              font-weight: 700;
+            `}
+          >
+            공구목록
+          </Text>
+          <Link href={GROUPDEALLIST}>
             <Text
-              as="p"
               css={css`
-                text-align: left;
-                font-size: 1.2rem;
-                font-weight: 700;
+                color: #5e6272;
+                &:hover {
+                  color: #999daf;
+                  cursor: pointer;
+                }
               `}
             >
-              공구목록
+              더보기
             </Text>
-            <Link href={GROUPDEALLIST}>
-              <Text
-                css={css`
-                  color: #5e6272;
-                  &:hover {
-                    color: #999daf;
-                    cursor: pointer;
-                  }
-                `}
-              >
-                더보기
-              </Text>
-            </Link>
-          </TitleWrapper>
-          <CardWapper>
-            <Card promiseDate={newDate} nowPeople={2} maxPeople={5} price={1000000} imgUrl={"/public/coding.jpg"} />
-            <Card promiseDate={newDate} nowPeople={2} maxPeople={5} price={1000000} imgUrl={"/public/coding.jpg"} />
-            <Card promiseDate={newDate} nowPeople={2} maxPeople={5} price={1000000} imgUrl={"/public/coding.jpg"} />
-            <Card promiseDate={newDate} nowPeople={2} maxPeople={5} price={1000000} imgUrl={"/public/coding.jpg"} />
-          </CardWapper>
-        </CategorytWrapper>
-      </MainWrapper>
-    </ContainerWrapper>
+          </Link>
+        </TitleWrapper>
+        <CardWapper>
+          <Card promiseDate={newDate} nowPeople={2} maxPeople={5} price={1000000} imgUrl={"/public/coding.jpg"} />
+          <Card promiseDate={newDate} nowPeople={2} maxPeople={5} price={1000000} imgUrl={"/public/coding.jpg"} />
+          <Card promiseDate={newDate} nowPeople={2} maxPeople={5} price={1000000} imgUrl={"/public/coding.jpg"} />
+          <Card promiseDate={newDate} nowPeople={2} maxPeople={5} price={1000000} imgUrl={"/public/coding.jpg"} />
+        </CardWapper>
+      </CategorytWrapper>
+    </MainWrapper>
   );
 };
 export default HomePage;
-const ContainerWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  @media screen and (max-width: 899px) {
-    justify-content: left;
-  }
-`;
+
 const MainWrapper = styled.div`
   max-width: 1799px;
   display: flex;
@@ -141,7 +133,7 @@ const MainWrapper = styled.div`
 
 const CategorytWrapper = styled.div`
   display: inline-block;
-  max-width: 1799px;
+  max-width: 1300px;
   flex-direction: column;
 `;
 
