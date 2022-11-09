@@ -300,6 +300,7 @@ public class MemberService {
 
     private MemberProfileDto profileCreate(Member member){
         MemberProfileDto memberProfileDto = MemberProfileDto.builder()
+                .memberId(member.getId())
                 .email(member.getEmail())
                 .name(member.getName())
                 .nickname(member.getNickname())
