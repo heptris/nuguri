@@ -86,4 +86,5 @@ class AlarmServiceTest {
         );
         assertThat(alarm.getIsRead()).isEqualTo(TRUE);
     }
+
 }
