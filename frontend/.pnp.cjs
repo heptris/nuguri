@@ -6721,6 +6721,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@stomp/stompjs", [\
+        ["npm:6.1.2", {\
+          "packageLocation": "./.yarn/cache/@stomp-stompjs-npm-6.1.2-f8d2563fda-f6ef589c0a.zip/node_modules/@stomp/stompjs/",\
+          "packageDependencies": [\
+            ["@stomp/stompjs", "npm:6.1.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["@storybook/addon-actions", [\
         ["npm:6.5.12", {\
           "packageLocation": "./.yarn/cache/@storybook-addon-actions-npm-6.5.12-209bf82dda-94f433a6b0.zip/node_modules/@storybook/addon-actions/",\
@@ -9774,6 +9783,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@types/sockjs", "npm:0.3.33"],\
             ["@types/node", "npm:16.11.66"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@types/sockjs-client", [\
+        ["npm:1.5.1", {\
+          "packageLocation": "./.yarn/cache/@types-sockjs-client-npm-1.5.1-c20bc4c18e-4daa30aa5a.zip/node_modules/@types/sockjs-client/",\
+          "packageDependencies": [\
+            ["@types/sockjs-client", "npm:1.5.1"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -14807,6 +14825,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/events-npm-3.3.0-c280bc7e48-f6f487ad21.zip/node_modules/events/",\
           "packageDependencies": [\
             ["events", "npm:3.3.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["eventsource", [\
+        ["npm:2.0.2", {\
+          "packageLocation": "./.yarn/cache/eventsource-npm-2.0.2-e94c48aca3-c0072d9727.zip/node_modules/eventsource/",\
+          "packageDependencies": [\
+            ["eventsource", "npm:2.0.2"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -24314,6 +24341,20 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["sockjs-client", [\
+        ["npm:1.6.1", {\
+          "packageLocation": "./.yarn/cache/sockjs-client-npm-1.6.1-e9cbd57be6-c7623bbc98.zip/node_modules/sockjs-client/",\
+          "packageDependencies": [\
+            ["sockjs-client", "npm:1.6.1"],\
+            ["debug", "virtual:1f43412872fd884ea1247d77cd236ac89b1b489fe66cda1675f885395b16fa7be38fca8f4ee0ddb7d79481d2482886d2d62a39f86813baeaf755095851975ab1#npm:3.2.7"],\
+            ["eventsource", "npm:2.0.2"],\
+            ["faye-websocket", "npm:0.11.4"],\
+            ["inherits", "npm:2.0.4"],\
+            ["url-parse", "npm:1.5.10"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["socks", [\
         ["npm:2.7.1", {\
           "packageLocation": "./.yarn/cache/socks-npm-2.7.1-17f2b53052-259d9e3e8e.zip/node_modules/socks/",\
@@ -26392,6 +26433,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@emotion/styled", "virtual:569035de073023aa8b0b5018956311b227b0a904329a09033178811fc3e35e666a9055672cf1571918d7dc6006c37bb02ee20b7a6a08428927cea962afec4a25#npm:11.10.4"],\
             ["@mui/icons-material", "virtual:569035de073023aa8b0b5018956311b227b0a904329a09033178811fc3e35e666a9055672cf1571918d7dc6006c37bb02ee20b7a6a08428927cea962afec4a25#npm:5.10.9"],\
             ["@mui/material", "virtual:569035de073023aa8b0b5018956311b227b0a904329a09033178811fc3e35e666a9055672cf1571918d7dc6006c37bb02ee20b7a6a08428927cea962afec4a25#npm:5.10.10"],\
+            ["@stomp/stompjs", "npm:6.1.2"],\
             ["@tanstack/react-query", "virtual:569035de073023aa8b0b5018956311b227b0a904329a09033178811fc3e35e666a9055672cf1571918d7dc6006c37bb02ee20b7a6a08428927cea962afec4a25#npm:4.14.1"],\
             ["@tanstack/react-query-devtools", "virtual:569035de073023aa8b0b5018956311b227b0a904329a09033178811fc3e35e666a9055672cf1571918d7dc6006c37bb02ee20b7a6a08428927cea962afec4a25#npm:4.14.5"],\
             ["@types/eslint", "npm:8.4.6"],\
@@ -26399,6 +26441,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/prettier", "npm:2.7.1"],\
             ["@types/react", "npm:18.0.15"],\
             ["@types/react-dom", "npm:18.0.6"],\
+            ["@types/sockjs-client", "npm:1.5.1"],\
             ["axios", "npm:1.1.3"],\
             ["clsx", "npm:1.2.1"],\
             ["cookies-next", "npm:2.1.1"],\
@@ -26409,6 +26452,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react", "npm:18.2.0"],\
             ["react-dom", "virtual:569035de073023aa8b0b5018956311b227b0a904329a09033178811fc3e35e666a9055672cf1571918d7dc6006c37bb02ee20b7a6a08428927cea962afec4a25#npm:18.2.0"],\
             ["recoil", "virtual:569035de073023aa8b0b5018956311b227b0a904329a09033178811fc3e35e666a9055672cf1571918d7dc6006c37bb02ee20b7a6a08428927cea962afec4a25#npm:0.7.6"],\
+            ["sockjs-client", "npm:1.6.1"],\
             ["typescript", "patch:typescript@npm%3A4.8.4#~builtin<compat/typescript>::version=4.8.4&hash=701156"]\
           ],\
           "linkType": "SOFT"\

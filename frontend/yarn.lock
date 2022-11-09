@@ -3115,6 +3115,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@stomp/stompjs@npm:^6.1.2":
+  version: 6.1.2
+  resolution: "@stomp/stompjs@npm:6.1.2"
+  checksum: f6ef589c0a39f7ab19dad8eda2a9a31f24cd585d56ed6018f9c8578883aff11e87f9d8388c11ca6187ddafb257f42822209c0ef403ee574591fc9f9059df4bc0
+  languageName: node
+  linkType: hard
+
 "@storybook/addon-actions@npm:6.5.12, @storybook/addon-actions@npm:^6.5.12":
   version: 6.5.12
   resolution: "@storybook/addon-actions@npm:6.5.12"
@@ -5144,6 +5151,13 @@ __metadata:
     "@types/mime": "*"
     "@types/node": "*"
   checksum: b6ac93d471fb0f53ddcac1f9b67572a09cd62806f7db5855244b28f6f421139626f24799392566e97d1ffc61b12f9de7f30380c39fcae3c8a161fe161d44edf2
+  languageName: node
+  linkType: hard
+
+"@types/sockjs-client@npm:^1":
+  version: 1.5.1
+  resolution: "@types/sockjs-client@npm:1.5.1"
+  checksum: 4daa30aa5a31fddf60a87ecd412ae7bdf64eb2870b07de394d3b274c10cb5521f607903e178ab0fad83482f1ac7ba841ade5fd538ceb098152004cc365d83fa2
   languageName: node
   linkType: hard
 
@@ -9070,6 +9084,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eventsource@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "eventsource@npm:2.0.2"
+  checksum: c0072d972753e10c705d9b2285b559184bf29d011bc208973dde9c8b6b8b7b6fdad4ef0846cecb249f7b1585e860fdf324cbd2ac854a76bc53649e797496e99a
+  languageName: node
+  linkType: hard
+
 "exec-sh@npm:^0.3.2":
   version: 0.3.6
   resolution: "exec-sh@npm:0.3.6"
@@ -9288,7 +9309,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"faye-websocket@npm:^0.11.3":
+"faye-websocket@npm:^0.11.3, faye-websocket@npm:^0.11.4":
   version: 0.11.4
   resolution: "faye-websocket@npm:0.11.4"
   dependencies:
@@ -10669,7 +10690,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"inherits@npm:2, inherits@npm:2.0.4, inherits@npm:^2.0.0, inherits@npm:^2.0.1, inherits@npm:^2.0.3, inherits@npm:~2.0.3":
+"inherits@npm:2, inherits@npm:2.0.4, inherits@npm:^2.0.0, inherits@npm:^2.0.1, inherits@npm:^2.0.3, inherits@npm:^2.0.4, inherits@npm:~2.0.3":
   version: 2.0.4
   resolution: "inherits@npm:2.0.4"
   checksum: 4a48a733847879d6cf6691860a6b1e3f0f4754176e4d71494c41f3475553768b10f84b5ce1d40fbd0e34e6bfbb864ee35858ad4dd2cf31e02fc4a154b724d7f1
@@ -16651,6 +16672,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"sockjs-client@npm:^1.6.1":
+  version: 1.6.1
+  resolution: "sockjs-client@npm:1.6.1"
+  dependencies:
+    debug: ^3.2.7
+    eventsource: ^2.0.2
+    faye-websocket: ^0.11.4
+    inherits: ^2.0.4
+    url-parse: ^1.5.10
+  checksum: c7623bbc9891f427c1670145550a1c9c2d5379719e174a791606ba4f12c7d92e4cfb9acec6c17f91fda45d910b23c308a1f9fbcad4916ce5db4e982b24079fc7
+  languageName: node
+  linkType: hard
+
 "sockjs@npm:^0.3.24":
   version: 0.3.24
   resolution: "sockjs@npm:0.3.24"
@@ -18184,7 +18218,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"url-parse@npm:^1.5.3":
+"url-parse@npm:^1.5.10, url-parse@npm:^1.5.3":
   version: 1.5.10
   resolution: "url-parse@npm:1.5.10"
   dependencies:
@@ -18410,6 +18444,7 @@ __metadata:
     "@emotion/styled": 11.10.4
     "@mui/icons-material": ^5.10.9
     "@mui/material": ^5.10.10
+    "@stomp/stompjs": ^6.1.2
     "@tanstack/react-query": ^4.14.1
     "@tanstack/react-query-devtools": ^4.14.5
     "@types/eslint": ^8
@@ -18417,6 +18452,7 @@ __metadata:
     "@types/prettier": ^2
     "@types/react": 18.0.15
     "@types/react-dom": 18.0.6
+    "@types/sockjs-client": ^1
     axios: ^1.1.3
     clsx: ^1.2.1
     cookies-next: ^2.1.1
@@ -18427,6 +18463,7 @@ __metadata:
     react: 18.2.0
     react-dom: 18.2.0
     recoil: ^0.7.6
+    sockjs-client: ^1.6.1
     typescript: ^4.8.4
   languageName: unknown
   linkType: soft
