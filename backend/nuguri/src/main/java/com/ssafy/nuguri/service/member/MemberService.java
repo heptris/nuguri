@@ -320,7 +320,6 @@ public class MemberService {
 
     @PostConstruct
     public void init() {
-      //  System.out.println("실행됨??");
         List<Member> memberList = memberRepository.findAll();
         System.out.println(memberList.size());
         memberList.forEach(member -> {
