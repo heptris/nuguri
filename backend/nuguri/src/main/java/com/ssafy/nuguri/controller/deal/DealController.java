@@ -26,7 +26,7 @@ public class DealController {
 
     private final DealService dealService;
 
-    @ApiOperation(value = "해당 지역, 취미에 대한 중고거래 목록 조회 + categoryId는 null 넣으면 근처 지역 중고거래 전체 조회")
+    @ApiOperation(value = "해당 지역, 취미에 대한 중고거래 목록 조회 + localId, categoryId는 null 넣으면 조건에 맞는 중고거래 전체 조회")
     @GetMapping("/list")
     public ResponseEntity findLocalCategoryDealList(@RequestParam(required = false) Long localId,
                                                     @RequestParam(required = false) Long categoryId,
