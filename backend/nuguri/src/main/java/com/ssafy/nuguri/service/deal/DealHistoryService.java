@@ -29,7 +29,7 @@ public class DealHistoryService {
     private final DealRepository dealRepository;
 
     @Transactional
-    public void createDealHistory(Long memberId, Long dealId){
+    public Long createDealHistory(Long memberId, Long dealId){
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(()->new CustomException(ErrorCode.MEMBER_NOT_FOUND));
         Deal deal = dealRepository.findById(dealId)
@@ -46,6 +46,7 @@ public class DealHistoryService {
         if(duplicateCheckDealRepository != null)throw new CustomException(ALREADY_USED_DEAL_HISTORY);
 
         dealHistoryRepository.save(dealHistory);
+        return dealHistory.getId();
     }
 
     @Transactional

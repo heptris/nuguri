@@ -15,4 +15,5 @@ public class MemberProfileDto {
     private Double temperature;
     private String profileImage;
     private String baseAddress;
+    private Long localId;
 }
