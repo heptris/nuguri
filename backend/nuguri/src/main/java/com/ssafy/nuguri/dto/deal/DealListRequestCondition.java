@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DealListRequestDto {
+public class DealListRequestCondition {
 
     private Long localId;
 
