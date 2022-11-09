@@ -48,7 +48,8 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
 //                .innerJoin(hobby.baseAddress, baseAddress)
 //                .innerJoin(hobby.category, category)
                 .where(RegionEq(RegionId),
-                        CategoryEq(CategoryId)
+                        CategoryEq(CategoryId),
+                        hobby.isClosed.eq(Boolean.FALSE)
                 )
                 .fetch();
         return hobbyDtoList;

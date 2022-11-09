@@ -73,6 +73,7 @@ class HobbyServiceTest {
                 .hobbyImage("")
                 .build();
 
+
         // hobby를 생성하면서 hobbyHistory도 같이 생성
         Hobby hobby = hobbyRepository.save(hobbyEntity);
         Long memberId = 1L;
