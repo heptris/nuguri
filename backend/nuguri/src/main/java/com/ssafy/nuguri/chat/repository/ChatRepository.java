@@ -1,6 +1,7 @@
 package com.ssafy.nuguri.chat.repository;
 
 import com.ssafy.nuguri.chat.domain.ChatMessage;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 

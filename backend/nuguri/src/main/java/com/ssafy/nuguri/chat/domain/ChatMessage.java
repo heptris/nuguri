@@ -32,7 +32,7 @@ public class ChatMessage {
     private Long senderId;  // 보내는 사람 Id
     private String message;
     private LocalDateTime createdDate;
-    private String roomId;
+    private Long roomId;
     private MessageType messageType;
 
     public ChatMessageResponseDto toChatMessageResponseDto() {
