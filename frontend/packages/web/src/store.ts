@@ -10,10 +10,6 @@ export type SearchBarType = {
   placeholder: string;
   value: string;
 };
-export type ProfileType = {
-  nickName: string;
-  temperature: number;
-}
 
 const headerState = atom<HeaderType>({
   key: "headerState",
@@ -34,12 +30,5 @@ const searchBarState = atom<SearchBarType>({
   },
 });
 
-const profileState = atom<ProfileType>({
-  key: "profileState",
-  default: {
-    nickName: "",
-    temperature: null,
-  }
-})
 
-export { headerState, regionState, searchBarState, profileState };
+export { headerState, regionState, searchBarState };

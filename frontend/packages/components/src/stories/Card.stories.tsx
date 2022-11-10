@@ -1,7 +1,7 @@
 import React from "react";
 
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import { HobbyCard } from "../components/Card/HobbyCard";
+import { HobbyCard } from "../components/Card";
 
 export default {
   title: "Card",

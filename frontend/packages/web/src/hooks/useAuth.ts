@@ -36,16 +36,6 @@ export const useAuth = () => {
     });
   };
 
-  const postProfile = () => {
-    axios.
-      post(ENDPOINT_API + "/member")
-      .then(res => {
-        console.log(res)
-      })
-      .catch(e => {
-        console.log(e)
-      })
-  }
 
   const handleSilentRefresh = () => {
     axios
