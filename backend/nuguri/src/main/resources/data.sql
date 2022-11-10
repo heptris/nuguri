@@ -73,3 +73,4 @@ INSERT INTO `hobby_history` VALUES (1,'2022-11-03 14:14:32.334036','2022-11-03 1
 
 
 INSERT INTO `hobby_favorite` VALUES (1,_binary '\0',1,1),(2,_binary '',2,2),(3,_binary '',3,2),(4,_binary '',1,3),(5,_binary '',1,4),(6,_binary '',2,3),(7,_binary '',2,4);
+

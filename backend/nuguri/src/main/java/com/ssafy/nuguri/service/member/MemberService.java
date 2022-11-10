@@ -322,10 +322,7 @@ public class MemberService {
     @PostConstruct
     public void init() {
         List<Member> memberList = memberRepository.findAll();
-        System.out.println(memberList.size());
         memberList.forEach(member -> {
-            System.out.println("@@@@@@@@@@");
-            System.out.println(member.getId());
             redisService.setValues(String.valueOf(member.getId()) + ".", member.getNickname());
         });
     }
