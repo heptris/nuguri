@@ -7,6 +7,7 @@ import { LoginFormType } from "@/types";
 import axios from "axios";
 import { atom, useRecoilState } from "recoil";
 import { deleteCookie, getCookie } from "cookies-next";
+import { useUser } from "./useUser"
 
 type AuthType = { isLogined: boolean; nickname?: string };
 const authState = atom<AuthType>({
@@ -19,6 +20,7 @@ export const useAuth = () => {
   const [{ isLogined, nickname }, setAuthState] = useRecoilState(authState);
   const { replace } = useRouter();
   const isRefreshed = useRef(false);
+  const { postProfile } = useUser();
 
   useEffect(() => {
     setAuthState({ isLogined: !!getCookie(ACCESS_TOKEN) });
@@ -58,6 +60,7 @@ export const useAuth = () => {
     onSuccess: data => {
       handleLoginProcess(data);
       replace(HOME);
+      postProfile();
     },
   });
 
