@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -47,7 +48,7 @@ public class ChatRoomService {
     }
 
     /**
-     * 내가 속해있는 채팅방 조회
+     * 내가 속해있는 채팅방 조회(채팅창 목록)
      */
     public List<ChatRoomResponseDto> findMyRoomList(Long memberId) {
         List<ChatRoom> chatRoomList = chatRoomRepository.findAllByUserListIn(memberId);
@@ -58,11 +59,19 @@ public class ChatRoomService {
                 ChatMessage chatMessage = chatMessageOp.get();
                 ChatRoomResponseDto chatRoomResponseDto = null;
                 if (chatRoom.getDealHistoryId() != null) {
+                    String roomName = null;
+                    Iterator<Long> iterator = chatRoom.getUserList().iterator();
+                    while (iterator.hasNext()) {
+                        Long next = iterator.next();
+                        if (!next.equals(memberId)) {
+                            roomName = redisService.getValues(String.valueOf(next) + ".");
+                        }
+                    }
                     chatRoomResponseDto = ChatRoomResponseDto.builder()
-                            .roomName(redisService.getValues(String.valueOf(chatMessage.getSenderId()) + "."))
+                            .roomName(roomName)
                             .roomId(chatRoom.getId()).lastChatMessage(chatMessage.getMessage())
                             .lastChatTime(chatMessage.getCreatedDate()).build();
-                } else if (chatRoom.getHobbyId() != null ){
+                } else if (chatRoom.getHobbyId() != null) {
                     chatRoomResponseDto = ChatRoomResponseDto.builder().roomName(chatRoom.getRoomName())
                             .roomId(chatRoom.getId()).lastChatMessage(chatMessage.getMessage())
                             .lastChatTime(chatMessage.getCreatedDate()).build();
@@ -103,9 +112,9 @@ public class ChatRoomService {
             Optional<ChatRoom> chatRoomOptional = chatRoomRepository.findChatRoomByDealHistoryId(findChatRoomDto.getDealHistoryId());
             if (chatRoomOptional.isPresent()) { // 이미 채팅방이 생성돼어 있을 경우
                 ChatRoom chatRoom = chatRoomOptional.get();
-                chatRoom.getUserList().add(findChatRoomDto.getSenderId());
-                chatRoom.getUserList().add(findChatRoomDto.getReceiverId());
-                chatRoomRepository.updateChatRoom(chatRoom.getId(), chatRoom.getUserList());
+//                chatRoom.getUserList().add(findChatRoomDto.getSenderId());
+//                chatRoom.getUserList().add(findChatRoomDto.getReceiverId());
+//                chatRoomRepository.updateChatRoom(chatRoom.getId(), chatRoom.getUserList());
                 return chatRoom.getId();
             } else {
                 ChatRoom chatRoom = findChatRoomDto.toEntity();
@@ -139,19 +148,27 @@ public class ChatRoomService {
     /**
      * 채팅방 참가 및 채팅방 채팅 기록 가져오기(커서 페이징)
      */
-    public CursorResult<?> get(Long roomId, Long cursorId, Pageable pageable) {
+    public CursorResult<List<ChatMessageResponseDto>> get(Long roomId, Long cursorId, Pageable pageable) {
         List<ChatMessage> chatRoomHistory = getChatRoomHistory(roomId, cursorId, pageable);
         Long lastIdOfList = chatRoomHistory.isEmpty() ? null : chatRoomHistory.get(chatRoomHistory.size() - 1).getId();
 
         // chatmessage -> ChatMessResponeDto
+        List<ChatMessageResponseDto> chatMessageResponseDtoList = getChatMessageResponseDtos(chatRoomHistory);
+
+        return new CursorResult<List<ChatMessageResponseDto>>(chatMessageResponseDtoList, hasNext(roomId, lastIdOfList), lastIdOfList);
+    }
+
+    /**
+     * ChatMessage -> ChatMessageResponseDto
+     */
+    private List<ChatMessageResponseDto> getChatMessageResponseDtos(List<ChatMessage> chatRoomHistory) {
         List<ChatMessageResponseDto> chatMessageResponseDtoList = new ArrayList<>();
         chatRoomHistory.forEach(chatMessage -> {
             ChatMessageResponseDto chatMessageResponseDto = chatMessage.toChatMessageResponseDto();
             chatMessageResponseDto.setSender(redisService.getValues(String.valueOf(chatMessage.getSenderId()) + "."));
             chatMessageResponseDtoList.add(chatMessageResponseDto);
         });
-
-        return new CursorResult<>(chatMessageResponseDtoList, hasNext(roomId, lastIdOfList), lastIdOfList);
+        return chatMessageResponseDtoList;
     }
 
     public List<ChatMessage> getChatRoomHistory(Long roomId, Long cursorId, Pageable pageable) {

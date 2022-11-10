@@ -38,7 +38,7 @@ public class ChatRoomController {
     public ResponseEntity getChatRoomHistory(@RequestBody GetChatRoomHistoryDto getChatRoomHistoryDto) {
 
         CursorResult<?> cursorResult = chatRoomService.get(getChatRoomHistoryDto.getRoomId(), getChatRoomHistoryDto.getCursorId(),
-                PageRequest.of(0, 2));
+                PageRequest.of(0, 10));
         return ResponseEntity.ok().body(
                 new ResponseDto<>(200, "채팅 로그 불러오기", cursorResult)
         );
