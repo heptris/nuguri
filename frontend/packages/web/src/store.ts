@@ -3,8 +3,8 @@ import { atom } from "recoil";
 
 export type HeaderType = { mode: "EDIT" | "ITEM" | "MAIN" | "LIST" | "SEARCH" | "LOGIN" | "POST" | "DEFAULT"; headingText?: string; HeaderRight?: ReactNode };
 export type RegionType = {
-  regionName: string;
-  regionId: number;
+  baseAddress: string;
+  localId: number;
 };
 export type SearchBarType = {
   placeholder: string;
@@ -22,8 +22,8 @@ const headerState = atom<HeaderType>({
 const regionState = atom<RegionType>({
   key: "regionState",
   default: {
-    regionName: "전국",
-    regionId: null,
+    baseAddress: "전국",
+    localId: null,
   },
 });
 const searchBarState = atom<SearchBarType>({
