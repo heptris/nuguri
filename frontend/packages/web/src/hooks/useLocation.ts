@@ -7,6 +7,7 @@ import { regionState, RegionType } from "@/store";
 import { ROUTES } from "@/constant";
 import { ENDPOINT_API } from "./../api/endpoints";
 
+
 const { HOME } = ROUTES;
 export const useLocation = () => {
   const [, setLocation] = useRecoilState(regionState);
