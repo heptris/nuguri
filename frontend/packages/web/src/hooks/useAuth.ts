@@ -7,6 +7,8 @@ import { LoginFormType } from "@/types";
 import axios from "axios";
 import { atom, useRecoilState } from "recoil";
 import { deleteCookie, getCookie } from "cookies-next";
+import { regionState, RegionType } from "@/store";
+import { ENDPOINT_API } from "@/api";
 
 type AuthType = { isLogined: boolean; nickname?: string };
 const authState = atom<AuthType>({
@@ -19,6 +21,7 @@ export const useAuth = () => {
   const [{ isLogined, nickname }, setAuthState] = useRecoilState(authState);
   const { replace } = useRouter();
   const isRefreshed = useRef(false);
+  const [, setLocation] = useRecoilState(regionState);
 
   useEffect(() => {
     setAuthState({ isLogined: !!getCookie(ACCESS_TOKEN) });
@@ -32,6 +35,17 @@ export const useAuth = () => {
       return data;
     });
   };
+
+  const postProfile = () => {
+    axios.
+      post(ENDPOINT_API + "/member")
+      .then(res => {
+        console.log(res)
+      })
+      .catch(e => {
+        console.log(e)
+      })
+  }
 
   const handleSilentRefresh = () => {
     axios
@@ -58,6 +72,7 @@ export const useAuth = () => {
     onSuccess: data => {
       handleLoginProcess(data);
       replace(HOME);
+      postProfile();
     },
   });
 
