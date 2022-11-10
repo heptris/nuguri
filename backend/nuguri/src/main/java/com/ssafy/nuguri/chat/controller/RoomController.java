@@ -45,7 +45,7 @@ public class RoomController {
 
  //   채팅방 조회
     @GetMapping("/room")
-    public void getRoom(String roomId, Model model){
+    public void getRoom(Long roomId, Model model){
 
         log.info("# get Chat Room, roomID : " + roomId);
         //chatRoomService.joinTest(roomId);

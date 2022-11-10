@@ -55,11 +55,22 @@ public class ChatRoomService {
         List<ChatRoom> chatRoomList = chatRoomRepository.findAllByUserListIn(memberId);
         List<ChatRoomResponseDto> chatRoomResponseDtoList = new ArrayList<>();
         chatRoomList.forEach(chatRoom -> {
-            ChatMessage chatMessage = chatRepository.lastChatMessage(chatRoom.getRoomId());
-            ChatRoomResponseDto chatRoomResponseDto = ChatRoomResponseDto.builder().roomName(chatRoom.getRoomName())
-                    .roomId(chatRoom.getRoomId()).lastChatMessage(chatMessage.getMessage())
-                    .lastChatTime(chatMessage.getCreatedDate()).build();
-            chatRoomResponseDtoList.add(chatRoomResponseDto);
+            Optional<ChatMessage> chatMessageOp = chatRepository.lastChatMessage(chatRoom.getId());
+            if (chatMessageOp.isPresent()) {
+                ChatMessage chatMessage = chatMessageOp.get();
+                ChatRoomResponseDto chatRoomResponseDto = null;
+                if (chatRoom.getDealHistoryId() != null) {
+                    chatRoomResponseDto = ChatRoomResponseDto.builder()
+                            .roomName(redisService.getValues(String.valueOf(chatMessage.getSenderId()) + "."))
+                            .roomId(chatRoom.getId()).lastChatMessage(chatMessage.getMessage())
+                            .lastChatTime(chatMessage.getCreatedDate()).build();
+                } else if (chatRoom.getHobbyId() != null ){
+                    chatRoomResponseDto = ChatRoomResponseDto.builder().roomName(chatRoom.getRoomName())
+                            .roomId(chatRoom.getId()).lastChatMessage(chatMessage.getMessage())
+                            .lastChatTime(chatMessage.getCreatedDate()).build();
+                }
+                chatRoomResponseDtoList.add(chatRoomResponseDto);
+            }
         });
 
         Collections.sort(chatRoomResponseDtoList);
@@ -67,9 +78,9 @@ public class ChatRoomService {
     }
 
     /**
-     * 채팅방 생성 
+     * 채팅방 생성
      */
-    public String createChatRoom(FindChatRoomDto createChatRoomDto) {
+    public Long createChatRoom(FindChatRoomDto createChatRoomDto) {
         log.info("createChatRoomDto = {}", createChatRoomDto);
             // 1대1 채팅일 시
         if (createChatRoomDto.getIsOneToOne() != null && createChatRoomDto.getIsOneToOne()) {
@@ -79,11 +90,11 @@ public class ChatRoomService {
 //                    Query.query(Criteria.where("userList").is(collect)), ChatRoom.class);
             Optional<ChatRoom> chatRoomOptional = chatRoomRepository.findChatRoomByUserList(collect);
             if (chatRoomOptional.isPresent()) { // 이미 1대1 채팅방이 있을 경우
-                return chatRoomOptional.get().getRoomId();
+                return chatRoomOptional.get().getId();
             } else {
                 ChatRoom chatRoom = createChatRoomDto.toEntity();
                 chatRoomRepository.save(chatRoom);
-                return chatRoom.getRoomId();
+                return chatRoom.getId();
             }
         }
 
@@ -93,11 +104,11 @@ public class ChatRoomService {
         if (createChatRoomDto.getDealHistoryId() != null) {
             Optional<ChatRoom> chatRoomOptional = chatRoomRepository.findChatRoomByDealHistoryId(createChatRoomDto.getDealHistoryId());
             if (chatRoomOptional.isPresent()) { // 이미 채팅방이 생성돼어 있을 경우
-                return chatRoomOptional.get().getRoomId();
+                return chatRoomOptional.get().getId();
             } else {
                 ChatRoom chatRoom = createChatRoomDto.toEntity();
                 chatRoomRepository.save(chatRoom);
-                return chatRoom.getRoomId();
+                return chatRoom.getId();
             }
         }
 
@@ -107,11 +118,11 @@ public class ChatRoomService {
         if (createChatRoomDto.getHobbyId() != null) {
             Optional<ChatRoom> chatRoomOptional = chatRoomRepository.findChatRoomByHobbyId(createChatRoomDto.getHobbyId());
             if (chatRoomOptional.isPresent()) { // 이미 채팅방이 생성돼어 있을 경우
-                return chatRoomOptional.get().getRoomId();
+                return chatRoomOptional.get().getId();
             } else {
                 ChatRoom chatRoom = createChatRoomDto.toEntity();
                 chatRoomRepository.save(chatRoom);
-                return chatRoom.getRoomId();
+                return chatRoom.getId();
             }
         }
         return null;
@@ -123,15 +134,15 @@ public class ChatRoomService {
      * @return
      */
     public List<ChatMessageResponseDto> join(GetChatRoomHistoryDto joinChatRoomDto) {
-        ChatRoom chatRoom = chatRoomRepository.findChatRoomByRoomId(joinChatRoomDto.getRoomId()).orElseThrow(
+        ChatRoom chatRoom = chatRoomRepository.findChatRoomById(joinChatRoomDto.getRoomId()).orElseThrow(
                 () -> new CustomException(ErrorCode.CHATROOM_NOT_FOUND)
         );
         chatRoom.getUserList().add(joinChatRoomDto.getSenderId());
         if (joinChatRoomDto.getReceiverId() != null) {
             chatRoom.getUserList().add(joinChatRoomDto.getReceiverId());
         }
-        chatRoomRepository.save(chatRoom);
-        List<ChatMessage> chatMessages = chatRepository.findChatMessageByRoomIdOrderByCreatedDateDesc(chatRoom.getRoomId());
+        chatRoomRepository.updateChatRoom(chatRoom.getId(), chatRoom.getUserList());
+        List<ChatMessage> chatMessages = chatRepository.findChatMessageByRoomIdOrderByCreatedDateDesc(chatRoom.getId());
         List<ChatMessageResponseDto> chatMessageResponseDtoList = new ArrayList<>();
         chatMessages.forEach(chatMessage -> {
             ChatMessageResponseDto chatMessageResponseDto = chatMessage.toChatMessageResponseDto();
@@ -142,10 +153,11 @@ public class ChatRoomService {
         return chatMessageResponseDtoList;
     }
 
-    public ChatRoom findChatRoom(String roomId) {
-        ChatRoom chatRoom = chatRoomRepository.findChatRoomByRoomId(roomId).orElseThrow(
+    public ChatRoom findChatRoom(Long roomId) {
+        ChatRoom chatRoom = chatRoomRepository.findChatRoomById(roomId).orElseThrow(
                 () -> new CustomException(ErrorCode.ALREADY_USED_NICKNAME)
         );
+        System.out.println(chatRoom);
         return chatRoom;
     }
 
@@ -160,7 +172,7 @@ public class ChatRoomService {
     /**
      * 테스트용도
      */
-    public void joinTest(String roomId) {
+    public void joinTest(Long roomId) {
         List<ChatMessage> chatMessages = chatRepository.findChatMessageByRoomIdOrderByCreatedDateDesc(roomId);
         chatMessages.forEach(chatMessage -> {
             System.out.println(chatMessage);

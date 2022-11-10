@@ -2,7 +2,9 @@ package com.ssafy.nuguri.chat.repository;
 
 import com.ssafy.nuguri.chat.domain.ChatMessage;
 
+import java.util.Optional;
+
 public interface ChatRepositoryCustom {
 
-    ChatMessage lastChatMessage(String roomId);
+    Optional<ChatMessage> lastChatMessage(Long roomId);
 }

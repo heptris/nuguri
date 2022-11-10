@@ -3,6 +3,7 @@ package com.ssafy.nuguri.chat.domain;
 import com.querydsl.core.annotations.QueryEntity;
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Id;
@@ -14,10 +15,11 @@ import java.util.*;
 @Document(collection = "chatroom")
 public class ChatRoom {
 
-    @Id
-    private String id;
+    @Transient
+    public static final String SEQUENCE_NAME = "chatroom_sequence";
 
-    private String roomId;
+    @Id
+    private Long id;
 
     @Builder.Default
     private Set<Long> userList = new HashSet<>();

@@ -27,7 +27,7 @@ public class ChatRoomController {
      */
     @PostMapping
     public ResponseEntity findChatRoom(@RequestBody FindChatRoomDto findChatRoomDto) {
-        String roomId = chatRoomService.createChatRoom(findChatRoomDto);
+        Long roomId = chatRoomService.createChatRoom(findChatRoomDto);
         return ResponseEntity.ok().body(
                 new ResponseDto<>(200, "채팅방 Id 조회", roomId)
         );

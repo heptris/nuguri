@@ -10,6 +10,6 @@ public interface ChatRepository extends MongoRepository<ChatMessage, String>, Ch
 
     public List<ChatMessage> findAll();
 
-    public List<ChatMessage> findChatMessageByRoomIdOrderByCreatedDateDesc(String roomId);
+    public List<ChatMessage> findChatMessageByRoomIdOrderByCreatedDateDesc(Long roomId);
 
 }

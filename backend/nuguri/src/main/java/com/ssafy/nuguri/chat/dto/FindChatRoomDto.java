@@ -23,7 +23,7 @@ public class FindChatRoomDto {
     private Long receiverId;    // 1대1 채팅일 시
 
     public ChatRoom toEntity() {
-        return ChatRoom.builder().roomId(UUID.randomUUID().toString()).isOneToOne(isOneToOne)
+        return ChatRoom.builder().isOneToOne(isOneToOne)
                 .hobbyId(hobbyId).dealHistoryId(dealHistoryId)
                 .roomName(roomName).build();
     }
