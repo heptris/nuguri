@@ -14,6 +14,7 @@ export type ProfileType = {
   nickName: string;
   temperature: number;
 }
+export type HobbyType = string;
 
 const headerState = atom<HeaderType>({
   key: "headerState",
@@ -42,4 +43,9 @@ const profileState = atom<ProfileType>({
   }
 })
 
-export { headerState, regionState, searchBarState, profileState };
+const hobbyState = atom<HobbyType>({
+  key: "hobbyState",
+  default: null,
+})
+
+export { headerState, regionState, searchBarState, profileState, hobbyState };
