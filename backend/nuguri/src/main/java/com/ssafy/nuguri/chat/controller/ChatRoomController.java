@@ -1,18 +1,13 @@
 package com.ssafy.nuguri.chat.controller;
 
 import com.ssafy.nuguri.chat.domain.ChatRoom;
-import com.ssafy.nuguri.chat.dto.ChatMessageResponseDto;
-import com.ssafy.nuguri.chat.dto.ChatRoomResponseDto;
-import com.ssafy.nuguri.chat.dto.CreateChatRoomDto;
-import com.ssafy.nuguri.chat.dto.JoinChatRoomDto;
+import com.ssafy.nuguri.chat.dto.*;
 import com.ssafy.nuguri.chat.service.ChatRoomService;
-import com.ssafy.nuguri.domain.member.Member;
+import com.ssafy.nuguri.dto.response.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @Slf4j
-@RequestMapping("/chat/room")
+@RequestMapping("/app/chat/room")
 public class ChatRoomController {
 
     private final ChatRoomService chatRoomService;
@@ -29,18 +24,24 @@ public class ChatRoomController {
      * 채팅방 생성
      */
     @PostMapping
-    public String createChatRoom(@RequestBody CreateChatRoomDto createChatRoomDto) {
-        return chatRoomService.createChatRoom(createChatRoomDto);
+    public ResponseEntity findChatRoom(@RequestBody FindChatRoomDto findChatRoomDto) {
+        Long roomId = chatRoomService.createChatRoom(findChatRoomDto);
+        return ResponseEntity.ok().body(
+                new ResponseDto<>(200, "채팅방 Id 조회", roomId)
+        );
     }
 
     /**
-     * 채팅방 참가
-     *
-     * @return
+     * (채팅방 이전 채팅 기록 조회)
      */
-    @PostMapping("/join")
-    public List<ChatMessageResponseDto> joinChatRoom(@RequestBody JoinChatRoomDto joinChatRoomDto) {
-        return chatRoomService.join(joinChatRoomDto);
+    @PostMapping("/log")
+    public ResponseEntity getChatRoomHistory(@RequestBody GetChatRoomHistoryDto getChatRoomHistoryDto) {
+
+        CursorResult<?> cursorResult = chatRoomService.get(getChatRoomHistoryDto.getRoomId(), getChatRoomHistoryDto.getCursorId(),
+                PageRequest.of(0, 10));
+        return ResponseEntity.ok().body(
+                new ResponseDto<>(200, "채팅 로그 불러오기", cursorResult)
+        );
     }
 
     /**
@@ -52,7 +53,7 @@ public class ChatRoomController {
     }
 
     /**
-     * 내 채팅방 조회
+     * 내가 속해있는 채팅방 조회
      */
     @GetMapping("/{memberId}")
     public List<ChatRoomResponseDto> getMyRoomList(@PathVariable Long memberId) {

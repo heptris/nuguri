@@ -2,10 +2,7 @@ package com.ssafy.nuguri.chat.service;
 
 import com.ssafy.nuguri.chat.domain.ChatMessage;
 import com.ssafy.nuguri.chat.domain.ChatRoom;
-import com.ssafy.nuguri.chat.dto.ChatMessageResponseDto;
-import com.ssafy.nuguri.chat.dto.ChatRoomResponseDto;
-import com.ssafy.nuguri.chat.dto.CreateChatRoomDto;
-import com.ssafy.nuguri.chat.dto.JoinChatRoomDto;
+import com.ssafy.nuguri.chat.dto.*;
 import com.ssafy.nuguri.chat.repository.ChatRepository;
 import com.ssafy.nuguri.chat.repository.ChatRoomRepository;
 import com.ssafy.nuguri.config.redis.RedisService;
@@ -13,11 +10,12 @@ import com.ssafy.nuguri.exception.ex.CustomException;
 import com.ssafy.nuguri.exception.ex.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -50,17 +48,36 @@ public class ChatRoomService {
     }
 
     /**
-     * 내가 속해있는 채팅방 조회
+     * 내가 속해있는 채팅방 조회(채팅창 목록)
      */
     public List<ChatRoomResponseDto> findMyRoomList(Long memberId) {
         List<ChatRoom> chatRoomList = chatRoomRepository.findAllByUserListIn(memberId);
         List<ChatRoomResponseDto> chatRoomResponseDtoList = new ArrayList<>();
         chatRoomList.forEach(chatRoom -> {
-            ChatMessage chatMessage = chatRepository.lastChatMessage(chatRoom.getRoomId());
-            ChatRoomResponseDto chatRoomResponseDto = ChatRoomResponseDto.builder().roomName(chatRoom.getRoomName())
-                    .roomId(chatRoom.getRoomId()).lastChatMessage(chatMessage.getMessage())
-                    .lastChatTime(chatMessage.getCreatedDate()).build();
-            chatRoomResponseDtoList.add(chatRoomResponseDto);
+            Optional<ChatMessage> chatMessageOp = chatRepository.lastChatMessage(chatRoom.getId());
+            if (chatMessageOp.isPresent()) {
+                ChatMessage chatMessage = chatMessageOp.get();
+                ChatRoomResponseDto chatRoomResponseDto = null;
+                if (chatRoom.getDealHistoryId() != null) {
+                    String roomName = null;
+                    Iterator<Long> iterator = chatRoom.getUserList().iterator();
+                    while (iterator.hasNext()) {
+                        Long next = iterator.next();
+                        if (!next.equals(memberId)) {
+                            roomName = redisService.getValues(String.valueOf(next) + ".");
+                        }
+                    }
+                    chatRoomResponseDto = ChatRoomResponseDto.builder()
+                            .roomName(roomName)
+                            .roomId(chatRoom.getId()).lastChatMessage(chatMessage.getMessage())
+                            .lastChatTime(chatMessage.getCreatedDate()).build();
+                } else if (chatRoom.getHobbyId() != null) {
+                    chatRoomResponseDto = ChatRoomResponseDto.builder().roomName(chatRoom.getRoomName())
+                            .roomId(chatRoom.getId()).lastChatMessage(chatMessage.getMessage())
+                            .lastChatTime(chatMessage.getCreatedDate()).build();
+                }
+                chatRoomResponseDtoList.add(chatRoomResponseDto);
+            }
         });
 
         Collections.sort(chatRoomResponseDtoList);
@@ -68,92 +85,115 @@ public class ChatRoomService {
     }
 
     /**
-     * 채팅방 생성 
+     * 채팅방 생성
      */
-    public String createChatRoom(CreateChatRoomDto createChatRoomDto) {
-        log.info("createChatRoomDto = {}", createChatRoomDto);
+    public Long createChatRoom(FindChatRoomDto findChatRoomDto) {
+        log.info("createChatRoomDto = {}", findChatRoomDto);
             // 1대1 채팅일 시
-        if (createChatRoomDto.getIsOneToOne() != null && createChatRoomDto.getIsOneToOne()) {
+        if (findChatRoomDto.getIsOneToOne() != null && findChatRoomDto.getIsOneToOne()) {
            // 1대1 채팅방 있는지 찾기
-            Set<Long> collect = Stream.of(createChatRoomDto.getSenderId(), createChatRoomDto.getReceiverId()).collect(Collectors.toSet());
+            Set<Long> collect = Stream.of(findChatRoomDto.getSenderId(), findChatRoomDto.getReceiverId()).collect(Collectors.toSet());
 //            List<ChatRoom> chatRooms = mongoTemplate.find(
 //                    Query.query(Criteria.where("userList").is(collect)), ChatRoom.class);
             Optional<ChatRoom> chatRoomOptional = chatRoomRepository.findChatRoomByUserList(collect);
             if (chatRoomOptional.isPresent()) { // 이미 1대1 채팅방이 있을 경우
-                return chatRoomOptional.get().getRoomId();
+                return chatRoomOptional.get().getId();
             } else {
-                ChatRoom chatRoom = createChatRoomDto.toEntity();
+                ChatRoom chatRoom = findChatRoomDto.toEntity();
                 chatRoomRepository.save(chatRoom);
-                return chatRoom.getRoomId();
+                return chatRoom.getId();
             }
         }
 
         /**
          * 중고거래 채팅일 시
          */
-        if (createChatRoomDto.getDealHistoryId() != null) {
-            Optional<ChatRoom> chatRoomOptional = chatRoomRepository.findChatRoomByDealHistoryId(createChatRoomDto.getDealHistoryId());
+        if (findChatRoomDto.getDealHistoryId() != null) {
+            Optional<ChatRoom> chatRoomOptional = chatRoomRepository.findChatRoomByDealHistoryId(findChatRoomDto.getDealHistoryId());
             if (chatRoomOptional.isPresent()) { // 이미 채팅방이 생성돼어 있을 경우
-                return chatRoomOptional.get().getRoomId();
+                ChatRoom chatRoom = chatRoomOptional.get();
+//                chatRoom.getUserList().add(findChatRoomDto.getSenderId());
+//                chatRoom.getUserList().add(findChatRoomDto.getReceiverId());
+//                chatRoomRepository.updateChatRoom(chatRoom.getId(), chatRoom.getUserList());
+                return chatRoom.getId();
             } else {
-                ChatRoom chatRoom = createChatRoomDto.toEntity();
+                ChatRoom chatRoom = findChatRoomDto.toEntity();
+                chatRoom.getUserList().add(findChatRoomDto.getSenderId());
+                chatRoom.getUserList().add(findChatRoomDto.getReceiverId());
                 chatRoomRepository.save(chatRoom);
-                return chatRoom.getRoomId();
+                return chatRoom.getId();
             }
         }
 
         /**
          * 취미모임 채팅일 시
          */
-        if (createChatRoomDto.getHobbyId() != null) {
-            Optional<ChatRoom> chatRoomOptional = chatRoomRepository.findChatRoomByHobbyId(createChatRoomDto.getHobbyId());
+        if (findChatRoomDto.getHobbyId() != null) {
+            Optional<ChatRoom> chatRoomOptional = chatRoomRepository.findChatRoomByHobbyId(findChatRoomDto.getHobbyId());
             if (chatRoomOptional.isPresent()) { // 이미 채팅방이 생성돼어 있을 경우
-                return chatRoomOptional.get().getRoomId();
+                ChatRoom chatRoom = chatRoomOptional.get();
+                chatRoom.getUserList().add(findChatRoomDto.getSenderId());
+                chatRoomRepository.updateChatRoom(chatRoom.getId(), chatRoom.getUserList());
+                return chatRoom.getId();
             } else {
-                ChatRoom chatRoom = createChatRoomDto.toEntity();
+                ChatRoom chatRoom = findChatRoomDto.toEntity();
+                chatRoom.getUserList().add(findChatRoomDto.getSenderId());
                 chatRoomRepository.save(chatRoom);
-                return chatRoom.getRoomId();
+                return chatRoom.getId();
             }
         }
         return null;
     }
 
     /**
-     * 채팅방 참가
-     *
-     * @return
+     * 채팅방 참가 및 채팅방 채팅 기록 가져오기(커서 페이징)
      */
-    public List<ChatMessageResponseDto> join(JoinChatRoomDto joinChatRoomDto) {
-        ChatRoom chatRoom = chatRoomRepository.findChatRoomByRoomId(joinChatRoomDto.getRoomId()).orElseThrow(
-                () -> new CustomException(ErrorCode.CHATROOM_NOT_FOUND)
-        );
-        chatRoom.getUserList().add(joinChatRoomDto.getSenderId());
-        if (joinChatRoomDto.getReceiverId() != null) {
-            chatRoom.getUserList().add(joinChatRoomDto.getReceiverId());
-        }
-        chatRoomRepository.save(chatRoom);
-        List<ChatMessage> chatMessages = chatRepository.findChatMessageByRoomIdOrderByCreatedDateDesc(chatRoom.getRoomId());
+    public CursorResult<List<ChatMessageResponseDto>> get(Long roomId, Long cursorId, Pageable pageable) {
+        List<ChatMessage> chatRoomHistory = getChatRoomHistory(roomId, cursorId, pageable);
+        Long lastIdOfList = chatRoomHistory.isEmpty() ? null : chatRoomHistory.get(chatRoomHistory.size() - 1).getId();
+
+        // chatmessage -> ChatMessResponeDto
+        List<ChatMessageResponseDto> chatMessageResponseDtoList = getChatMessageResponseDtos(chatRoomHistory);
+
+        return new CursorResult<List<ChatMessageResponseDto>>(chatMessageResponseDtoList, hasNext(roomId, lastIdOfList), lastIdOfList);
+    }
+
+    /**
+     * ChatMessage -> ChatMessageResponseDto
+     */
+    private List<ChatMessageResponseDto> getChatMessageResponseDtos(List<ChatMessage> chatRoomHistory) {
         List<ChatMessageResponseDto> chatMessageResponseDtoList = new ArrayList<>();
-        chatMessages.forEach(chatMessage -> {
+        chatRoomHistory.forEach(chatMessage -> {
             ChatMessageResponseDto chatMessageResponseDto = chatMessage.toChatMessageResponseDto();
             chatMessageResponseDto.setSender(redisService.getValues(String.valueOf(chatMessage.getSenderId()) + "."));
             chatMessageResponseDtoList.add(chatMessageResponseDto);
         });
-
         return chatMessageResponseDtoList;
     }
 
-    public ChatRoom findChatRoom(String roomId) {
-        ChatRoom chatRoom = chatRoomRepository.findChatRoomByRoomId(roomId).orElseThrow(
+    public List<ChatMessage> getChatRoomHistory(Long roomId, Long cursorId, Pageable pageable) {
+
+        return cursorId == null ? chatRepository.findChatHistoryPage(roomId, pageable) :
+                chatRepository.findChatHistoryPageLessThan(roomId, cursorId, pageable);
+    }
+
+    public Boolean hasNext(Long roomId, Long cursorId) {
+        if (cursorId == null) return Boolean.FALSE;
+        return chatRepository.existsByLessThan(roomId, cursorId);
+    }
+
+    public ChatRoom findChatRoom(Long roomId) {
+        ChatRoom chatRoom = chatRoomRepository.findChatRoomById(roomId).orElseThrow(
                 () -> new CustomException(ErrorCode.ALREADY_USED_NICKNAME)
         );
+        System.out.println(chatRoom);
         return chatRoom;
     }
 
     /**
      * 테스트 용도로 만듬
      */
-    public String createChatRoomTest(CreateChatRoomDto createChatRoomDto) {
+    public String createChatRoomTest(FindChatRoomDto createChatRoomDto) {
         chatRoomRepository.save(createChatRoomDto.toEntity());
         return createChatRoomDto.getRoomName();
     }
@@ -161,7 +201,7 @@ public class ChatRoomService {
     /**
      * 테스트용도
      */
-    public void joinTest(String roomId) {
+    public void joinTest(Long roomId) {
         List<ChatMessage> chatMessages = chatRepository.findChatMessageByRoomIdOrderByCreatedDateDesc(roomId);
         chatMessages.forEach(chatMessage -> {
             System.out.println(chatMessage);

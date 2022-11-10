@@ -10,7 +10,7 @@ public class ChatMessageDto {
 
     private Long senderId;
     private String message;
-    private String roomId;
+    private Long roomId;
 
     private ChatMessage.MessageType messageType;
 

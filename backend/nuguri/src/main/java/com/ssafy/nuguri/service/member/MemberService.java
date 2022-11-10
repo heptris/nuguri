@@ -300,6 +300,7 @@ public class MemberService {
 
     private MemberProfileDto profileCreate(Member member){
         MemberProfileDto memberProfileDto = MemberProfileDto.builder()
+                .memberId(member.getId())
                 .email(member.getEmail())
                 .name(member.getName())
                 .nickname(member.getNickname())
@@ -320,12 +321,8 @@ public class MemberService {
 
     @PostConstruct
     public void init() {
-      //  System.out.println("실행됨??");
         List<Member> memberList = memberRepository.findAll();
-        System.out.println(memberList.size());
         memberList.forEach(member -> {
-            System.out.println("@@@@@@@@@@");
-            System.out.println(member.getId());
             redisService.setValues(String.valueOf(member.getId()) + ".", member.getNickname());
         });
     }

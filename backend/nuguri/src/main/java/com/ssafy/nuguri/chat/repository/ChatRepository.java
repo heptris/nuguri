@@ -1,6 +1,7 @@
 package com.ssafy.nuguri.chat.repository;
 
 import com.ssafy.nuguri.chat.domain.ChatMessage;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 
@@ -10,6 +11,6 @@ public interface ChatRepository extends MongoRepository<ChatMessage, String>, Ch
 
     public List<ChatMessage> findAll();
 
-    public List<ChatMessage> findChatMessageByRoomIdOrderByCreatedDateDesc(String roomId);
+    public List<ChatMessage> findChatMessageByRoomIdOrderByCreatedDateDesc(Long roomId);
 
 }

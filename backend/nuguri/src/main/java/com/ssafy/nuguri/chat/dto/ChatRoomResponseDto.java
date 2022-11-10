@@ -17,7 +17,7 @@ import java.util.Comparator;
 public class ChatRoomResponseDto implements Comparable<ChatRoomResponseDto> {
 
     private String roomName;
-    private String roomId;
+    private Long roomId;
     private String lastChatMessage;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime lastChatTime;
