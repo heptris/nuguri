@@ -13,7 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Data
-public class CreateChatRoomDto {
+public class FindChatRoomDto {
     private String roomName;
     private Long dealHistoryId;    // 중고거래 1대1 채팅일 경우
     private Long hobbyId;   // 취미 등록 채팅일 경우

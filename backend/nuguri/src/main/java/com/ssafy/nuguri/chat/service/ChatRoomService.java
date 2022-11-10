@@ -4,8 +4,8 @@ import com.ssafy.nuguri.chat.domain.ChatMessage;
 import com.ssafy.nuguri.chat.domain.ChatRoom;
 import com.ssafy.nuguri.chat.dto.ChatMessageResponseDto;
 import com.ssafy.nuguri.chat.dto.ChatRoomResponseDto;
-import com.ssafy.nuguri.chat.dto.CreateChatRoomDto;
-import com.ssafy.nuguri.chat.dto.JoinChatRoomDto;
+import com.ssafy.nuguri.chat.dto.FindChatRoomDto;
+import com.ssafy.nuguri.chat.dto.GetChatRoomHistoryDto;
 import com.ssafy.nuguri.chat.repository.ChatRepository;
 import com.ssafy.nuguri.chat.repository.ChatRoomRepository;
 import com.ssafy.nuguri.config.redis.RedisService;
@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -70,7 +69,7 @@ public class ChatRoomService {
     /**
      * 채팅방 생성 
      */
-    public String createChatRoom(CreateChatRoomDto createChatRoomDto) {
+    public String createChatRoom(FindChatRoomDto createChatRoomDto) {
         log.info("createChatRoomDto = {}", createChatRoomDto);
             // 1대1 채팅일 시
         if (createChatRoomDto.getIsOneToOne() != null && createChatRoomDto.getIsOneToOne()) {
@@ -123,7 +122,7 @@ public class ChatRoomService {
      *
      * @return
      */
-    public List<ChatMessageResponseDto> join(JoinChatRoomDto joinChatRoomDto) {
+    public List<ChatMessageResponseDto> join(GetChatRoomHistoryDto joinChatRoomDto) {
         ChatRoom chatRoom = chatRoomRepository.findChatRoomByRoomId(joinChatRoomDto.getRoomId()).orElseThrow(
                 () -> new CustomException(ErrorCode.CHATROOM_NOT_FOUND)
         );
@@ -153,7 +152,7 @@ public class ChatRoomService {
     /**
      * 테스트 용도로 만듬
      */
-    public String createChatRoomTest(CreateChatRoomDto createChatRoomDto) {
+    public String createChatRoomTest(FindChatRoomDto createChatRoomDto) {
         chatRoomRepository.save(createChatRoomDto.toEntity());
         return createChatRoomDto.getRoomName();
     }

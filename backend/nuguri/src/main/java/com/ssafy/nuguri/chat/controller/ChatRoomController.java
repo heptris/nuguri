@@ -3,16 +3,13 @@ package com.ssafy.nuguri.chat.controller;
 import com.ssafy.nuguri.chat.domain.ChatRoom;
 import com.ssafy.nuguri.chat.dto.ChatMessageResponseDto;
 import com.ssafy.nuguri.chat.dto.ChatRoomResponseDto;
-import com.ssafy.nuguri.chat.dto.CreateChatRoomDto;
-import com.ssafy.nuguri.chat.dto.JoinChatRoomDto;
+import com.ssafy.nuguri.chat.dto.FindChatRoomDto;
+import com.ssafy.nuguri.chat.dto.GetChatRoomHistoryDto;
 import com.ssafy.nuguri.chat.service.ChatRoomService;
-import com.ssafy.nuguri.domain.member.Member;
+import com.ssafy.nuguri.dto.response.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,8 +26,11 @@ public class ChatRoomController {
      * 채팅방 생성
      */
     @PostMapping
-    public String createChatRoom(@RequestBody CreateChatRoomDto createChatRoomDto) {
-        return chatRoomService.createChatRoom(createChatRoomDto);
+    public ResponseEntity findChatRoom(@RequestBody FindChatRoomDto findChatRoomDto) {
+        String roomId = chatRoomService.createChatRoom(findChatRoomDto);
+        return ResponseEntity.ok().body(
+                new ResponseDto<>(200, "채팅방 Id 조회", roomId)
+        );
     }
 
     /**
@@ -39,8 +39,11 @@ public class ChatRoomController {
      * @return
      */
     @PostMapping("/join")
-    public List<ChatMessageResponseDto> joinChatRoom(@RequestBody JoinChatRoomDto joinChatRoomDto) {
-        return chatRoomService.join(joinChatRoomDto);
+    public ResponseEntity getChatRoomHistory(@RequestBody GetChatRoomHistoryDto getChatRoomHistoryDto) {
+        List<ChatMessageResponseDto> chatMessageResponseDtoList = chatRoomService.join(getChatRoomHistoryDto);
+        return ResponseEntity.ok().body(
+                new ResponseDto<>(200, "채팅 로그 불러오기", chatMessageResponseDtoList)
+        );
     }
 
     /**

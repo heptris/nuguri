@@ -1,6 +1,6 @@
 package com.ssafy.nuguri.chat.controller;
 
-import com.ssafy.nuguri.chat.dto.CreateChatRoomDto;
+import com.ssafy.nuguri.chat.dto.FindChatRoomDto;
 import com.ssafy.nuguri.chat.service.ChatRoomService;
 import com.ssafy.nuguri.chat.service.ChatService;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +38,7 @@ public class RoomController {
     @PostMapping(value = "/room")
     public String create(@RequestParam String name, RedirectAttributes rttr){
         log.info("# Create Chat Room , name: " + name);
-        CreateChatRoomDto createChatRoomDto = CreateChatRoomDto.builder().roomName(name).build();
+        FindChatRoomDto createChatRoomDto = FindChatRoomDto.builder().roomName(name).build();
         chatRoomService.createChatRoomTest(createChatRoomDto);
         return "redirect:/chat/test/rooms";
     }
@@ -48,7 +48,7 @@ public class RoomController {
     public void getRoom(String roomId, Model model){
 
         log.info("# get Chat Room, roomID : " + roomId);
-        chatRoomService.joinTest(roomId);
+        //chatRoomService.joinTest(roomId);
         model.addAttribute("room", chatRoomService.findChatRoom(roomId));
     }
 

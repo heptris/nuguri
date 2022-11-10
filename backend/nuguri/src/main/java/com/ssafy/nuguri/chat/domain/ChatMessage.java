@@ -4,6 +4,7 @@ import com.ssafy.nuguri.chat.dto.ChatMessageResponseDto;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Entity;
@@ -22,8 +23,11 @@ public class ChatMessage {
         TALK, ENTER, LEAVE
     }
 
+    @Transient
+    public static final String SEQUENCE_NAME = "chat_sequence";
+
     @Id
-    private String id;
+    private Long id;
 
     private Long senderId;  // 보내는 사람 Id
     private String message;
