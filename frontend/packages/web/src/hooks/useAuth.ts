@@ -9,6 +9,7 @@ import { atom, useRecoilState } from "recoil";
 import { deleteCookie, getCookie } from "cookies-next";
 import { regionState, RegionType } from "@/store";
 import { ENDPOINT_API } from "@/api";
+import { useUser } from "./useUser"
 
 type AuthType = { isLogined: boolean; nickname?: string };
 const authState = atom<AuthType>({
@@ -22,6 +23,7 @@ export const useAuth = () => {
   const { replace } = useRouter();
   const isRefreshed = useRef(false);
   const [, setLocation] = useRecoilState(regionState);
+  const { postProfile } = useUser();
 
   useEffect(() => {
     setAuthState({ isLogined: !!getCookie(ACCESS_TOKEN) });

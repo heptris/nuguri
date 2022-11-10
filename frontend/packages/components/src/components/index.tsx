@@ -10,6 +10,7 @@ export { BottomNavbarItem } from "./BottomNavbar/BottomNavbarItem";
 export { Icon } from "./Icon";
 export { default as Text } from "./Text";
 export { LabelInput } from "./LabelInput";
-
+export { Menu } from "./Menu";
+export { Card } from "./Card";
 export { GlobalStyle } from "../styles/GlobalStyle";
 export { ThemeProvider, theme } from "../styles/theme";

@@ -10,4 +10,7 @@ export const ROUTES = {
   SEARCH: "/search",
   LOCATION: "/location",
   POST: "/post",
+  HOBBYLIST: "/list/hobby",
+  DEALLIST: "/list/deal",
+  GROUPDEALLIST: "/list/groupdeal",
 };
