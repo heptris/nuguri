@@ -20,13 +20,13 @@ public class DealHistoryController {
 
     private final DealHistoryService dealHistoryService;
 
-    @ApiOperation(value = "구매자가 채팅하기 눌렀을 때 로그 쌓이기 위한 API, 생긴 중고거래 history_id를 반환")
+    @ApiOperation(value = "구매자가 채팅하기 눌렀을 때 로그 쌓이기 위한 API, 생긴 중고거래 history_id와 중복 체크 isDuplicated 반환")
     @PostMapping("/{dealId}/create")
     public ResponseEntity pushChatButton(@PathVariable Long dealId){
         Long memberId = SecurityUtil.getCurrentMemberId();
-
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseDto(HttpStatus.OK.value(), "중고거래 History 생성", dealHistoryService.createDealHistory(memberId, dealId))
+                new ResponseDto(HttpStatus.OK.value(), "중고거래 History 생성",
+                        dealHistoryService.createDealHistory(memberId, dealId))
         );
     }
 

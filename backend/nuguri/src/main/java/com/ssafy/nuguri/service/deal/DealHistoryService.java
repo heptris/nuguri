@@ -5,6 +5,7 @@ import com.ssafy.nuguri.domain.deal.DealHistory;
 import com.ssafy.nuguri.domain.deal.DealStatus;
 import com.ssafy.nuguri.domain.member.Member;
 import com.ssafy.nuguri.dto.deal.DealFinishedDto;
+import com.ssafy.nuguri.dto.deal.DealHistoryResponseDto;
 import com.ssafy.nuguri.dto.deal.DealHistoryUpdateDto;
 import com.ssafy.nuguri.exception.ex.CustomException;
 import com.ssafy.nuguri.exception.ex.ErrorCode;
@@ -29,7 +30,18 @@ public class DealHistoryService {
     private final DealRepository dealRepository;
 
     @Transactional
-    public Long createDealHistory(Long memberId, Long dealId){
+    public DealHistoryResponseDto createDealHistory(Long memberId, Long dealId){
+        // 이미 채팅을 했던 것에 대한 중복 로그 쌓임 방지를 위한 중복 체크
+        DealHistory duplicateCheckDealRepository = dealHistoryRepository.findByMemberIdAndDealId(memberId, dealId);
+        // 중복일 경우
+        if(duplicateCheckDealRepository != null){
+            return DealHistoryResponseDto.builder()
+                    .dealHistoryId(duplicateCheckDealRepository.getId())
+                    .isDuplicated(true)
+                    .build();
+//            throw new CustomException(ALREADY_USED_DEAL_HISTORY);
+        }
+
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(()->new CustomException(ErrorCode.MEMBER_NOT_FOUND));
         Deal deal = dealRepository.findById(dealId)
@@ -40,13 +52,13 @@ public class DealHistoryService {
                 .deal(deal)
                 .dealStatus(DealStatus.AWAITER)
                 .build();
-
-        // 이미 채팅을 했던 것에 대한 중복 로그 쌓임 방지를 위한 Exception
-        DealHistory duplicateCheckDealRepository = dealHistoryRepository.findByMemberIdAndDealId(memberId, dealId);
-        if(duplicateCheckDealRepository != null)throw new CustomException(ALREADY_USED_DEAL_HISTORY);
-
         dealHistoryRepository.save(dealHistory);
-        return dealHistory.getId();
+
+        DealHistoryResponseDto dealHistoryResponseDto = DealHistoryResponseDto.builder()
+                .dealHistoryId(dealHistory.getId())
+                .isDuplicated(false)
+                .build();
+        return dealHistoryResponseDto;
     }
 
     @Transactional

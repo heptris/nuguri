@@ -2,6 +2,7 @@ package com.ssafy.nuguri.service.deal;
 
 import com.ssafy.nuguri.domain.deal.DealHistory;
 import com.ssafy.nuguri.dto.deal.DealFinishedDto;
+import com.ssafy.nuguri.dto.deal.DealHistoryResponseDto;
 import com.ssafy.nuguri.dto.deal.DealHistoryUpdateDto;
 import com.ssafy.nuguri.repository.deal.DealHistoryRepository;
 import org.junit.jupiter.api.Test;
@@ -28,8 +29,8 @@ class DealHistoryServiceTest {
     @Commit
     public void 중고거래기록남기기() throws Exception{
         //given
-        Long dealHistoryId = dealHistoryService.createDealHistory(1L, 4L);
-        System.out.println("dealHistoryId = " + dealHistoryId);
+        DealHistoryResponseDto dealHistory1 = dealHistoryService.createDealHistory(1L, 4L);
+        System.out.println("dealHistoryId = " + dealHistory1.getDealHistoryId());
         Optional<DealHistory> dealHistory = dealHistoryRepository.findById(1L);
         System.out.println("dealHistory.get().getDealStatus() = " + dealHistory.get().getDealStatus());
         System.out.println("dealHistory.get().getPromiseLocation() = " + dealHistory.get().getPromiseLocation());
