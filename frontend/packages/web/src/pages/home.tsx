@@ -145,7 +145,7 @@ const MainWrapper = styled.div`
 
 const CategorytWrapper = styled.div`
   display: inline-block;
-  max-width: 1300px;
+  max-width: 1599px;
   flex-direction: column;
 `;
 
