@@ -14,3 +14,8 @@ export const ROUTES = {
   DEALLIST: "/list/deal",
   GROUPDEALLIST: "/list/groupdeal",
 };
+
+export const QUERY_KEYS = {
+  MY_ALARM: "myAlarm",
+  MY_PROFILE: "myProfile",
+};

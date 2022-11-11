@@ -80,7 +80,9 @@ const HomePage = () => {
           </Link>
         </TitleWrapper>
         <CardWapper>
-          <Card price={1000000} imgUrl={"/public/coding.jpg"} />
+          <Link href={"/region/1/deal/1"}>
+            <Card price={1000000} imgUrl={"/public/coding.jpg"} />
+          </Link>
           <Card price={1000000} imgUrl={"/public/coding.jpg"} />
           <Card price={1000000} imgUrl={"/public/coding.jpg"} />
           <Card price={1000000} imgUrl={"/public/coding.jpg"} />

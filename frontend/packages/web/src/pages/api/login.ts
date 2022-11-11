@@ -25,7 +25,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       res,
       secure: true,
       sameSite: "strict",
-      maxAge: (accessTokenExpiresIn - Date.now()) / 1000,
     });
     setCookie(REFRESH_TOKEN, refreshToken, {
       req,
@@ -62,15 +61,14 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         return [tmp[0], tmp[1]];
       });
 
-      if (arr === undefined) {
-        res.status(404).json("로그인 정보가 없습니다. 다시 로그인하세요");
-        break;
-      }
-
       const cookieMap = new Map<string, string>(arr);
       const accessToken = cookieMap.get(ACCESS_TOKEN);
       const refreshToken = cookieMap.get(REFRESH_TOKEN);
       console.log(cookieMap);
+      if (accessToken === undefined) {
+        res.status(404).json("로그인 정보가 없습니다. 다시 로그인하세요");
+        break;
+      }
       await axios
         .post(`${ENDPOINT_AUTH}/reissue`, {
           accessToken,
