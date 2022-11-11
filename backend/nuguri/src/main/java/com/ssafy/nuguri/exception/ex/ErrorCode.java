@@ -13,7 +13,7 @@ public enum ErrorCode {
 
     // 401
     INVALID_REFRESH_TOKEN(401, "유효하지 않은 RefreshToken 입니다."),
-    INVALID_ACCESS_TOKEN(401, "유요하지 않은 accessToken 입니다."),
+    INVALID_ACCESS_TOKEN(401, "유효하지 않은 accessToken 입니다."),
 
     // 404 NOT FOUND 잘못된 리소스 접근
     MEMBER_NOT_FOUND(404, "존재하지 않은 회원 ID 입니다."),

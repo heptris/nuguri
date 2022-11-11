@@ -93,7 +93,7 @@ public class AuthService {
 
 
         // 2. Access Token 에서 Member ID 가져오기
-        Authentication authentication = tokenProvider.getAuthentication(tokenRequestDto.getAccessToken());
+        Authentication authentication = tokenProvider.getAuthentication(tokenRequestDto.getRefreshToken());
 
         // redis에 있는 refreshToken과 비교
         tokenProvider.checkRefreshToken(authentication.getName(), tokenRequestDto.getRefreshToken());
