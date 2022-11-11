@@ -3,14 +3,21 @@ package com.ssafy.nuguri.chat.controller;
 import com.ssafy.nuguri.chat.domain.ChatRoom;
 import com.ssafy.nuguri.chat.dto.*;
 import com.ssafy.nuguri.chat.service.ChatRoomService;
+import com.ssafy.nuguri.domain.s3.AwsS3;
 import com.ssafy.nuguri.dto.response.ResponseDto;
+import com.ssafy.nuguri.exception.ex.CustomException;
+import com.ssafy.nuguri.service.s3.AwsS3Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
+
+import static com.ssafy.nuguri.exception.ex.ErrorCode.FILE_UPLOAD_ERROR;
 
 @RequiredArgsConstructor
 @RestController
@@ -19,6 +26,7 @@ import java.util.List;
 public class ChatRoomController {
 
     private final ChatRoomService chatRoomService;
+    private final AwsS3Service awsS3Service;
 
     /**
      * 채팅방 생성
@@ -58,5 +66,17 @@ public class ChatRoomController {
     @GetMapping("/{memberId}")
     public List<ChatRoomResponseDto> getMyRoomList(@PathVariable Long memberId) {
         return chatRoomService.findMyRoomList(memberId);
+    }
+
+    @PostMapping("/file")
+    public ResponseEntity fileUpLoad(@RequestParam("file") MultipartFile file, @RequestPart Long roomId) {
+        try {
+            AwsS3 upload = awsS3Service.upload(file, "Room" + String.valueOf(roomId));
+            return ResponseEntity.ok().body(
+                    new ResponseDto(200, "file upload 성공", upload.getPath())
+            );
+        } catch (IOException e) {
+            throw new CustomException(FILE_UPLOAD_ERROR);
+        }
     }
 }
