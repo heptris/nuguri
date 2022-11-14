@@ -1,10 +1,11 @@
 import { ROUTES } from "@/constant";
-import { useHeader, useLocation, useSearchBar } from "@/hooks";
+import { useHeader, useLocation, useSearchBar, useAlert, useAuth } from "@/hooks";
 import { Button, LabelInput } from "@common/components";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 import * as React from "react";
 import Box from "@mui/material/Box";
@@ -14,8 +15,9 @@ import Modal from "@mui/material/Modal";
 import { useRecoilState } from "recoil";
 import { searchBarState } from "@/store";
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import { apiInstance, ENDPOINT_AUTH } from "@/api";
 
-const { LOCATION } = ROUTES;
+const { HOME } = ROUTES;
 
 const style = {
   position: "absolute" as "absolute",
@@ -30,7 +32,11 @@ const style = {
 };
 
 const SignUpPage = () => {
-  useHeader({ mode: "LOGIN", headingText: "이메일로 회원가입" });
+  useHeader({ mode: "LOGIN", headingText: "회원가입" });
+  const { handleAlertOpen } = useAlert();
+  const { handleLogin, isLoginError } = useAuth();
+  const { replace } = useRouter();
+
   const [age, setAge] = useState(null);
   const [baseAddress, setBaseAddress] = useState("");
   const [email, setEmail] = useState("");
@@ -54,14 +60,38 @@ const SignUpPage = () => {
   const handleOnClick = () => {
     handleSearchAddress(debouncedSearchedValue);
   };
-  // 버튼에 적용할 클릭 이벤트 함수
 
   const handleOnKeyPress = e => {
     if (e.key === "Enter") {
       handleOnClick(); // Enter 입력이 되면 클릭 이벤트 실행
     }
   };
-  // 인풋에 적용할 Enter 키 입력 함수
+
+  const data = {
+    age,
+    baseAddress,
+    email,
+    name,
+    nickName,
+    password,
+    passwordConfirm,
+    sex,
+  };
+
+  const onSubmitHandler = async () => {
+    await apiInstance
+      .post(ENDPOINT_AUTH + "/signup", data)
+      .then(res => {
+        console.log(res);
+        handleAlertOpen("회원가입이 성공했습니다.");
+        handleLogin({ email, password });
+        replace(HOME);
+      })
+      .catch(e => {
+        console.log(e);
+        handleAlertOpen("회원가입이 실패했습니다.");
+      });
+  };
 
   return (
     <ContainerWrapper>
@@ -195,7 +225,9 @@ const SignUpPage = () => {
           margin-top: 2rem;
           border-radius: 1rem;
         `}
-        onClick={() => {}}
+        onClick={() => {
+          onSubmitHandler();
+        }}
       >
         회원가입
       </Button>

@@ -7,6 +7,7 @@ export type SearchBarType = {
   placeholder: string;
   value: string;
 };
+export type HobbyType = string;
 
 const headerState = atom<HeaderType>({
   key: "headerState",
@@ -20,4 +21,9 @@ const searchBarState = atom<SearchBarType>({
   },
 });
 
-export { headerState, searchBarState };
+const hobbyState = atom<HobbyType>({
+  key: "hobbyState",
+  default: null,
+})
+
+export { headerState, searchBarState, hobbyState };
