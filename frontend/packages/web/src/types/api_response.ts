@@ -1,11 +1,13 @@
-type UserInfo = {
+type UserInfoType = {
+  baseAddress: string;
+  description?: string;
   email: string;
+  localId: number;
+  memberId: number;
   name: string;
   nickname: string;
-  description: string;
+  profileImage?: string;
   temperature: number;
-  profileImage: string;
-  baseAddress: string;
 };
 
-export type { UserInfo };
+export type { UserInfoType };

@@ -52,16 +52,20 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         .catch(e => {
           const { response } = e;
           const { status, data } = response;
-          console.log(data);
-          res.status(status).json(data);
+          res.status(status ?? 404).json(data ?? "잘못된 요청입니다.");
         });
       break;
     // 토큰 재발행 케이스
     case "GET":
-      const arr = req.headers.cookie.split(";").map<[string, string]>(el => {
+      const arr = req.headers.cookie?.split(";").map<[string, string]>(el => {
         const tmp = el.trim().split("=");
         return [tmp[0], tmp[1]];
       });
+
+      if (arr === undefined) {
+        res.status(404).json("로그인 정보가 없습니다. 다시 로그인하세요");
+        break;
+      }
 
       const cookieMap = new Map<string, string>(arr);
       const accessToken = cookieMap.get(ACCESS_TOKEN);
