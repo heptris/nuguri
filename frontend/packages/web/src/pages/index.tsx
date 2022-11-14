@@ -5,14 +5,26 @@ import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import Link from "@/components/Link";
 import { ROUTES } from "@/constant";
+import { useRecoilState } from "recoil";
+import { hobbyState } from "@/store";
+
 const { HOBBYLIST, DEALLIST, GROUPDEALLIST } = ROUTES;
+const options = ["전체", "문화, 예술", "운동, 액티비티", "푸드, 드링크", "여행, 나들이", "창작", "성장, 자기계발"];
 
 const HomePage = () => {
   useHeader({ mode: "MAIN", headingText: undefined });
+  const [hobby, setHobby] = useRecoilState(hobbyState);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
   const open = Boolean(anchorEl);
-  const handleClick = (selectedMenu: HTMLElement) => {
+  const handleClickListItem = (selectedMenu: HTMLElement) => {
     setAnchorEl(selectedMenu);
+  };
+  const handleMenuItemClick = (index: number) => {
+    setSelectedIndex(index);
+    setHobby(options[index]);
+    setAnchorEl(null);
+    console.log(options[index]);
   };
   const handleClose = () => {
     setAnchorEl(null);
@@ -21,7 +33,7 @@ const HomePage = () => {
   const newDate = new Date("2022-10-15 15:00:37");
   return (
     <MainWrapper>
-      <Menu open={open} anchorEl={anchorEl} onCloseHandler={handleClose} onClickHandler={handleClick} />
+      <Menu open={open} anchorEl={anchorEl} onCloseHandler={handleClose} handleClickListItem={handleClickListItem} handleMenuItemClick={handleMenuItemClick} selectedIndex={selectedIndex} />
       <CategorytWrapper>
         <TitleWrapper>
           <Text
