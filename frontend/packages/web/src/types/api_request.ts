@@ -18,17 +18,4 @@ type ChatRoomMessageInfoType<T extends ChatMessageType> = {
   roomId: string;
 } & (T extends "TALK" ? { message: string } : {});
 
-type DealItemDetailType = {
-  dealId: number;
-  title: string;
-  description: string;
-  price: number;
-  hit: number;
-  dealImage: string;
-  dong: string;
-  sellerId: number;
-  deal: boolean;
-  favorite?: boolean;
-};
-
-export type { LoginFormType, ChatRoomInfoFindType, ChatRoomInfoGetHistoryType, ChatRoomMessageInfoType, DealItemDetailType };
+export type { LoginFormType, ChatRoomInfoFindType, ChatRoomInfoGetHistoryType, ChatRoomMessageInfoType };

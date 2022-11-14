@@ -20,7 +20,7 @@ const App = ({ Component, pageProps }: AppProps) => (
           <Layout>
             <Component {...pageProps} />
           </Layout>
-          <ReactQueryDevtools initialIsOpen={false} />
+          <ReactQueryDevtools initialIsOpen={false} position={"top-right"} />
         </QueryClientProvider>
       </RecoilRoot>
     </ThemeProvider>

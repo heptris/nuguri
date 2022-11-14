@@ -7,7 +7,7 @@ const nextConfig = {
     emotion: true,
   },
   images: {
-    domains: ["nuguri-bucket.s3.ap-northeast-2.amazonaws.com"],
+    domains: ["nuguri-bucket.s3.ap-northeast-2.amazonaws.com", "uniqon-bucket.s3.ap-northeast-2.amazonaws.com"],
   },
 };
 
