@@ -1,4 +1,4 @@
-import { Card } from "@mui/material";
+import { Card, IconButton } from "@mui/material";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
@@ -6,14 +6,14 @@ import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import PaidIcon from "@mui/icons-material/Paid";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import Image from "next/image";
-import React from "react";
 import axios from "axios";
 
-import { Avatar, Text } from "@common/components";
+import { Avatar, Button, Text } from "@common/components";
 
 import { ACCESS_TOKEN, ENDPOINT_API } from "@/api";
-import { useHobbyRoom } from "@/hooks";
+import { useBottom, useHeader, useHobbyRoom } from "@/hooks";
 import { HobbyRoomType } from "@/types";
 
 export async function getServerSideProps({ params, query, req }) {
@@ -32,6 +32,30 @@ export async function getServerSideProps({ params, query, req }) {
 const HobbyDetailPage = ({ hobbyRoomDefaultInfo }: { hobbyRoomDefaultInfo: HobbyRoomType }) => {
   const { hobbyRoomInfo, refetchHobbyRoomInfo } = useHobbyRoom(hobbyRoomDefaultInfo);
   const { ageLimit, categoryId, closed, content, curNum, endDate, fee, hobbyId, hobbyImage, localId, maxNum, meetingPlace, sexLimit, title } = hobbyRoomInfo;
+  useHeader({ mode: "ITEM" });
+  useBottom(
+    <div
+      css={css`
+        position: fixed;
+        bottom: 0;
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        padding: 0.5rem;
+      `}
+    >
+      <IconButton>
+        <FavoriteIcon fontSize="large" />
+      </IconButton>
+      <Button
+        css={css`
+          width: 80%;
+        `}
+      >
+        참여 신청하기
+      </Button>
+    </div>,
+  );
   return (
     <div
       css={css`
