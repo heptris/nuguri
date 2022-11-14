@@ -38,7 +38,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @Commit
 @SpringBootTest
 @Transactional
-@Sql("classpath:tableInit.sql")
 class HobbyServiceTest {
     @Autowired
     HobbyService hobbyService;

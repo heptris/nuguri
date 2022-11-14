@@ -45,7 +45,7 @@ import static java.lang.Boolean.FALSE;
 
 @SpringBootTest
 @Transactional
-@Sql("classpath:tableInit.sql")
+//@Sql("classpath:tableInit.sql")
 class HobbyHistoryServiceTest {
     @Autowired
     HobbyHistoryService hobbyHistoryService;
@@ -58,87 +58,6 @@ class HobbyHistoryServiceTest {
     EntityManager em;
     JPAQueryFactory queryFactory;
 
-    @Test
-    @BeforeEach
-    public void before(){
-
-        queryFactory = new JPAQueryFactory(em);
-        BaseAddress ba = queryFactory
-                .selectFrom(baseAddress)
-                .where(baseAddress.id.eq(1L))
-                .fetchOne();
-        Category ca = queryFactory
-                .selectFrom(category)
-                .where(category.id.eq(1L))
-                .fetchOne();
-        Member me1 = queryFactory // 25살, m, 청운동
-                .selectFrom(member)
-                .where(member.id.eq(1L))
-                .fetchOne();
-        Member me2 = queryFactory // 25살, m, 청운동
-                .selectFrom(member)
-                .where(member.id.eq(2L))
-                .fetchOne();
-        Member me3 = queryFactory // 25살, m, 청운동
-                .selectFrom(member)
-                .where(member.id.eq(3L))
-                .fetchOne();
-
-
-        Hobby hobbyEntity1 = Hobby.builder()
-                .baseAddress(ba)
-                .category(ca)
-                .title("취미방 1")
-                .content("1번방 입니다")
-                .endDate(LocalDateTime.now().plusDays(10))
-                .meetingPlace("서울에서 모여요")
-                .isClosed(false)
-                .curNum(1)
-                .maxNum(10)
-                .fee(10)
-                .ageLimit(10)
-                .sexLimit('f')
-                .hobbyImage("aa")
-                .build();
-
-        Hobby hobbyEntity2 = Hobby.builder()
-                .baseAddress(ba)
-                .category(ca)
-                .title("취미방 2")
-                .content("2번방 입니다")
-                .endDate(LocalDateTime.now())
-                .meetingPlace("부산에서 모여요")
-                .isClosed(false)
-                .curNum(2)
-                .maxNum(20)
-                .fee(20)
-                .ageLimit(20)
-                .sexLimit('m')
-                .hobbyImage("bb")
-                .build();
-
-        HobbyHistory hobbyHistory1 = HobbyHistory.builder().member(me1).hobby(hobbyEntity1).isPromoter(true).approveStatus(ApproveStatus.READY).build();
-        HobbyHistory hobbyHistory2 = HobbyHistory.builder().member(me1).hobby(hobbyEntity2).isPromoter(false).approveStatus(ApproveStatus.READY).build();
-        HobbyHistory hobbyHistory3 = HobbyHistory.builder().member(me2).hobby(hobbyEntity1).isPromoter(true).approveStatus(ApproveStatus.APPROVE).build();
-        HobbyHistory hobbyHistory4 = HobbyHistory.builder().member(me2).hobby(hobbyEntity2).isPromoter(false).approveStatus(ApproveStatus.APPROVE).build();
-        HobbyHistory hobbyHistory5 = HobbyHistory.builder().member(me3).hobby(hobbyEntity1).isPromoter(false).approveStatus(ApproveStatus.REJECT).build();
-
-
-        em.persist(hobbyEntity1);
-        em.persist(hobbyEntity2);
-        em.persist(hobbyHistory1);
-        em.persist(hobbyHistory2);
-        em.persist(hobbyHistory3);
-        em.persist(hobbyHistory4);
-        em.persist(hobbyHistory5);
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
-
-        List<HobbyHistory> result = hobbyHistoryRepository.findAll();
-        for (HobbyHistory m :result
-             ) {
-            System.out.println(m.getId());
-        }
-    }
 
     @Test
     public void 취미1_승인_대기자(){
@@ -199,7 +118,7 @@ class HobbyHistoryServiceTest {
 
     @Test
     public void 취미방_정보_변경(){
-        HobbyHistoryDto before = hobbyHistoryService.findByIdDto(1L);
+        HobbyHistoryDto before = hobbyHistoryService.findByIdDto(3L);
         System.out.println("변경 전: "+before.toString());
         ChangeStatusRequestDto changeStatusRequestDto = ChangeStatusRequestDto.builder()
                 .hobbyId(before.getHobbyId())

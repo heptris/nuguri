@@ -24,5 +24,6 @@ public class DealLoginDetailDto {
     // 즐겨찾기
     private boolean isFavorite;
     private Long sellerId;
+    private String sellerNickname;
 
 }

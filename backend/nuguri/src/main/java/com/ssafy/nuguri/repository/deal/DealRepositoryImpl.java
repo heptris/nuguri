@@ -121,7 +121,8 @@ public class DealRepositoryImpl implements DealRepositoryCustom{
                         deal.isDeal,
                         deal.dealImage,
                         baseAddress.dong,
-                        deal.member.id
+                        deal.member.id,
+                        deal.member.nickname
                 ))
                 .from(deal)
                 .innerJoin(deal.baseAddress, baseAddress)

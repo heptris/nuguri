@@ -43,5 +43,8 @@ public class HobbyFavoriteService {
             return hobbyFavorite.changeFavorite();
         }
     }
+    public Integer getFavoriteCnt(Long hobbyId){
+        return hobbyFavoriteRepository.getFavoriteNumberByHobbyId(hobbyId);
+    }
 
 }
