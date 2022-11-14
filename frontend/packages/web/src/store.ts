@@ -9,6 +9,8 @@ export type SearchBarType = {
 };
 export type HobbyType = string;
 
+export type PostType=number;
+
 const headerState = atom<HeaderType>({
   key: "headerState",
   default: { mode: "MAIN" },
@@ -26,4 +28,8 @@ const hobbyState = atom<HobbyType>({
   default: null,
 })
 
-export { headerState, searchBarState, hobbyState };
+const postState=atom<PostType>({
+  key:"postState",
+  default:null,
+})
+export { headerState, searchBarState, hobbyState, postState };
