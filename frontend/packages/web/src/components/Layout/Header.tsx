@@ -1,17 +1,21 @@
-import { ROUTES } from "@/constant";
-import { headerState, regionState, searchBarState } from "@/store";
-import { AppBar, Icon, LabelInput, Text } from "@common/components";
-import { css } from "@emotion/react";
-import { useRouter } from "next/router";
 import React, { useMemo } from "react";
 import { useRecoilState } from "recoil";
+import { css } from "@emotion/react";
+import { AppBar, Icon, LabelInput, Text } from "@common/components";
+import { useRouter } from "next/router";
+
+import { useLocation } from "@/hooks";
+import { headerState, searchBarState } from "@/store";
 import Link from "../Link";
+import { ROUTES } from "@/constant";
+
 const { LOCATION, SEARCH, NOTIFICATION, POST } = ROUTES;
+
 const Header = () => {
   const [{ mode: appBarMode, headingText, HeaderRight }] = useRecoilState(headerState);
-  const [{ baseAddress }] = useRecoilState(regionState);
   const [searchBar, setSearchBar] = useRecoilState(searchBarState);
   const router = useRouter();
+  const { curBaseAddress: baseAddress } = useLocation();
 
   const LeftChild = useMemo(() => {
     const GoBackComponent = <Icon mode={"GOBACK"} onClick={() => router.back()} />;
@@ -49,7 +53,7 @@ const Header = () => {
       default:
         return GoBackComponent;
     }
-  }, [appBarMode, searchBar]);
+  }, [appBarMode, searchBar, baseAddress]);
   const RightChild = useMemo(() => {
     const NotificaationComponent = <Icon mode={"NOTIFICATION"} component={Link} noLinkStyle href={NOTIFICATION} />;
     switch (appBarMode) {
