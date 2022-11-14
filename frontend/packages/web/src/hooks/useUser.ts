@@ -1,26 +1,28 @@
 import { apiInstance } from "./../api/index";
-import axios from "axios";
 import { ENDPOINT_API } from "@/api";
-import { useRecoilState } from "recoil";
-import { profileState, regionState } from "@/store";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { QUERY_KEYS } from "@/constant";
+import { UserInfoType } from "@/types";
 
+const { MY_PROFILE } = QUERY_KEYS;
 export const useUser = () => {
-    const [, setLocation] = useRecoilState(regionState);
-    const [, setProfile] = useRecoilState(profileState);
-    const data = {};
-    const postProfile = () => {
-        apiInstance.
-            post(ENDPOINT_API + "/member", data)
-            .then(res => {
-                const { localId, baseAddress, nickName, temperature } = res.data.data;
-                console.log(baseAddress)
-                setLocation({ localId, baseAddress })
-                setProfile({ nickName, temperature })
-            })
-            .catch(e => {
-                console.log(e)
-            })
-    }
+  const client = useQueryClient();
 
-    return { postProfile }
+  const postProfile = async (nickname?: string) => {
+    return await apiInstance
+      .post(ENDPOINT_API + "/member", { nickname })
+      .then(({ data }) => {
+        console.log(data.data);
+        client.setQueryData<UserInfoType>([MY_PROFILE], data.data);
+        client.invalidateQueries([MY_PROFILE]);
+        return data.data;
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  };
+
+  const { data: userInfo } = useQuery<UserInfoType>([MY_PROFILE]);
+
+  return { postProfile, userInfo };
 };
