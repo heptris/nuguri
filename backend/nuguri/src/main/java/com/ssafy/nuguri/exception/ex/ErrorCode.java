@@ -15,6 +15,9 @@ public enum ErrorCode {
     INVALID_REFRESH_TOKEN(401, "유효하지 않은 RefreshToken 입니다."),
     INVALID_ACCESS_TOKEN(401, "유효하지 않은 accessToken 입니다."),
 
+    // 403
+    FILE_UPLOAD_ERROR(403, "파일 업로드에 실패하였습니다"),
+
     // 404 NOT FOUND 잘못된 리소스 접근
     MEMBER_NOT_FOUND(404, "존재하지 않은 회원 ID 입니다."),
     MEMBER_EMAIL_NOT_FOUND(404, "존재하지 않은 이메일입니다."),
