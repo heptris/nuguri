@@ -8,6 +8,7 @@ import com.ssafy.nuguri.domain.deal.DealFavorite;
 import com.ssafy.nuguri.domain.deal.DealHistory;
 import com.ssafy.nuguri.domain.group.GroupPurchase;
 import com.ssafy.nuguri.domain.group.GroupPurchaseHistory;
+import com.ssafy.nuguri.domain.hobby.Hobby;
 import com.ssafy.nuguri.domain.hobby.HobbyHistory;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,6 +42,10 @@ public class Member extends BaseEntity {
     @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<HobbyHistory> hobbyHistoryList = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Hobby> hobbyList = new ArrayList<>();
 
     @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)

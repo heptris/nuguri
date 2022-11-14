@@ -43,6 +43,7 @@ public class HobbyService {
     private final HobbyHistoryRepository hobbyHistoryRepository;
     private final BaseaddressRepository baseaddressRepository;
     private final CategoryRepository categoryRepository;
+    private final MemberRepository memberRepository;
     private final AwsS3Service awsS3Service;
 
     @Transactional
@@ -59,6 +60,10 @@ public class HobbyService {
     public Long createHobby(HobbyCreateRequestDto hobbyCreateRequestDto, MultipartFile hobbyImage){ // 취미방 생성
         BaseAddress baseAddress = baseaddressRepository.findById(hobbyCreateRequestDto.getLocalId()).orElseThrow(()->new CustomException(BASEADDRESS_NOT_FOUND));
         Category category = categoryRepository.findById(hobbyCreateRequestDto.getCategoryId()).orElseThrow(()->new CustomException(CATEGORY_NOT_FOUND));
+        Long memberId = SecurityUtil.getCurrentMemberId();
+        Member member = new Member();
+        member.changeMemberId(memberId);
+
         String hobbyImageUrl;
         if(hobbyImage == null){
             hobbyImageUrl = "";
@@ -75,6 +80,7 @@ public class HobbyService {
         Hobby hobbyEntity = Hobby.builder()
                 .baseAddress(baseAddress)
                 .category(category)
+                .member(member)
                 .title(hobbyCreateRequestDto.getTitle())
                 .content(hobbyCreateRequestDto.getContent())
                 .endDate(hobbyCreateRequestDto.getEndDate())
@@ -90,10 +96,7 @@ public class HobbyService {
 
         // hobby를 생성하면서 hobbyHistory도 같이 생성
         Hobby hobby = hobbyRepository.save(hobbyEntity);
-        Long memberId = SecurityUtil.getCurrentMemberId();
 
-        Member member = new Member();
-        member.changeMemberId(memberId);
 
         HobbyHistory hobbyHistoryEntity = HobbyHistory.builder()
                 .member(member)
