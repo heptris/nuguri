@@ -18,6 +18,7 @@ public class HobbyDto {
     private Long localId;
     private Long categoryId;
     private Long memberId;
+    private String nickname;
     private String title;
     private String content;
 

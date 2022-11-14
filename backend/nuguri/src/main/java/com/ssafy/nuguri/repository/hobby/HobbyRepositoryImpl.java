@@ -33,6 +33,7 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
                         baseAddress.id,
                         category.id,
                         hobby.member.id,
+                        hobby.member.nickname,
                         hobby.title,
                         hobby.content,
                         hobby.endDate,
@@ -46,8 +47,6 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
                         hobby.hobbyImage
                 ))
                 .from(hobby)
-//                .innerJoin(hobby.baseAddress, baseAddress)
-//                .innerJoin(hobby.category, category)
                 .where(RegionEq(RegionId),
                         CategoryEq(CategoryId),
                         hobby.isClosed.eq(Boolean.FALSE)
@@ -69,7 +68,8 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
                         hobby.id,
                         baseAddress.id,
                         category.id,
-                        member.id,
+                        hobby.member.id,
+                        hobby.member.nickname,
                         hobby.title,
                         hobby.content,
                         hobby.endDate,
@@ -100,6 +100,7 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
                         baseAddress.id,
                         category.id,
                         hobby.member.id,
+                        hobby.member.nickname,
                         hobby.title,
                         hobby.content,
                         hobby.endDate,
