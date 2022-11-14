@@ -33,6 +33,7 @@ const Layout = ({ children }) => {
         css={css`
           position: relative;
           top: 4rem;
+          padding-bottom: 4rem;
         `}
       >
         {isOpened && <Alert color={isSuccess ? "success" : "error"}>{message}</Alert>}

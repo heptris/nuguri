@@ -9,7 +9,7 @@ import Link from "../Link";
 const { LOCATION, SEARCH, NOTIFICATION, POST } = ROUTES;
 const Header = () => {
   const [{ mode: appBarMode, headingText, HeaderRight }] = useRecoilState(headerState);
-  const [region] = useRecoilState(regionState);
+  const [{ baseAddress }] = useRecoilState(regionState);
   const [searchBar, setSearchBar] = useRecoilState(searchBarState);
   const router = useRouter();
 
@@ -36,14 +36,14 @@ const Header = () => {
         return (
           <div>
             {GoBackComponent}
-            <Text>{region}</Text>
+            <Text>{baseAddress}</Text>
           </div>
         );
       case "MAIN":
         return (
           <Link href={LOCATION} noLinkStyle>
             <Icon mode={"MYLOCATION"} />
-            <Text>{region}</Text>
+            <Text>{baseAddress}</Text>
           </Link>
         );
       default:
