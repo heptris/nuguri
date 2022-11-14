@@ -4,11 +4,12 @@ type LoginFormType = {
 };
 
 export type ChatRoomType = "DEAL" | "HOBBY";
-type ChatRoomInfoDefaultType = { senderId: number };
-type DealChatRoomInfoType = ChatRoomInfoDefaultType & { receiverId: number };
-type HobbyChatRoomInfoType = ChatRoomInfoDefaultType & { roomName: string };
-type ChatRoomInfoFindType<T extends ChatRoomType> = T extends "DEAL" ? DealChatRoomInfoType & { dealHisotyId: number } : HobbyChatRoomInfoType & { hobbyId: number };
-type ChatRoomInfoGetHistoryType<T extends ChatRoomType> = (T extends "DEAL" ? DealChatRoomInfoType : HobbyChatRoomInfoType) & { roomId: string };
+
+type ChatRoomInfoType<ChatRoomType> = { senderId?: number } & (ChatRoomType extends "DEAL" ? { receiverId: number } : { roomName: string });
+
+type ChatRoomInfoFindType<T extends ChatRoomType> = ChatRoomInfoType<T> & (T extends "DEAL" ? { dealHistoryId: number } : { hobbyId: number });
+
+type ChatRoomInfoGetHistoryType<T extends ChatRoomType> = { roomId: string } & ChatRoomInfoType<T>;
 
 type ChatMessageType = "ENTER" | "TALK" | "LEAVE";
 type ChatRoomMessageInfoType<T extends ChatMessageType> = {
