@@ -27,7 +27,7 @@ const LocationPage = () => {
                   margin-bottom: 1rem;
                 `}
                 key={localId}
-                onClick={() => handleSelectAddress(baseAddress)}
+                onClick={() => handleSelectAddress({ baseAddress, localId })}
               >
                 {baseAddress}
               </div>

@@ -2,11 +2,12 @@ import { useEffect, useRef } from "react";
 import { ROUTES } from "./../constant/index";
 import { useRouter } from "next/router";
 import { useMutation } from "@tanstack/react-query";
-import { ACCESS_TOKEN, ENDPOINT_BFF, REFRESH_TOKEN } from "@/api";
+import { ACCESS_TOKEN, apiInstance, ENDPOINT_BFF, REFRESH_TOKEN, ENDPOINT_AUTH } from "@/api";
 import { LoginFormType } from "@/types";
 import axios from "axios";
 import { atom, useRecoilState } from "recoil";
 import { deleteCookie, getCookie } from "cookies-next";
+import { useUser } from "./useUser"
 
 type AuthType = { isLogined: boolean; nickname?: string };
 const authState = atom<AuthType>({
@@ -20,6 +21,8 @@ export const useAuth = () => {
   const { replace } = useRouter();
   const isRefreshed = useRef(false);
 
+  const { postProfile } = useUser();
+
   useEffect(() => {
     setAuthState({ isLogined: !!getCookie(ACCESS_TOKEN) });
     console.log(isRefreshed);
@@ -32,6 +35,11 @@ export const useAuth = () => {
       return data;
     });
   };
+
+  const postLogout = async () => {
+    await apiInstance.get(ENDPOINT_AUTH + "/logout").then((res) => console.log(res))
+  }
+
 
   const handleSilentRefresh = () => {
     axios
@@ -58,14 +66,23 @@ export const useAuth = () => {
     onSuccess: data => {
       handleLoginProcess(data);
       replace(HOME);
+      postProfile();
     },
   });
 
-  const handleLogout = () => {
-    setAuthState({ isLogined: false, nickname: null });
-    deleteCookie(ACCESS_TOKEN);
-    deleteCookie(REFRESH_TOKEN);
-  };
+  const {
+    mutate: handleLogout,
+    isError: isLogoutError,
+    isLoading: isLogoutLoading,
+  } = useMutation(postLogout, {
+    onSuccess: () => {
+      alert("로그아웃이 성공했습니다.");
+      setAuthState({ isLogined: false, nickname: null });
+      deleteCookie(ACCESS_TOKEN);
+      deleteCookie(REFRESH_TOKEN);
+    }
+  })
+
 
   return { isLogined, nickname, handleLogin, isLoginError, isLoginLoading, handleLogout, handleSilentRefresh };
 };

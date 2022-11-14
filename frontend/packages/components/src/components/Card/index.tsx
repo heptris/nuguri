@@ -77,7 +77,19 @@ export const Card = forwardRef<HTMLDivElement, AllCardProps>((props, ref) => {
         margin-bottom: 3rem;
       `}
     >
-      <CardMedia component="img" height="194" image={props.imgUrl} alt="Coding" />
+      <img
+        src={props.imgUrl}
+        alt="Coding"
+        css={css`
+          @media screen and (max-width: 1799px) {
+            height: 5rem;
+          }
+
+          @media screen and (max-width: 599px) {
+            height: 3rem;
+          }
+        `}
+      />
       <CardContent>
         <ButtonDiv
           css={css`

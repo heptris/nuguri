@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useMutation, RegionType } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useRecoilState } from "recoil";
 
-import { regionState } from "@/store";
+import { regionState, RegionType } from "@/store";
 import { ROUTES } from "@/constant";
 import { ENDPOINT_API } from "./../api/endpoints";
 
@@ -13,13 +13,13 @@ export const useLocation = () => {
   const [, setLocation] = useRecoilState(regionState);
   const postBaseAddress = async (keyword: string) => await axios.post(ENDPOINT_API + `/base-address/${keyword}/search`).then(({ data }) => data);
   const { data: searchedData, mutate: handleSearchAddress, isLoading: isSearching } = useMutation(postBaseAddress);
-  const handleBaseAddress = (address: RegionType) => {
-    setLocation(address);
+  const handleBaseAddress = (local: RegionType) => {
+    setLocation(local);
   };
   const router = useRouter();
 
-  const handleSelectAddress = (address: RegionType) => {
-    handleBaseAddress(address);
+  const handleSelectAddress = (local: RegionType) => {
+    handleBaseAddress(local);
     router.push(HOME);
   };
   return { searchedData, handleSearchAddress, isSearching, handleSelectAddress };
