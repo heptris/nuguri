@@ -23,6 +23,7 @@ export const useUser = () => {
   };
 
   const { data: userInfo } = useQuery<UserInfoType>([MY_PROFILE]);
+  userInfo || client.setQueryData([MY_PROFILE], { baseAddress: "전국", localId: 0 });
 
   return { postProfile, userInfo };
 };

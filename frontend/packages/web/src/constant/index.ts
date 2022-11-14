@@ -10,9 +10,9 @@ export const ROUTES = {
   SEARCH: "/search",
   LOCATION: "/location",
   POST: "/post",
-  HOBBYLIST: "/list/hobby",
-  DEALLIST: "/list/deal",
-  GROUPDEALLIST: "/list/groupdeal",
+  HOBBY: "/hobby",
+  GROUP_DEAL: "/groupdeal",
+  DEAL: "/deal",
 };
 
 export const QUERY_KEYS = {
