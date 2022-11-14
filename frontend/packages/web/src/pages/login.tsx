@@ -61,20 +61,12 @@ const LoginPage = () => {
         css={css`
           width: 100%;
           margin-top: 2rem;
+          border-radius: 1rem;
         `}
         onClick={() => handleLogin({ email, password })}
       >
         로그인
       </Button>
-      <Link
-        href={SIGNUP}
-        noLinkStyle
-        css={css`
-          margin-top: 2rem;
-        `}
-      >
-        이메일로 회원가입
-      </Link>
     </form>
   );
 };

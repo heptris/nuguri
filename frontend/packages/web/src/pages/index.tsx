@@ -82,15 +82,15 @@ const mainPage = () => {
             justify-content: center;
           `}
         >
-          <Link href={SIGNUP}>
+          <Link href={SIGNUP} noLinkStyle>
             <Button
               css={css`
-                background-color: #a77c4e;
+                background-color: #d3bea7;
                 width: 20rem;
                 margin-bottom: 1rem;
                 border-radius: 1rem;
                 &:hover {
-                  background-color: #d3bea7;
+                  background-color: #f2decb;
                 }
               `}
             >
@@ -101,7 +101,7 @@ const mainPage = () => {
 
         <Text>
           이미 계정이 있나요?{" "}
-          <Link href={LOGIN}>
+          <Link href={LOGIN} noLinkStyle>
             <Text
               css={css`
                 text-decoration: none;
