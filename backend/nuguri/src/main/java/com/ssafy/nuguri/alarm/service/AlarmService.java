@@ -37,7 +37,7 @@ public class AlarmService {
         sseEmitter.onTimeout(() -> emitterRepository.deleteById(memberId));
         try {
             // 연결 메세지 보내기(503에러 방지)
-            sseEmitter.send(SseEmitter.event().name("connect"));
+            sseEmitter.send(SseEmitter.event().name("connect").data("connected"));
         } catch (IOException e) {
             e.printStackTrace();
         }

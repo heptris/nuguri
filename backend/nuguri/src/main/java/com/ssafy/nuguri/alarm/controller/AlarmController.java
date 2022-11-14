@@ -23,7 +23,7 @@ import static org.springframework.http.HttpStatus.OK;
 public class AlarmController {
 
     private final AlarmService alarmService;
-    @ApiOperation(value ="알람 조회")
+    @ApiOperation(value ="알람 조회", notes = "알람 조회 API")
     @GetMapping
     public ResponseEntity myAlarmList() {
         Long memberId = SecurityUtil.getCurrentMemberId();
@@ -35,7 +35,7 @@ public class AlarmController {
     /**
      * 알람 읽기
      */
-    @ApiOperation(value = "알림 읽기 요청")
+    @ApiOperation(value = "알림 읽기 요청", notes = "알람 읽기 처리하는 API")
     @GetMapping("/{alarmId}")
     public ResponseEntity readAlarm(@PathVariable Long alarmId) {
         alarmService.readAlarm(alarmId);

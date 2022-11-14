@@ -7,6 +7,7 @@ import com.ssafy.nuguri.domain.s3.AwsS3;
 import com.ssafy.nuguri.dto.response.ResponseDto;
 import com.ssafy.nuguri.exception.ex.CustomException;
 import com.ssafy.nuguri.service.s3.AwsS3Service;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -31,6 +32,7 @@ public class ChatRoomController {
     /**
      * 채팅방 생성
      */
+    @ApiOperation(value = "채팅 할 채팅방 조회", notes = "채팅 할 채팅방 조희 API")
     @PostMapping
     public ResponseEntity findChatRoom(@RequestBody FindChatRoomDto findChatRoomDto) {
         Long roomId = chatRoomService.createChatRoom(findChatRoomDto);
@@ -42,6 +44,7 @@ public class ChatRoomController {
     /**
      * (채팅방 이전 채팅 기록 조회)
      */
+    @ApiOperation(value = "채팅방 이전 채팅 기록 조회", notes = "채팅방 이전 채팅 기록 조회 API")
     @PostMapping("/log")
     public ResponseEntity getChatRoomHistory(@RequestBody GetChatRoomHistoryDto getChatRoomHistoryDto) {
 
@@ -63,11 +66,13 @@ public class ChatRoomController {
     /**
      * 내가 속해있는 채팅방 조회
      */
+    @ApiOperation(value = "내 채팅방 목록 조회", notes = "내 채팅방 목록 조회 API")
     @GetMapping("/{memberId}")
     public List<ChatRoomResponseDto> getMyRoomList(@PathVariable Long memberId) {
         return chatRoomService.findMyRoomList(memberId);
     }
 
+    @ApiOperation(value = "채팅방 파일 업로드", notes = "채팅방 파일 업로드 API")
     @PostMapping("/file")
     public ResponseEntity fileUpLoad(@RequestParam("file") MultipartFile file, @RequestPart Long roomId) {
         try {
