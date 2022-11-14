@@ -83,13 +83,13 @@ const SignUpPage = () => {
       .post(ENDPOINT_AUTH + "/signup", data)
       .then(res => {
         console.log(res);
-        handleAlertOpen("회원가입이 성공했습니다.");
+        handleAlertOpen("회원가입이 성공했습니다.", true, 1000);
         handleLogin({ email, password });
         replace(HOME);
       })
       .catch(e => {
         console.log(e);
-        handleAlertOpen("회원가입이 실패했습니다.");
+        handleAlertOpen("회원가입이 실패했습니다.", false, 5000);
       });
   };
 
