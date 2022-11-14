@@ -1,9 +1,14 @@
 import Link from "@/components/Link";
 import { ROUTES } from "@/constant";
-import { useHeader } from "@/hooks";
+import { useHeader, useCategory } from "@/hooks";
+import { postState } from "@/store";
 import withAuth from "@/utils/withAuth";
-import { Button } from "@common/components";
-import React, { useState } from "react";
+import { Button, Text } from "@common/components";
+import { css } from "@emotion/react";
+import styled from "@emotion/styled";
+import { Box, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
 
 const PostButton = ({ disabled, onClickPostButton }) => {
   return (
@@ -16,33 +21,219 @@ const PostButton = ({ disabled, onClickPostButton }) => {
 const { POST } = ROUTES;
 
 const PostPage = () => {
+  const { getCategory } = useCategory();
+  const [options, setOptions] = useState<any>();
+  useEffect(() => {
+    const List = getCategory();
+    //promise 객체에서 배열로 바꿔주는 과정
+    const getData = () => {
+      List.then(data => {
+        setOptions(data);
+      });
+    };
+    getData();
+  }, []);
   const [disabled, setDisabled] = useState(true);
+  const [, setPostState] = useRecoilState(postState);
+  const [categoryId, setCategoryId] = useState(null);
   const onClickPostButton = () => {};
   useHeader({ mode: "POST", HeaderRight: <PostButton {...{ disabled, onClickPostButton }} /> });
-
   return (
-    <div>
-      취미 카테고리 선택 후 서비스 종류 선택이 가능합니다.
-      <select>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-      </select>
-      <div>
-        <Link href={POST + "/hobby"}>
-          <Button>취미모임</Button>
-        </Link>
-        <Link href={POST + "/deal"}>
-          <Button>중고거래</Button>
-        </Link>
-        <Link href={POST + "/groupdeal"}>
-          <Button>공구거래</Button>
-        </Link>
+    <Container>
+      <div
+        css={css`
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        `}
+      >
+        <Text
+          as="h1"
+          css={css`
+            font-size: 1.5rem;
+            font-weight: 500;
+          `}
+        >
+          취미 카테고리 선택 후
+        </Text>
+        <Text
+          as="h1"
+          css={css`
+            font-size: 1.5rem;
+            font-weight: 500;
+          `}
+        >
+          서비스 종류 선택이 가능합니다.
+        </Text>
       </div>
-    </div>
+
+      <Box
+        sx={{ minWidth: 120 }}
+        css={css`
+          width: 60%;
+          margin-top: 2rem;
+          @media screen and (max-width: 899px) {
+            width: 80%;
+          }
+          @media screen and (max-width: 599px) {
+            width: 90%;
+          }
+        `}
+      >
+        <FormControl fullWidth>
+          <InputLabel>취미카테고리를 선택해주세요.</InputLabel>
+          <Select
+            value={categoryId}
+            label="취미카테고리"
+            onChange={(event: SelectChangeEvent) => {
+              setCategoryId(event.target.value);
+            }}
+          >
+            {options?.map(option => (
+              <MenuItem key={option.categoryId} value={option.categoryId}>
+                {option.categoryName}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
+
+      <div
+        css={css`
+          display: flex;
+          width: 60%;
+          margin-top: 2rem;
+          flex-direction: row;
+          justify-content: space-around;
+          align-items: center;
+          @media screen and (max-width: 899px) {
+            width: 80%;
+          }
+          @media screen and (max-width: 599px) {
+            width: 90%;
+          }
+        `}
+      >
+        {categoryId ? (
+          <Link href={POST + "/hobby"}>
+            {
+              <ButtonStyle
+                onClick={() => {
+                  setPostState(categoryId);
+                }}
+              >
+                <Text
+                  css={css`
+                    color: white;
+                    @media screen and (max-width: 599px) {
+                      font-size: 0.7rem;
+                    }
+                  `}
+                >
+                  취미모임
+                </Text>
+              </ButtonStyle>
+            }
+          </Link>
+        ) : (
+          <ButtonStyle disabled>
+            <Text
+              css={css`
+                @media screen and (max-width: 599px) {
+                  font-size: 0.7rem;
+                }
+              `}
+            >
+              취미모임
+            </Text>
+          </ButtonStyle>
+        )}
+        {categoryId ? (
+          <Link href={POST + "/deal"}>
+            <ButtonStyle
+              onClick={() => {
+                setPostState(categoryId);
+              }}
+            >
+              <Text
+                css={css`
+                  color: white;
+                  @media screen and (max-width: 599px) {
+                    font-size: 0.7rem;
+                  }
+                `}
+              >
+                중고거래
+              </Text>
+            </ButtonStyle>
+          </Link>
+        ) : (
+          <ButtonStyle disabled>
+            <Text
+              css={css`
+                @media screen and (max-width: 599px) {
+                  font-size: 0.7rem;
+                }
+              `}
+            >
+              중고거래
+            </Text>
+          </ButtonStyle>
+        )}
+        {categoryId ? (
+          <Link href={POST + "/groupdeal"}>
+            <ButtonStyle
+              onClick={() => {
+                setPostState(categoryId);
+              }}
+            >
+              <Text
+                css={css`
+                  color: white;
+                  @media screen and (max-width: 599px) {
+                    font-size: 0.7rem;
+                  }
+                `}
+              >
+                공구거래
+              </Text>
+            </ButtonStyle>
+          </Link>
+        ) : (
+          <ButtonStyle disabled>
+            <Text
+              css={css`
+                @media screen and (max-width: 599px) {
+                  font-size: 0.7rem;
+                }
+              `}
+            >
+              공구거래
+            </Text>
+          </ButtonStyle>
+        )}
+      </div>
+    </Container>
   );
 };
 
 export default withAuth(PostPage);
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+`;
+
+const ButtonStyle = styled(Button)`
+  width: 10rem;
+  height: 15rem;
+  @media screen and (max-width: 599px) {
+    /* 모바일 세로 */
+    width: 5rem;
+    height: 10rem;
+  }
+`;
