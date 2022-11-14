@@ -131,6 +131,7 @@ public class DealService {
                 .dong(dealDetailDto.getDong())
                 .isFavorite(isDealFavorite)
                 .sellerId(dealDetailDto.getSellerId())
+                .sellerNickname(dealDetailDto.getSellerNickname())
                 .build();
     }
 
