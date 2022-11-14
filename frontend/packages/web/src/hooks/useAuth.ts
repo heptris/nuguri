@@ -1,35 +1,37 @@
-import { useEffect, useRef } from "react";
-import { ROUTES } from "./../constant/index";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { useMutation } from "@tanstack/react-query";
-import { ACCESS_TOKEN, apiInstance, ENDPOINT_BFF, REFRESH_TOKEN, ENDPOINT_AUTH } from "@/api";
-import { LoginFormType } from "@/types";
 import axios from "axios";
 import { atom, useRecoilState } from "recoil";
 import { deleteCookie, getCookie } from "cookies-next";
-import { useUser } from "./useUser";
-import { useAlert } from "./useAlert";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-type AuthType = { isLogined: boolean; nickname?: string };
+import { ACCESS_TOKEN, apiInstance, ENDPOINT_BFF, REFRESH_TOKEN, ENDPOINT_AUTH } from "@/api";
+import { LoginFormType } from "@/types";
+import { QUERY_KEYS, ROUTES } from "@/constant/index";
+import { useAlert } from "./useAlert";
+import { useUser } from "./useUser";
+
+type AuthType = { isLogined: boolean };
 const authState = atom<AuthType>({
   key: "authState",
-  default: { isLogined: null, nickname: null },
+  default: { isLogined: null },
 });
 const { HOME } = ROUTES;
-
+const { MY_PROFILE } = QUERY_KEYS;
 export const useAuth = () => {
-  const [{ isLogined, nickname }, setAuthState] = useRecoilState(authState);
-  const { replace } = useRouter();
-  const isRefreshed = useRef(false);
+  const [{ isLogined }, setAuthState] = useRecoilState(authState);
+  const { replace, push } = useRouter();
   const { handleAlertOpen } = useAlert();
-
+  const client = useQueryClient();
   const { postProfile } = useUser();
 
   useEffect(() => {
-    setAuthState({ isLogined: !!getCookie(ACCESS_TOKEN) });
-    isRefreshed.current || (!isLogined && handleSilentRefresh());
-    isRefreshed.current = true;
+    isLogined || handleLoginProcess();
   }, []);
+
+  useEffect(() => {
+    isLogined && postProfile();
+  }, [isLogined]);
 
   const postLogin = async (form: LoginFormType) => {
     return await axios.post(ENDPOINT_BFF + "/login", form).then(({ data }) => {
@@ -38,23 +40,22 @@ export const useAuth = () => {
   };
 
   const postLogout = async () => {
-    await apiInstance.get(ENDPOINT_AUTH + "/logout").then(res => console.log(res));
+    return await apiInstance.get(ENDPOINT_AUTH + "/logout").then(({ data }) => {
+      console.log(data);
+      return data;
+    });
   };
 
-  const handleSilentRefresh = () => {
-    axios
-      .get(ENDPOINT_BFF + "/login")
-      .then(res => {
-        handleLoginProcess(res.data);
-      })
-      .catch(e => {
-        console.error(e);
-      });
+  const handleLoginProcess = () => {
+    setAuthState({ isLogined: !!getCookie(ACCESS_TOKEN) });
   };
 
-  const handleLoginProcess = ({ accessTokenExpiresIn, nickname }: { accessTokenExpiresIn: number; nickname: string }) => {
-    setAuthState({ isLogined: true, nickname });
-    setTimeout(handleSilentRefresh, accessTokenExpiresIn - Date.now() - 1000 * 60 * 5);
+  const handleLogoutProcess = () => {
+    handleAlertOpen("로그아웃 완료!", true, 1000);
+    setAuthState({ isLogined: false });
+    deleteCookie(ACCESS_TOKEN);
+    deleteCookie(REFRESH_TOKEN);
+    client.setQueryData([MY_PROFILE], { baseAddress: "전국", localId: 0 });
   };
 
   const {
@@ -64,24 +65,20 @@ export const useAuth = () => {
   } = useMutation(postLogin, {
     onSuccess: data => {
       handleAlertOpen("로그인에 성공했습니다.", true, 1000);
-      handleLoginProcess(data);
+      handleLoginProcess();
       replace(HOME);
-      postProfile();
+    },
+  });
+  const { mutate: mutateLogout } = useMutation(postLogout, {
+    onSettled: () => {
+      handleLogoutProcess();
     },
   });
 
-  const {
-    mutate: handleLogout,
-    isError: isLogoutError,
-    isLoading: isLogoutLoading,
-  } = useMutation(postLogout, {
-    onSuccess: () => {
-      alert("로그아웃이 성공했습니다.");
-      setAuthState({ isLogined: false, nickname: null });
-      deleteCookie(ACCESS_TOKEN);
-      deleteCookie(REFRESH_TOKEN);
-    },
-  });
+  const handleLogout = async () => {
+    await push(HOME);
+    mutateLogout();
+  };
 
-  return { isLogined, nickname, handleLogin, isLoginError, isLoginLoading, handleLogout, handleSilentRefresh };
+  return { isLogined, handleLogin, isLoginError, isLoginLoading, handleLogout };
 };
