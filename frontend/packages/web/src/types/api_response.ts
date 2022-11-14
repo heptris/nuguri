@@ -27,4 +27,17 @@ type HobbyRoomType = {
   closed: boolean;
 };
 
-export type { UserInfoType, HobbyRoomType };
+type DealItemDetailType = {
+  dealId: number;
+  title: string;
+  description: string;
+  price: number;
+  hit: number;
+  dealImage: string;
+  dong: string;
+  sellerId: number;
+  deal: boolean;
+  favorite?: boolean;
+};
+
+export type { UserInfoType, HobbyRoomType, DealItemDetailType };
