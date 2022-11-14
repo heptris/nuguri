@@ -18,4 +18,5 @@ export const ROUTES = {
 export const QUERY_KEYS = {
   MY_ALARM: "myAlarm",
   MY_PROFILE: "myProfile",
+  HOBBY_ROOM: "hobbyRoom",
 };

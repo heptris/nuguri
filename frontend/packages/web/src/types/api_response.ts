@@ -10,4 +10,21 @@ type UserInfoType = {
   temperature: number;
 };
 
-export type { UserInfoType };
+type HobbyRoomType = {
+  hobbyId: number;
+  localId: number;
+  categoryId: number;
+  title: string;
+  content: string;
+  endDate: string;
+  meetingPlace: string;
+  curNum: number;
+  maxNum: number;
+  fee: number;
+  ageLimit: number;
+  sexLimit?: "f" | "m";
+  hobbyImage: string;
+  closed: boolean;
+};
+
+export type { UserInfoType, HobbyRoomType };

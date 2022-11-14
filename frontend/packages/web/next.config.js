@@ -6,6 +6,9 @@ const nextConfig = {
   compiler: {
     emotion: true,
   },
+  images: {
+    domains: ["nuguri-bucket.s3.ap-northeast-2.amazonaws.com"],
+  },
 };
 
 module.exports = withTM(nextConfig);
