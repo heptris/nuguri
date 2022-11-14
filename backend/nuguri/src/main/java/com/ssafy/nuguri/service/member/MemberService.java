@@ -1,6 +1,7 @@
 package com.ssafy.nuguri.service.member;
 
 import com.ssafy.nuguri.config.redis.RedisService;
+import com.ssafy.nuguri.domain.baseaddress.BaseAddress;
 import com.ssafy.nuguri.domain.deal.Deal;
 import com.ssafy.nuguri.domain.deal.DealFavorite;
 import com.ssafy.nuguri.domain.deal.DealHistory;
@@ -9,14 +10,15 @@ import com.ssafy.nuguri.domain.hobby.ApproveStatus;
 import com.ssafy.nuguri.domain.member.Member;
 import com.ssafy.nuguri.dto.deal.DealListDto;
 import com.ssafy.nuguri.dto.hobby.HobbyHistoryResponseDto;
-import com.ssafy.nuguri.dto.member.MemberModifyDto;
+import com.ssafy.nuguri.dto.member.MemberLocalModifyDto;
+import com.ssafy.nuguri.dto.member.MemberProfileModifyDto;
 import com.ssafy.nuguri.dto.member.MemberProfileDto;
 import com.ssafy.nuguri.dto.member.MemberProfileRequestDto;
 import com.ssafy.nuguri.exception.ex.CustomException;
+import com.ssafy.nuguri.repository.baseaddress.BaseaddressRepository;
 import com.ssafy.nuguri.repository.deal.DealFavoriteRepository;
 import com.ssafy.nuguri.repository.deal.DealHistoryRepository;
 import com.ssafy.nuguri.repository.deal.DealRepository;
-import com.ssafy.nuguri.repository.hobby.HobbyHistoryRepository;
 import com.ssafy.nuguri.repository.hobby.HobbyRepository;
 import com.ssafy.nuguri.repository.member.MemberRepository;
 import com.ssafy.nuguri.util.SecurityUtil;
@@ -28,6 +30,7 @@ import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ssafy.nuguri.exception.ex.ErrorCode.BASEADDRESS_NOT_FOUND;
 import static com.ssafy.nuguri.exception.ex.ErrorCode.MEMBER_NOT_FOUND;
 
 @Service
@@ -35,6 +38,7 @@ import static com.ssafy.nuguri.exception.ex.ErrorCode.MEMBER_NOT_FOUND;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final BaseaddressRepository baseaddressRepository;
     private final HobbyRepository hobbyRepository;
     private final DealRepository dealRepository;
     private final DealFavoriteRepository dealFavoriteRepository;
@@ -67,14 +71,33 @@ public class MemberService {
         return memberProfileDto;
     }
 
+    /**
+     * 회원 닉네임 수정
+     */
     @Transactional
-    public MemberModifyDto profileModify(MemberModifyDto requestDto){
+    public MemberProfileModifyDto nicknameModify(MemberProfileModifyDto requestDto){
         Long memberId = SecurityUtil.getCurrentMemberId();
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
 
-        member.modify(requestDto.getNickname());
+        member.nicknameModify(requestDto.getNickname());
         redisService.setValues(String.valueOf(memberId) + ".", requestDto.getNickname());
-        return new MemberModifyDto(requestDto.getNickname());
+        return new MemberProfileModifyDto(requestDto.getNickname());
+    }
+
+    /**
+     * 회원 지역 수정
+     */
+    @Transactional
+    public MemberLocalModifyDto baseAddressModify(MemberLocalModifyDto requestDto){
+        Long memberId = SecurityUtil.getCurrentMemberId();
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+
+        String[] memberAddress = requestDto.getBaseAddress().split(" ");
+
+        BaseAddress baseAddress = baseaddressRepository.findBySidoAndGugunAndDong(memberAddress[0], memberAddress[1], memberAddress[2]).orElseThrow(() -> new CustomException(BASEADDRESS_NOT_FOUND));
+
+        member.baseAddressModify(baseAddress);
+        return new MemberLocalModifyDto(requestDto.getBaseAddress());
     }
 
 //    @Transactional

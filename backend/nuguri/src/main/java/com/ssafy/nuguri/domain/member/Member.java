@@ -99,7 +99,11 @@ public class Member extends BaseEntity {
         this.id = memberId;
     }
 
-    public void modify(String nickname) {
+    public void nicknameModify(String nickname) {
         this.nickname = nickname;
+    }
+
+    public void baseAddressModify(BaseAddress baseAddress) {
+        this.baseAddress = baseAddress;
     }
 }

@@ -1,6 +1,7 @@
 package com.ssafy.nuguri.controller.member;
 
-import com.ssafy.nuguri.dto.member.MemberModifyDto;
+import com.ssafy.nuguri.dto.member.MemberLocalModifyDto;
+import com.ssafy.nuguri.dto.member.MemberProfileModifyDto;
 import com.ssafy.nuguri.dto.member.MemberProfileRequestDto;
 import com.ssafy.nuguri.dto.response.ResponseDto;
 import com.ssafy.nuguri.service.member.MemberService;
@@ -22,10 +23,17 @@ public class MemberController {
         );
     }
 
-    @PostMapping("/modify")
-    public ResponseEntity profileModify(@RequestBody MemberModifyDto requestDto){
+    @PostMapping("/modify-nickname")
+    public ResponseEntity profileModify(@RequestBody MemberProfileModifyDto requestDto){
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseDto<>(HttpStatus.OK.value(), "회원 프로필 수정", memberService.profileModify(requestDto))
+                new ResponseDto<>(HttpStatus.OK.value(), "회원 프로필 수정", memberService.nicknameModify(requestDto))
+        );
+    }
+
+    @PostMapping("/modify-local")
+    public ResponseEntity baseAddressModify(@RequestBody MemberLocalModifyDto requestDto){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseDto<>(HttpStatus.OK.value(), "회원 지역 수정", memberService.baseAddressModify(requestDto))
         );
     }
 

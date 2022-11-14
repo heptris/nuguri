@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberModifyDto {
+public class MemberProfileModifyDto {
     private String nickname;
 }
