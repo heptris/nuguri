@@ -1,15 +1,21 @@
 import { css } from "@emotion/react";
 import { Alert } from "@common/components";
 
-import { useAlert, useLoading } from "@/hooks";
+import { useAlert, useAuth, useLoading, useUser } from "@/hooks";
 import Header from "./Header";
 import BottomNavigation from "./BottomNavigation";
+import { useEffect } from "react";
 
 const Layout = ({ children }) => {
   const {
     alertInfo: { isOpened, isSuccess, message },
   } = useAlert();
   const { pageLoading } = useLoading();
+  const { isLogined } = useAuth();
+  const { postProfile } = useUser();
+  useEffect(() => {
+    isLogined && postProfile();
+  }, [isLogined]);
 
   return (
     <>
