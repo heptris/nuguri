@@ -56,7 +56,7 @@ const FileUploadWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom: 1rem;
+  margin: 2rem 1rem 0;
 `;
 
 const FileUploadBtn = styled.button`
