@@ -8,3 +8,4 @@ export * from "./useLocation";
 export * from "./useDebounce";
 export * from "./useChatRoom";
 export * from "./useUser";
+export *from "./useCategory";
