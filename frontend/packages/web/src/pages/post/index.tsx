@@ -13,21 +13,9 @@ import { useRecoilState } from "recoil";
 const { POST } = ROUTES;
 
 const PostPage = () => {
-  const { getCategory } = useCategory();
-  const [options, setOptions] = useState<any>();
-  useEffect(() => {
-    const List = getCategory();
-    //promise 객체에서 배열로 바꿔주는 과정
-    const getData = () => {
-      List.then(data => {
-        setOptions(data);
-      });
-    };
-    getData();
-  }, []);
+  const { options } = useCategory();
   const [, setPostState] = useRecoilState(postState);
   const [categoryId, setCategoryId] = useState(null);
-  const onClickPostButton = () => {};
 
   return (
     <Container>
