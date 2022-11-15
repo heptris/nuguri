@@ -1,4 +1,4 @@
-import { useHeader } from "@/hooks";
+import { useCategory, useHeader } from "@/hooks";
 import * as React from "react";
 import { Card, Menu, Text } from "@common/components";
 import styled from "@emotion/styled";
@@ -6,25 +6,23 @@ import { css } from "@emotion/react";
 import Link from "@/components/Link";
 import { ROUTES } from "@/constant";
 import { useRecoilState } from "recoil";
-import { hobbyState } from "@/store";
+import { menuCategoryState } from "@/store";
 
 const { HOBBYLIST, DEALLIST, GROUPDEALLIST } = ROUTES;
-const options = ["전체", "문화, 예술", "운동, 액티비티", "푸드, 드링크", "여행, 나들이", "창작", "성장, 자기계발"];
 
 const HomePage = () => {
+  const { options } = useCategory();
   useHeader({ mode: "MAIN", headingText: undefined });
-  const [hobby, setHobby] = useRecoilState(hobbyState);
+  const [categoryId, setCategoryId] = useRecoilState(menuCategoryState);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
   const open = Boolean(anchorEl);
   const handleClickListItem = (selectedMenu: HTMLElement) => {
     setAnchorEl(selectedMenu);
   };
-  const handleMenuItemClick = (index: number) => {
-    setSelectedIndex(index);
-    setHobby(options[index]);
+  const handleMenuItemClick = (categoryId: number) => {
+    setCategoryId(categoryId);
     setAnchorEl(null);
-    console.log(options[index]);
+    console.log(categoryId);
   };
   const handleClose = () => {
     setAnchorEl(null);
@@ -33,7 +31,15 @@ const HomePage = () => {
   const newDate = new Date("2022-10-15 15:00:37");
   return (
     <MainWrapper>
-      <Menu open={open} anchorEl={anchorEl} onCloseHandler={handleClose} handleClickListItem={handleClickListItem} handleMenuItemClick={handleMenuItemClick} selectedIndex={selectedIndex} />
+      <Menu
+        open={open}
+        anchorEl={anchorEl}
+        onCloseHandler={handleClose}
+        handleClickListItem={handleClickListItem}
+        handleMenuItemClick={handleMenuItemClick}
+        categoryId={categoryId}
+        options={options}
+      />
       <CategorytWrapper>
         <TitleWrapper>
           <Text
@@ -141,6 +147,7 @@ const MainWrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding: 1rem;
+  background-color: #f2decb;
 `;
 
 const CategorytWrapper = styled.div`
