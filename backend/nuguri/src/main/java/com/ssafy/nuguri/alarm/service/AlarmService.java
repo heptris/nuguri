@@ -53,7 +53,7 @@ public class AlarmService {
         // 알람 전송(Sse)
         SseEmitter sseEmitter = emitterRepository.findByMemberId(alarm.getMember().getId());
         try {
-            sseEmitter.send(SseEmitter.event().name("alarm").data(alarm.toAlarmDto()));
+            sseEmitter.send(SseEmitter.event().name("alarm").data(savedAlarm.toAlarmDto()));
         } catch (IOException e) {
             e.printStackTrace();
         }
