@@ -1,74 +1,79 @@
 import Fileupload from "@/components/Fileupload";
-import { useAlert, useHeader } from "@/hooks";
+import { useAlert, useHeader, useUser } from "@/hooks";
 import { Button, LabelInput, Text } from "@common/components";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { Box, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Slider, TextField } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { apiInstance, ENDPOINT_API } from "@/api";
 import { useRouter } from "next/router";
 import { ROUTES } from "@/constant";
+import { postState } from "@/store";
+import { useRecoilState } from "recoil";
 
-const PostButton = ({ disabled, onClickPostButton }) => {
-  return (
-    <Button disabled={disabled} onClick={onClickPostButton}>
-      등록
-    </Button>
-  );
-};
 const { HOME } = ROUTES;
 
 const HobbyPage = () => {
-  const { replace } = useRouter();
-  const { handleAlertOpen } = useAlert();
-  const [disabled, setDisabled] = useState(true);
-  const onClickPostButton = () => {
-    const formData = new FormData();
-    file && formData.append("file", file);
-
-    const config = {
-      headers: {
-        "content-type": "multipart/form-data;charset=UTF-8;",
-      },
-    };
-
-    const data = {
-      title,
-      content,
-      maxNum,
-      endDate,
-      meetingPlace,
-      ageLimit,
-      sexLimit,
-      fee,
-    };
-
-    formData.append("hobbyCreateRequestDto", new Blob([JSON.stringify(data)], { type: "application/json" }));
-
-    apiInstance
-      .post(`${ENDPOINT_API}/hobby/regist`, formData, config)
-      .then(res => {
-        console.log(res);
-        handleAlertOpen("취미방 생성이 완료되었습니다.", true, 1000);
-        replace(HOME);
-      })
-      .catch(err => {
-        console.log(err);
-        handleAlertOpen("취미방 생성이 실패했습니다.", false, 5000);
-      });
-  };
-  useHeader({ mode: "POST", HeaderRight: <PostButton {...{ disabled, onClickPostButton }} /> });
-
+  const { userInfo } = useUser();
+  const [categoryId, setCategoryId] = useRecoilState(postState);
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [maxNum, setMaxNum] = useState(null);
   const [endDate, setEndDate] = useState("");
   const [meetingPlace, setMeetingPlace] = useState("");
-  // const [ageLimit, setAgeLimit] = useState(null);
   const [sexLimit, setSexLimit] = useState("");
   const [fee, setFee] = useState(null);
   const [ageLimit, setAgeLimit] = React.useState<number[]>([20, 37]);
+  const { replace } = useRouter();
+  const { handleAlertOpen } = useAlert();
+  console.log(endDate);
+
+  //취미방 생성 함수
+  const onClickPostButton = async () => {
+    if (file && title && content && maxNum && endDate && meetingPlace && sexLimit && fee && ageLimit) {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const config = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      };
+
+      const data = {
+        localId: userInfo.localId,
+        categoryId,
+        title,
+        content,
+        maxNum,
+        endDate: endDate + ":59.999Z",
+        meetingPlace,
+        rowAgeLimit: ageLimit[0],
+        highAgeLimit: ageLimit[1],
+        sexLimit,
+        fee,
+      };
+
+      formData.append("hobbyCreateRequestDto", new Blob([JSON.stringify(data)], { type: "application/json" }));
+
+      await apiInstance
+        .post(`${ENDPOINT_API}/hobby/regist`, formData, config)
+        .then(res => {
+          console.log(res);
+          handleAlertOpen("취미방 생성이 완료되었습니다.", true, 1000);
+          replace(HOME);
+          console.log(data);
+        })
+        .catch(err => {
+          console.log(err);
+          handleAlertOpen("취미방 생성이 실패했습니다.", false, 5000);
+          console.log(data);
+        });
+    } else {
+      handleAlertOpen("모든칸을 채워주세요.", false, 5000);
+    }
+  };
 
   return (
     <ContainerWrapper>
@@ -119,11 +124,11 @@ const HobbyPage = () => {
       />
 
       <TextField
-        label={"마감기한"}
+        label={"모임날짜"}
         InputLabelProps={{
           shrink: true,
         }}
-        type="date"
+        type="datetime-local"
         name={"endDate"}
         value={endDate}
         placeholder={"숫자만 입력 가능합니다."}
@@ -195,7 +200,7 @@ const HobbyPage = () => {
           >
             <MenuItem value={"M"}>남자</MenuItem>
             <MenuItem value={"W"}>여자</MenuItem>
-            <MenuItem value={"W"}>누구나</MenuItem>
+            <MenuItem value={"X"}>누구나</MenuItem>
           </Select>
         </FormControl>
       </Box>
@@ -214,6 +219,15 @@ const HobbyPage = () => {
           setFee(event.target.value);
         }}
       />
+      <Button
+        onClick={onClickPostButton}
+        css={css`
+          width: 80%;
+          margin-top: 2rem;
+        `}
+      >
+        등록
+      </Button>
     </ContainerWrapper>
   );
 };
@@ -223,7 +237,6 @@ export default HobbyPage;
 const ContainerWrapper = styled.div`
   display: flex;
   width: 100%;
-  height: 85vh;
   flex-direction: column;
   align-items: center;
 `;
