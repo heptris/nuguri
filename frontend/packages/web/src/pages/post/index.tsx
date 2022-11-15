@@ -10,14 +10,6 @@ import { Box, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } fro
 import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
-const PostButton = ({ disabled, onClickPostButton }) => {
-  return (
-    <Button disabled={disabled} onClick={onClickPostButton}>
-      완료
-    </Button>
-  );
-};
-
 const { POST } = ROUTES;
 
 const PostPage = () => {
@@ -33,11 +25,10 @@ const PostPage = () => {
     };
     getData();
   }, []);
-  const [disabled, setDisabled] = useState(true);
   const [, setPostState] = useRecoilState(postState);
   const [categoryId, setCategoryId] = useState(null);
   const onClickPostButton = () => {};
-  useHeader({ mode: "POST", HeaderRight: <PostButton {...{ disabled, onClickPostButton }} /> });
+
   return (
     <Container>
       <div
