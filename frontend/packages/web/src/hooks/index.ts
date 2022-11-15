@@ -11,3 +11,4 @@ export * from "./useUser";
 export * from "./useDealItem";
 export * from "./useHobbyRoom";
 export * from "./useBottom";
+export * from "./useHome";

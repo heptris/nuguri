@@ -18,4 +18,11 @@ type ChatRoomMessageInfoType<T extends ChatMessageType> = {
   roomId: string;
 } & (T extends "TALK" ? { message: string } : {});
 
-export type { LoginFormType, ChatRoomInfoFindType, ChatRoomInfoGetHistoryType, ChatRoomMessageInfoType };
+type ChatMessageReceiveType = {
+  chatTime: string;
+  message: string;
+  messageType: ChatMessageType;
+  sender: string;
+};
+
+export type { LoginFormType, ChatRoomInfoFindType, ChatRoomInfoGetHistoryType, ChatRoomMessageInfoType, ChatMessageReceiveType };

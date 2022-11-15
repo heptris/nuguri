@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { atom } from "recoil";
 
-export type HeaderType = { mode: "EDIT" | "ITEM" | "MAIN" | "LIST" | "SEARCH" | "LOGIN" | "POST" | "DEFAULT"; headingText?: string; HeaderRight?: ReactNode };
+export type HeaderType = { mode: "EDIT" | "ITEM" | "MAIN" | "LIST" | "SEARCH" | "LOGIN" | "POST" | "DEFAULT" | "NOTHING"; headingText?: string; HeaderRight?: ReactNode };
 export type SearchBarType = { placeholder: string; value: string };
 export type HobbyType = string;
 export type BottomType = { children: ReactNode };

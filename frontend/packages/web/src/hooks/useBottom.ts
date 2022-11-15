@@ -10,4 +10,5 @@ export const useBottom = (BottomComponent: ReactNode) => {
       setBottom({ children: null });
     };
   }, []);
+  return { setBottom };
 };

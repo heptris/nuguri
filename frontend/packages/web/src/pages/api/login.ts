@@ -25,7 +25,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       res,
       secure: true,
       sameSite: "strict",
-      maxAge: (accessTokenExpiresIn - Date.now()) / 1000,
+      // maxAge: (accessTokenExpiresIn - Date.now()) / 1000,
     });
     setCookie(REFRESH_TOKEN, refreshToken, {
       req,

@@ -5,7 +5,10 @@ import { useAlert, useAuth, useLoading, useUser } from "@/hooks";
 import Header from "./Header";
 import BottomNavigation from "./BottomNavigation";
 import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { ROUTES } from "@/constant";
 
+const { MAIN } = ROUTES;
 const Layout = ({ children }) => {
   const {
     alertInfo: { isOpened, isSuccess, message },
@@ -13,6 +16,7 @@ const Layout = ({ children }) => {
   const { pageLoading } = useLoading();
   const { isLogined } = useAuth();
   const { postProfile } = useUser();
+  const { pathname } = useRouter();
   useEffect(() => {
     isLogined && postProfile();
   }, [isLogined]);
@@ -38,7 +42,7 @@ const Layout = ({ children }) => {
       <main
         css={css`
           position: relative;
-          top: 4rem;
+          top: ${pathname === MAIN ? "0" : "4rem"};
           padding-bottom: 4rem;
         `}
       >

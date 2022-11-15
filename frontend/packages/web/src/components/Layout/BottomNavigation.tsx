@@ -6,6 +6,7 @@ import { BottomNavbar, BottomNavbarItem } from "@common/components";
 import Link from "@/components/Link";
 import { useRecoilState } from "recoil";
 import { bottomState } from "@/store";
+import withAuth from "@/utils/withAuth";
 
 const { HOME, CHAT, LOUNGE, PROFILE, LOGIN } = ROUTES;
 
@@ -15,7 +16,7 @@ const BottomNavigation = () => {
   return (
     <>
       {BottomComponent ? (
-        BottomComponent
+        <BottomNavbar>{BottomComponent}</BottomNavbar>
       ) : (
         <BottomNavbar value={router.pathname}>
           <BottomNavbarItem label={"홈"} value={HOME} icon={<HomeOutlined />} component={Link} noLinkStyle href={HOME} />
@@ -28,4 +29,4 @@ const BottomNavigation = () => {
   );
 };
 
-export default BottomNavigation;
+export default withAuth(BottomNavigation);

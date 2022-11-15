@@ -1,20 +1,14 @@
-import { ROUTES } from "@/constant";
-import { useHeader, useLocation, useSearchBar, useAlert, useAuth } from "@/hooks";
-import { Button, LabelInput } from "@common/components";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import Link from "next/link";
-import { useState } from "react";
-import { useRouter } from "next/router";
-
-import * as React from "react";
-import Box from "@mui/material/Box";
-
-import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
 import { useRecoilState } from "recoil";
+import { ChangeEvent, useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Box, Modal } from "@mui/material";
+
+import { Button, LabelInput } from "@common/components";
+import { ROUTES } from "@/constant";
+import { useHeader, useLocation, useSearchBar, useAlert, useAuth, useBottom, useDebounce } from "@/hooks";
 import { searchBarState } from "@/store";
-import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { apiInstance, ENDPOINT_AUTH } from "@/api";
 
 const { HOME } = ROUTES;
@@ -33,6 +27,7 @@ const style = {
 
 const SignUpPage = () => {
   useHeader({ mode: "LOGIN", headingText: "회원가입" });
+  useBottom(<></>);
   const { handleAlertOpen } = useAlert();
   const { handleLogin, isLoginError } = useAuth();
   const { replace } = useRouter();
@@ -46,26 +41,17 @@ const SignUpPage = () => {
   const [passwordConfirm, setPasswordConfirm] = useState("");
   const [sex, setSex] = useState("");
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [searchBar, setSearchBar] = useRecoilState(searchBarState);
   const { placeholder, value } = searchBar;
   const { searchedValue } = useSearchBar("내 동네 이름(동, 읍, 면)으로 검색");
-  const debouncedSearchedValue = searchedValue;
-  const { handleSearchAddress, searchedData, isSearching, handleSelectAddress } = useLocation();
-
-  if (isSearching) return <div>Loading...</div>;
-
-  const handleOnClick = () => {
-    handleSearchAddress(debouncedSearchedValue);
-  };
-
-  const handleOnKeyPress = e => {
-    if (e.key === "Enter") {
-      handleOnClick(); // Enter 입력이 되면 클릭 이벤트 실행
-    }
-  };
+  const { handleSearchAddress, searchedData, isSearching, resetSearchedData } = useLocation();
+  const debouncedSearchedValue = useDebounce(searchedValue);
+  useEffect(() => {
+    debouncedSearchedValue && handleSearchAddress(debouncedSearchedValue);
+  }, [debouncedSearchedValue]);
 
   const data = {
     age,
@@ -104,7 +90,7 @@ const SignUpPage = () => {
         `}
         name={"name"}
         value={name}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+        onChange={(event: ChangeEvent<HTMLInputElement>) => {
           setName(event.target.value);
         }}
       />
@@ -119,7 +105,7 @@ const SignUpPage = () => {
         type={"number"}
         name={"age"}
         value={age}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+        onChange={(event: ChangeEvent<HTMLInputElement>) => {
           setAge(event.target.value);
         }}
       />
@@ -155,7 +141,7 @@ const SignUpPage = () => {
         `}
         name={"nickName"}
         value={nickName}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+        onChange={(event: ChangeEvent<HTMLInputElement>) => {
           setNickName(event.target.value);
         }}
       />
@@ -169,7 +155,7 @@ const SignUpPage = () => {
         type={"email"}
         name={"email"}
         value={email}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+        onChange={(event: ChangeEvent<HTMLInputElement>) => {
           setEmail(event.target.value);
         }}
       />
@@ -183,7 +169,7 @@ const SignUpPage = () => {
         `}
         name={"baseAddress"}
         value={baseAddress}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+        onChange={(event: ChangeEvent<HTMLInputElement>) => {
           setBaseAddress(event.target.value);
         }}
         onClick={handleOpen}
@@ -199,7 +185,7 @@ const SignUpPage = () => {
         name={"password"}
         type={"password"}
         value={password}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+        onChange={(event: ChangeEvent<HTMLInputElement>) => {
           setPassword(event.target.value);
         }}
       />
@@ -214,7 +200,7 @@ const SignUpPage = () => {
         name={"passwordConfirm"}
         type={"password"}
         value={passwordConfirm}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+        onChange={(event: ChangeEvent<HTMLInputElement>) => {
           setPasswordConfirm(event.target.value);
         }}
       />
@@ -241,12 +227,21 @@ const SignUpPage = () => {
             `}
             placeholder={placeholder}
             value={value}
-            onKeyPress={handleOnKeyPress}
-            onChange={e => setSearchBar({ placeholder, value: e.target.value })}
+            onChange={e => {
+              setSearchBar({ placeholder, value: e.target.value });
+              handleSearchAddress(debouncedSearchedValue);
+            }}
           />
           <div> {!!debouncedSearchedValue ? searchedData?.message : "내 동네 검색하기"}</div>
-          <>
-            {!!debouncedSearchedValue &&
+          <div
+            css={css`
+              overflow-y: auto;
+              height: 10rem;
+            `}
+          >
+            {!!debouncedSearchedValue && isSearching ? (
+              <div>Loading...</div>
+            ) : (
               searchedData?.data.map(({ baseAddress, localId }) => {
                 return (
                   <div
@@ -258,14 +253,17 @@ const SignUpPage = () => {
                     key={localId}
                     onClick={() => {
                       setBaseAddress(baseAddress);
+                      setSearchBar({ placeholder, value: "" });
+                      resetSearchedData();
                       handleClose();
                     }}
                   >
                     {baseAddress}
                   </div>
                 );
-              })}
-          </>
+              })
+            )}
+          </div>
         </Box>
       </Modal>
     </ContainerWrapper>
