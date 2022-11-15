@@ -89,7 +89,8 @@ public class HobbyService {
                 .curNum(1)
                 .maxNum(hobbyCreateRequestDto.getMaxNum())
                 .fee(hobbyCreateRequestDto.getFee())
-                .ageLimit(hobbyCreateRequestDto.getAgeLimit())
+                .rowAgeLimit(hobbyCreateRequestDto.getRowAgeLimit())
+                .highAgeLimit(hobbyCreateRequestDto.getHighAgeLimit())
                 .sexLimit(hobbyCreateRequestDto.getSexLimit())
                 .hobbyImage(hobbyImageUrl)
                 .build();

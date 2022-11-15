@@ -67,7 +67,8 @@ class HobbyServiceTest {
                 .curNum(1)
                 .maxNum(hobbyCreateRequestDto.getMaxNum())
                 .fee(hobbyCreateRequestDto.getFee())
-                .ageLimit(hobbyCreateRequestDto.getAgeLimit())
+                .rowAgeLimit(hobbyCreateRequestDto.getRowAgeLimit())
+                .highAgeLimit(hobbyCreateRequestDto.getHighAgeLimit())
                 .sexLimit(hobbyCreateRequestDto.getSexLimit())
                 .hobbyImage("")
                 .build();
@@ -105,7 +106,8 @@ class HobbyServiceTest {
                 .meetingPlace("멀티캠퍼스")
                 .maxNum(10)
                 .fee(0)
-                .ageLimit(100)
+                .rowAgeLimit(0)
+                .highAgeLimit(100)
                 .sexLimit((char)1)
                 .build();
 
@@ -118,7 +120,8 @@ class HobbyServiceTest {
                 .meetingPlace("멀티캠퍼스")
                 .maxNum(10)
                 .fee(0)
-                .ageLimit(100)
+                .rowAgeLimit(1)
+                .highAgeLimit(99)
                 .sexLimit((char)1)
                 .build();
 
@@ -166,7 +169,8 @@ class HobbyServiceTest {
                 .meetingPlace("멀티캠퍼스")
                 .maxNum(10)
                 .fee(0)
-                .ageLimit(100)
+                .rowAgeLimit(1)
+                .highAgeLimit(88)
                 .sexLimit((char)1)
                 .build();
 

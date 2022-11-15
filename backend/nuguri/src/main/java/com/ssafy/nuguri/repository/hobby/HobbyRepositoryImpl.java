@@ -42,7 +42,8 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
                         hobby.curNum,
                         hobby.maxNum,
                         hobby.fee,
-                        hobby.ageLimit,
+                        hobby.rowAgeLimit,
+                        hobby.highAgeLimit,
                         hobby.sexLimit,
                         hobby.hobbyImage
                 ))
@@ -78,7 +79,8 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
                         hobby.curNum,
                         hobby.maxNum,
                         hobby.fee,
-                        hobby.ageLimit,
+                        hobby.rowAgeLimit,
+                        hobby.highAgeLimit,
                         hobby.sexLimit,
                         hobby.hobbyImage
                 ))
@@ -109,7 +111,8 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
                         hobby.curNum,
                         hobby.maxNum,
                         hobby.fee,
-                        hobby.ageLimit,
+                        hobby.rowAgeLimit,
+                        hobby.highAgeLimit,
                         hobby.sexLimit,
                         hobby.hobbyImage
                 ))

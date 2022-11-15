@@ -62,7 +62,9 @@ public class Hobby extends BaseEntity {
 
     private int fee;
 
-    private int ageLimit;
+    private int rowAgeLimit;
+
+    private int highAgeLimit;
 
     private char sexLimit;
 
