@@ -12,8 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.ssafy.nuguri.exception.ex.ErrorCode.DEAL_NOT_FOUND;
-import static com.ssafy.nuguri.exception.ex.ErrorCode.MEMBER_NOT_FOUND;
+import static com.ssafy.nuguri.exception.ex.ErrorCode.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -31,7 +30,7 @@ public class HobbyFavoriteService {
         HobbyFavorite hobbyFavorite = hobbyFavoriteRepository.findByMemberIdAndHobbyId(memberId, hobbyId);
         if(hobbyFavorite == null){
             Member member = memberRepository.findById(memberId).orElseThrow(()-> new CustomException(MEMBER_NOT_FOUND));
-            Hobby hobby = hobbyRepository.findById(hobbyId).orElseThrow(()-> new CustomException(DEAL_NOT_FOUND));
+            Hobby hobby = hobbyRepository.findById(hobbyId).orElseThrow(()-> new CustomException(HOBBY_NOT_FOUND));
             HobbyFavorite newHobbyFavorite = HobbyFavorite.builder()
                     .member(member)
                     .hobby(hobby)
@@ -42,6 +41,9 @@ public class HobbyFavoriteService {
         }else{
             return hobbyFavorite.changeFavorite();
         }
+    }
+    public Integer getFavoriteCnt(Long hobbyId){
+        return hobbyFavoriteRepository.getFavoriteNumberByHobbyId(hobbyId);
     }
 
 }

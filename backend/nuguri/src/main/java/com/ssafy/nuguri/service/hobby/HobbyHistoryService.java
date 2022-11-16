@@ -38,21 +38,19 @@ public class HobbyHistoryService {
 
     @Transactional
     public Long createHobbyHistory(Long hobbyId) { // 취미방 생성 또는 참여신청 // 신청만
-        Member member = new Member();
-        member.changeMemberId(SecurityUtil.getCurrentMemberId());
+        Long memberId = SecurityUtil.getCurrentMemberId();
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
 
-        Hobby hobby = hobbyRepository.findById(hobbyId).orElseThrow();
+        Hobby hobby = hobbyRepository.findById(hobbyId).orElseThrow(() -> new CustomException(HOBBY_NOT_FOUND));
+
+
 
 //        // 조건 미달
-//        if(!hobbyHistoryDto.isPromoter() // 방장이 아니면서
-//            && hobby.getCurNum() >= hobby.getMaxNum() // 정원초과
-//            || hobby.getAgeLimit() < member.getAge() // 나이제한
-//            || hobby.getSexLimit() ==  member.getSex() // 성별제한
-//            || LocalDateTime.now().isAfter(hobby.getEndDate()) // 만료된 모임
-//            || hobby.getBaseAddress() != member.getBaseAddress()){ // 주소가 다름
-//            System.out.println("입장하실 수 없습니다");
-//            return -1L;
-//        }
+//        if(hobby.getCurNum() >= hobby.getMaxNum()) throw new CustomException(FULL_HOBBY_ERROR); // 정원초과
+//        else if(hobby.getRowAgeLimit() > member.getAge()) throw new CustomException(AGE_LIMIT_ERROR); // 나이제한
+//        else if(hobby.getHighAgeLimit() < member.getAge()) throw new CustomException(AGE_LIMIT_ERROR); // 나이제한
+//        else if(hobby.getSexLimit() ==  member.getSex()) throw new CustomException(SEX_LIMIT_ERROR); // 성별제한
+//        else if(hobby.getBaseAddress() != member.getBaseAddress()) throw new CustomException(DIFF_ADDRESS_ERROR); // 나이제한
 
         HobbyHistory hobbyHistoryEntity = HobbyHistory.builder()
                 .member(member)

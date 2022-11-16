@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class ChatMessageResponseDto {
 
     private String sender;
-    private ChatMessage.MessageType messageType;
+//    private ChatMessage.MessageType messageType;
     private String message;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

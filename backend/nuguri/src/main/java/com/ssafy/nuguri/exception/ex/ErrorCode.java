@@ -32,6 +32,13 @@ public enum ErrorCode {
     SSE_NOT_FOUND(404, "존재하지 않은 SSE입니다"),
     ALARM_NOT_FOUND(404, "존재하지 않은 알림입니다"),
 
+    //406 취미방 조건 제한
+    FULL_HOBBY_ERROR(406,"취미방 정원이 초과했습니다"),
+    AGE_LIMIT_ERROR(406,"참여할 수 없는 나이의 취미방입니다"),
+    SEX_LIMIT_ERROR(406,"참여할 수 없는 성별의 취미방입니다"),
+    END_HOBBY_ERROR(406,"만료된 취미방입니다"),
+    DIFF_ADDRESS_ERROR(406,"본인의 주소에서 참여할 수 없는 취미방입니다"),
+
 
     //409 CONFLICT 중복된 리소스
     ALREADY_SAVED_MEMBER(409, "이미 가입되어 있는 회원입니다."),

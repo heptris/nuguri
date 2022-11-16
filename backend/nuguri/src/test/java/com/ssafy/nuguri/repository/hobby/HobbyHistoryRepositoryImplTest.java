@@ -37,82 +37,9 @@ class HobbyHistoryRepositoryImplTest {
     EntityManager em;
 
     @Autowired
-    HobbyHistoryRepositoryImpl hobbyHistoryRepository;
-    JPAQueryFactory queryFactory;
+    HobbyHistoryRepository hobbyHistoryRepository;
 
 
-//    @Test
-//    @BeforeEach
-////    @Commit
-//    public void before(){
-//
-//        queryFactory = new JPAQueryFactory(em);
-//
-//        BaseAddress ba = queryFactory
-//                .selectFrom(baseAddress)
-//                .where(baseAddress.id.eq(1L))
-//                .fetchOne();
-//        Category ca = queryFactory
-//                .selectFrom(category)
-//                .where(category.id.eq(1L))
-//                .fetchOne();
-//        Member me = queryFactory
-//                .selectFrom(member)
-//                .where(member.id.eq(1L))
-//                .fetchOne();
-//
-//        Hobby hobbyEntity1 = Hobby.builder()
-//                .baseAddress(ba)
-//                .category(ca)
-//                .title("취미방 1")
-//                .content("1번방 입니다")
-//                .endDate(LocalDateTime.now())
-//                .meetingPlace("서울에서 모여요")
-//                .isClosed(false)
-//                .curNum(10)
-//                .maxNum(10)
-//                .fee(10)
-//                .ageLimit(10)
-//                .sexLimit((char)1)
-//                .hobbyImage("aa")
-//                .build();
-//
-//        Hobby hobbyEntity2 = Hobby.builder()
-//                .baseAddress(ba)
-//                .category(ca)
-//                .title("취미방 2")
-//                .content("2번방 입니다")
-//                .endDate(LocalDateTime.now())
-//                .meetingPlace("부산에서 모여요")
-//                .isClosed(false)
-//                .curNum(20)
-//                .maxNum(20)
-//                .fee(20)
-//                .ageLimit(20)
-//                .sexLimit((char)2)
-//                .hobbyImage("bb")
-//                .build();
-//
-//        HobbyHistory hobbyHistory1 = HobbyHistory.builder().member(me).hobby(hobbyEntity1).isPromoter(true).approveStatus(ApproveStatus.READY).build();
-//        HobbyHistory hobbyHistory2 = HobbyHistory.builder().member(me).hobby(hobbyEntity1).isPromoter(false).approveStatus(ApproveStatus.REJECT).build();
-//        HobbyHistory hobbyHistory3 = HobbyHistory.builder().member(me).hobby(hobbyEntity1).isPromoter(true).approveStatus(ApproveStatus.APPROVE).build();
-//        HobbyHistory hobbyHistory4 = HobbyHistory.builder().member(me).hobby(hobbyEntity1).isPromoter(false).approveStatus(ApproveStatus.APPROVE).build();
-//        HobbyHistory hobbyHistory5 = HobbyHistory.builder().member(me).hobby(hobbyEntity1).isPromoter(false).approveStatus(ApproveStatus.REJECT).build();
-//        HobbyFavorite hobbyFavorite1 = HobbyFavorite.builder().member(me).hobby(hobbyEntity1).isFavorite(true).build();
-//        HobbyFavorite hobbyFavorite2 = HobbyFavorite.builder().member(me).hobby(hobbyEntity1).isFavorite(true).build();
-//
-//
-//
-//        em.persist(hobbyEntity1);
-//        em.persist(hobbyEntity2);
-//        em.persist(hobbyHistory1);
-//        em.persist(hobbyHistory2);
-//        em.persist(hobbyHistory3);
-//        em.persist(hobbyHistory4);
-//        em.persist(hobbyHistory5);
-//        em.persist(hobbyFavorite1);
-//        em.persist(hobbyFavorite2);
-//    }
 
     @Test
     public void 승인_대기자_목록(){
@@ -134,9 +61,7 @@ class HobbyHistoryRepositoryImplTest {
 
     @Test
     public void 취미참여자_상태_변경(){
-        HobbyHistory testData = queryFactory.selectFrom(hobbyHistory)
-                .where(hobbyHistory.id.eq(1L))
-                .fetchOne();
+        HobbyHistory testData = hobbyHistoryRepository.findById(1L).orElseThrow();
         System.out.println("변경 전: "+testData.getApproveStatus());
         hobbyHistoryRepository.changeStatus(testData.getId(),ApproveStatus.REJECT);
         System.out.println("변경 후: "+testData.getApproveStatus());
@@ -172,8 +97,8 @@ class HobbyHistoryRepositoryImplTest {
 
     @Test
     void 취미와_멤버로_대기중인_history_찾기(){ // 알람으로 온 신청을 승인 또는 거절할 때 사용됨
-        HobbyHistoryDto result = hobbyHistoryRepository.findByHobbyAndMemberIdDto(1L,1L);
-        System.out.println(result.toString());
+        HobbyHistoryDto result = hobbyHistoryRepository.findByHobbyAndMemberIdDto(3L,3L);
+        System.out.println("@@@@@@@@@@@@@"+result.toString());
     }
 
     @Test

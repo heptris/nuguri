@@ -12,11 +12,11 @@ public class ChatMessageDto {
     private String message;
     private Long roomId;
 
-    private ChatMessage.MessageType messageType;
+   // private ChatMessage.MessageType messageType;
 
     public ChatMessage toChatMessage() {
         ChatMessage chatMessage = ChatMessage.builder().message(message).senderId(senderId).
-        createdDate(LocalDateTime.now()).roomId(roomId).messageType(messageType).build();
+        createdDate(LocalDateTime.now()).roomId(roomId).build();
         return chatMessage;
     }
 }

@@ -16,5 +16,4 @@ class ChatRoomRepositoryTest {
     @Autowired
     private ChatRepository chatRepository;
 
-
 }

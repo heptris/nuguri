@@ -17,8 +17,9 @@ public class HobbyDto {
     private Long hobbyId;
     private Long localId;
     private Long categoryId;
+    private Long memberId;
+    private String nickname;
     private String title;
-
     private String content;
 
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
@@ -34,7 +35,9 @@ public class HobbyDto {
 
     private int fee;
 
-    private int ageLimit;
+    private int rowAgeLimit;
+
+    private int highAgeLimit;
 
     private char sexLimit;
 
