@@ -11,10 +11,7 @@ import com.ssafy.nuguri.domain.member.Member;
 import com.ssafy.nuguri.domain.s3.AwsS3;
 import com.ssafy.nuguri.dto.deal.DealListDto;
 import com.ssafy.nuguri.dto.hobby.HobbyHistoryResponseDto;
-import com.ssafy.nuguri.dto.member.MemberLocalModifyDto;
-import com.ssafy.nuguri.dto.member.MemberProfileModifyDto;
-import com.ssafy.nuguri.dto.member.MemberProfileDto;
-import com.ssafy.nuguri.dto.member.MemberProfileRequestDto;
+import com.ssafy.nuguri.dto.member.*;
 import com.ssafy.nuguri.exception.ex.CustomException;
 import com.ssafy.nuguri.repository.baseaddress.BaseaddressRepository;
 import com.ssafy.nuguri.repository.deal.DealFavoriteRepository;
@@ -80,7 +77,7 @@ public class MemberService {
      * 회원 닉네임 수정
      */
     @Transactional
-    public MemberProfileModifyDto nicknameModify(MultipartFile profileImage, MemberProfileModifyDto requestDto){
+    public MemberProfileModifyResponseDto nicknameModify(MultipartFile profileImage, MemberProfileModifyRequestDto requestDto){
         Long memberId = SecurityUtil.getCurrentMemberId();
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
 
@@ -107,7 +104,7 @@ public class MemberService {
 
         member.profileModify(profileImageUrl, nickname);
         redisService.setValues(String.valueOf(memberId) + ".", nickname);
-        return new MemberProfileModifyDto(profileImageUrl, nickname);
+        return new MemberProfileModifyResponseDto(profileImageUrl, nickname);
     }
 
     /**

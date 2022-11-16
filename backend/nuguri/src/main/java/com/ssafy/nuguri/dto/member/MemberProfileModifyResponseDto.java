@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemberProfileModifyDto {
+public class MemberProfileModifyResponseDto {
     private String profileImage;
     private String nickname;
 }

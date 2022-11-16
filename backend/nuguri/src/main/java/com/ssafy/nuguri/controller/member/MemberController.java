@@ -1,7 +1,7 @@
 package com.ssafy.nuguri.controller.member;
 
 import com.ssafy.nuguri.dto.member.MemberLocalModifyDto;
-import com.ssafy.nuguri.dto.member.MemberProfileModifyDto;
+import com.ssafy.nuguri.dto.member.MemberProfileModifyRequestDto;
 import com.ssafy.nuguri.dto.member.MemberProfileRequestDto;
 import com.ssafy.nuguri.dto.response.ResponseDto;
 import com.ssafy.nuguri.service.member.MemberService;
@@ -26,7 +26,7 @@ public class MemberController {
 
     @PostMapping("/modify")
     public ResponseEntity profileModify(@RequestPart(value = "file", required = false) MultipartFile profileImage,
-                                        @RequestPart(required = false) MemberProfileModifyDto requestDto){
+                                        @RequestPart(required = false) MemberProfileModifyRequestDto requestDto){
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseDto<>(HttpStatus.OK.value(), "회원 프로필 수정", memberService.nicknameModify(profileImage, requestDto))
         );
