@@ -31,7 +31,7 @@ export async function getServerSideProps({ params, query, req }) {
 
 const HobbyDetailPage = ({ hobbyRoomDefaultInfo }: { hobbyRoomDefaultInfo: HobbyRoomType }) => {
   const { hobbyRoomInfo, refetchHobbyRoomInfo } = useHobbyRoom(hobbyRoomDefaultInfo);
-  const { ageLimit, categoryId, closed, content, curNum, endDate, fee, hobbyId, hobbyImage, localId, maxNum, meetingPlace, sexLimit, title } = hobbyRoomInfo;
+  const { highAgeLimit, rowAgeLimit, categoryId, closed, content, curNum, endDate, fee, hobbyId, hobbyImage, localId, maxNum, meetingPlace, sexLimit, title } = hobbyRoomInfo;
   useHeader({ mode: "ITEM" });
   useBottom(
     <div
@@ -126,12 +126,12 @@ const HobbyDetailPage = ({ hobbyRoomDefaultInfo }: { hobbyRoomDefaultInfo: Hobby
             </IconTextWrapper>
             <IconTextWrapper>
               <PaidIcon />
-              <Text>{fee}</Text>
+              <Text>{fee === 0 ? "무료" : fee}</Text>
             </IconTextWrapper>
             <IconTextWrapper>
               <CheckCircleIcon />
               <Text>
-                {ageLimit}세 이상 {sexLimit === "f" ? "여자만" : sexLimit === "m" ? "남자만" : "무관"}
+                {!!rowAgeLimit && rowAgeLimit + "세 이하"}/{!!highAgeLimit && highAgeLimit + "세 이상"}/{sexLimit === "f" ? "여자만" : sexLimit === "m" ? "남자만" : "무관"}
               </Text>
             </IconTextWrapper>
             <IconTextWrapper>

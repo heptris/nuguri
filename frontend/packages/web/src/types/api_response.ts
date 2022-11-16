@@ -21,7 +21,8 @@ type HobbyRoomType = {
   curNum: number;
   maxNum: number;
   fee: number;
-  ageLimit: number;
+  highAgeLimit?: number;
+  rowAgeLimit?: number;
   sexLimit?: "f" | "m";
   hobbyImage: string;
   closed: boolean;
