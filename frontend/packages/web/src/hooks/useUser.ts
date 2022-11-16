@@ -14,16 +14,11 @@ export const useUser = () => {
   };
 
   const postProfile = async (nickname?: string) => {
-    return await apiInstance
-      .post(ENDPOINT_API + "/member", { nickname })
-      .then(({ data }) => {
-        console.log(data.data);
-        setUserInfo(data.data);
-        return data.data;
-      })
-      .catch(e => {
-        console.log(e);
-      });
+    return await apiInstance.post(ENDPOINT_API + "/member", { nickname }).then(({ data }) => {
+      console.log(data.data);
+      setUserInfo(data.data);
+      return data.data;
+    });
   };
 
   const { data: userInfo } = useQuery<UserInfoType>([MY_PROFILE]);
