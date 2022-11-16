@@ -7,5 +7,5 @@ const DOMAIN = PROTOCOL + HOST;
 export const ENDPOINT_API = DOMAIN + "/app";
 export const ENDPOINT_AUTH = DOMAIN + "/auth";
 export const ENDPOINT_BFF = "/api";
-export const ENDPOINT_WS = "/ws-connection";
-export const ENDPOINT_SSE = "/sse/sub";
+export const ENDPOINT_WS = ENDPOINT_API + "/ws-connection";
+export const ENDPOINT_SSE = ENDPOINT_API + "/sse/sub";
