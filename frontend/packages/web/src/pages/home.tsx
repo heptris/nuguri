@@ -21,14 +21,51 @@ import { menuCategoryState } from "@/store";
 import { DealItemDetailType, HobbyRoomType } from "@/types";
 import Image from "next/image";
 import { racconsThemes } from "@common/components/src/styles/theme";
+import { apiInstance, ENDPOINT_API } from "@/api";
 
 const { REGION, HOBBY, DEAL, GROUP_DEAL } = ROUTES;
 
+const postHobbyList = async ({ categoryId, localId }: { categoryId?: number; localId?: number }) => {
+  await apiInstance
+    .post(ENDPOINT_API + "/hobby/list", { categoryId, localId })
+    .then(({ data }) => {
+      const list = data.data;
+      console.log(data);
+      return list;
+    })
+    .catch(err => console.log(err));
+};
+
+const getHobbyList = ({ categoryId, localId }: { categoryId?: number; localId?: number }) => {
+  const [hobbyLists, setHobbyLists] = useState<any>();
+  useEffect(() => {
+    const List = postHobbyList({ categoryId, localId });
+    //promise 객체에서 배열로 바꿔주는 과정
+    const getData = () => {
+      List.then(data => {
+        setHobbyLists(data);
+      });
+    };
+    getData();
+  }, []);
+  console.log(hobbyLists);
+  return { hobbyLists };
+};
+
 const HomePage = () => {
   const { options } = useCategory();
+
   useHeader({ mode: "MAIN", headingText: undefined });
   const [categoryId, setCategoryId] = useRecoilState(menuCategoryState);
+  const {
+    userInfo: { localId },
+  } = useUser();
+  const { hobbyLists } = getHobbyList({ categoryId, localId });
+  console.log(hobbyLists);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+  // const [hobbyDatas, setHobbyDatas] = useState(getHobbyList({ categoryId, localId }));
+
   const open = Boolean(anchorEl);
   const handleClickListItem = (selectedMenu: HTMLElement) => {
     setAnchorEl(selectedMenu);
@@ -41,10 +78,13 @@ const HomePage = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const {
-    userInfo: { localId },
-  } = useUser();
-  const { dealDatas, hobbyDatas } = useHome({});
+
+  // const { dealDatas, hobbyDatas } = useHome({ categoryId, localId });
+  // console.log(dealDatas);
+
+  useEffect(() => {
+    // hobbyDatas=postHobbyList();
+  }, [categoryId]);
 
   // useEffect(() => {
   //   console.log(dealDatas?.pages[0].content, hobbyDatas);
@@ -86,7 +126,7 @@ const HomePage = () => {
           </Link>
         </TitleWrapper>
         <CardWapper>
-          {hobbyDatas?.map(({ highAgeLimit, categoryId, curNum, endDate, hobbyId, hobbyImage, maxNum, title, sexLimit }: HobbyRoomType) => {
+          {hobbyLists?.map(({ highAgeLimit, categoryId, curNum, endDate, hobbyId, hobbyImage, maxNum, title, sexLimit }: HobbyRoomType) => {
             return (
               <Link
                 href={REGION + `/${localId}` + HOBBY + `/${hobbyId}`}
@@ -207,7 +247,7 @@ const HomePage = () => {
           </Link>
         </TitleWrapper>
         <CardWapper>
-          {dealDatas?.pages[0].content.map(({ dealId, dealImage, price, title, hit, deal }: DealItemDetailType) => {
+          {/* {dealDatas?.pages[0].content.map(({ dealId, dealImage, price, title, hit, deal }: DealItemDetailType) => {
             return (
               <Link
                 href={REGION + `/${localId}` + DEAL + `/${dealId}`}
@@ -283,7 +323,7 @@ const HomePage = () => {
                 />
               </Link>
             );
-          })}
+          })} */}
         </CardWapper>
       </CategorytWrapper>
       <CategorytWrapper>
@@ -351,7 +391,6 @@ const CardWapper = styled.div`
   max-width: 1799px;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   -ms-overflow-style: none;
   &::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
