@@ -78,7 +78,7 @@ const Header = () => {
     }
   }, [appBarMode]);
 
-  return <AppBar LeftChild={LeftChild} RightChild={RightChild} heading={headingText} />;
+  return <>{appBarMode === "NOTHING" ? <></> : <AppBar LeftChild={LeftChild} RightChild={RightChild} heading={headingText} />}</>;
 };
 
 export default Header;

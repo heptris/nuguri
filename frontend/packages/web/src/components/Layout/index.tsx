@@ -1,21 +1,20 @@
 import { css } from "@emotion/react";
 import { Alert } from "@common/components";
 
-import { useAlert, useAuth, useLoading, useUser } from "@/hooks";
+import { useAlert, useAuth, useLoading } from "@/hooks";
 import Header from "./Header";
 import BottomNavigation from "./BottomNavigation";
-import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { ROUTES } from "@/constant";
 
+const { MAIN } = ROUTES;
 const Layout = ({ children }) => {
   const {
     alertInfo: { isOpened, isSuccess, message },
   } = useAlert();
   const { pageLoading } = useLoading();
-  const { isLogined } = useAuth();
-  const { postProfile } = useUser();
-  useEffect(() => {
-    isLogined && postProfile();
-  }, [isLogined]);
+  useAuth();
+  const { pathname } = useRouter();
 
   return (
     <>
@@ -38,7 +37,7 @@ const Layout = ({ children }) => {
       <main
         css={css`
           position: relative;
-          top: 4rem;
+          top: ${pathname === MAIN ? "0" : "4rem"};
           padding-bottom: 4rem;
         `}
       >
