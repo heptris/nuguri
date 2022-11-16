@@ -43,15 +43,7 @@ function FileUpload<T extends ElementType = "div">(props: FileUploadProps<T>, re
         >
           {imageSrc ? (
             <ImageWrapper>
-              <Image
-                alt="sample"
-                src={imageSrc}
-                height={50}
-                width={50}
-                css={css`
-                  border-radius: 10rem;
-                `}
-              />
+              <Image alt="sample" src={imageSrc} />
             </ImageWrapper>
           ) : (
             <ImageIcon sx={{ fontSize: "30px" }} color="action" />
@@ -66,7 +58,7 @@ function FileUpload<T extends ElementType = "div">(props: FileUploadProps<T>, re
         >
           {imageSrc ? (
             <ImageWrapper>
-              <Image alt="sample" src={imageSrc} height={50} width={50} />
+              <Image alt="sample" src={imageSrc} />
             </ImageWrapper>
           ) : (
             <ImageIcon sx={{ fontSize: "30px" }} color="action" />
@@ -105,8 +97,8 @@ const FileUploadBtn = styled.button`
 
 const FileUploadProifleBtn = styled.button`
   display: flex;
-  width: 20rem;
-  height: 20rem;
+  width: 10rem;
+  height: 10rem;
   flex-direction: row;
   justify-content: center;
   align-items: center;
@@ -126,14 +118,14 @@ const FileUploadStyle = css`
 `;
 
 const ImageWrapper = styled.div`
-  display: flex;
-  justify-content: center;
+  width: 10rem;
+  height: 10rem;
 `;
 
 const Image = styled.img`
-  width: 20rem;
-  height: 20rem;
-  padding: 1rem;
+  width: 10rem;
+  height: 10rem;
+  border-radius: 10rem;
 `;
 
 export default forwardRef(FileUpload) as typeof FileUpload;
