@@ -1,8 +1,6 @@
 import { forwardRef } from "react";
 import * as React from "react";
-import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
 import MenuItem from "@mui/material/MenuItem";
 
 import { MenuProps, default as MuiMenu } from "@mui/material/Menu";
@@ -10,7 +8,6 @@ import { ButtonProps } from "@mui/material/Button";
 import Text from "../Text";
 import { css } from "@emotion/react";
 import { racconsThemes } from "../../styles/theme";
-import styled from "@emotion/styled";
 import { Button } from "../Button";
 
 export type MenuButtomProps = MenuProps &
@@ -50,16 +47,7 @@ export const Menu = forwardRef<HTMLDivElement, MenuButtomProps>(({ handleClickLi
           </Text>
         </ListItem>
       </Button>
-      <MuiMenu
-        id="lock-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={onHandleClose}
-        MenuListProps={{
-          "aria-labelledby": "lock-button",
-          role: "listbox",
-        }}
-      >
+      <MuiMenu anchorEl={anchorEl} open={open} onClose={onHandleClose}>
         {options?.map((option, index) => (
           <MenuItem
             key={option.categoryId}
