@@ -13,6 +13,7 @@ export const ROUTES = {
   HOBBYLIST: "/list/hobby",
   DEALLIST: "/list/deal",
   GROUPDEALLIST: "/list/groupdeal",
+  EDITPROFILE: "/profile/edit",
 };
 
 export const QUERY_KEYS = {
