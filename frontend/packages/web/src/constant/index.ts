@@ -1,4 +1,5 @@
 export const ROUTES = {
+  MAIN: "/",
   HOME: "/home",
   LOGIN: "/login",
   SIGNUP: "/signup",
@@ -19,4 +20,7 @@ export const QUERY_KEYS = {
   MY_ALARM: "myAlarm",
   MY_PROFILE: "myProfile",
   HOBBY_ROOM: "hobbyRoom",
+  HOBBY_LIST: "hobbyList",
+  DEAL_LIST: "dealList",
+  CHAT_ROOM_HISTORY: "chatRoomHistory",
 };
