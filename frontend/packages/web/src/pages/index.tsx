@@ -1,5 +1,6 @@
 import Link from "@/components/Link";
 import { ROUTES } from "@/constant";
+import { useBottom, useHeader } from "@/hooks";
 import { Button, Text } from "@common/components";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
@@ -7,7 +8,9 @@ import Image from "next/image";
 const { LOGIN, SIGNUP } = ROUTES;
 import mainImg from "../../public/assets/main.png";
 
-const mainPage = () => {
+const MainPage = () => {
+  useHeader({ mode: "NOTHING" });
+  useBottom(<></>);
   return (
     <>
       <ContainerWrapper>
@@ -117,7 +120,7 @@ const mainPage = () => {
     </>
   );
 };
-export default mainPage;
+export default MainPage;
 
 const ContainerWrapper = styled.div`
   display: flex;
