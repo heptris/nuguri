@@ -42,9 +42,9 @@ function FileUpload<T extends ElementType = "div">(props: FileUploadProps<T>, re
           }}
         >
           {imageSrc ? (
-            <ImageWrapper>
-              <Image alt="sample" src={imageSrc} />
-            </ImageWrapper>
+            <ProfileImageWrapper>
+              <ProfileImage alt="sample" src={imageSrc} />
+            </ProfileImageWrapper>
           ) : (
             <ImageIcon sx={{ fontSize: "30px" }} color="action" />
           )}
@@ -117,12 +117,23 @@ const FileUploadStyle = css`
   display: none;
 `;
 
-const ImageWrapper = styled.div`
+const ProfileImageWrapper = styled.div`
   width: 10rem;
   height: 10rem;
 `;
 
+const ImageWrapper = styled.div`
+  width: 20rem;
+  height: 20rem;
+`;
+
 const Image = styled.img`
+  width: 20rem;
+  height: 20rem;
+  border-radius: 8px;
+`;
+
+const ProfileImage = styled.img`
   width: 10rem;
   height: 10rem;
   border-radius: 10rem;

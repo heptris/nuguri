@@ -80,12 +80,9 @@ const ProfilePage = () => {
     setSelectedGroupDealMenu(selectedMenu);
   };
 
-  // const { handleLogout } = useAuth();
-
   return (
     <div>
       <TopWrapper>
-        {/* <Button onClick={() => handleLogout()}>로그아웃</Button> */}
         <ProfileWrapper>
           <div
             css={css`
