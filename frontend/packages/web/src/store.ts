@@ -3,8 +3,9 @@ import { atom } from "recoil";
 
 export type HeaderType = { mode: "EDIT" | "ITEM" | "MAIN" | "LIST" | "SEARCH" | "LOGIN" | "POST" | "DEFAULT" | "NOTHING"; headingText?: string; HeaderRight?: ReactNode };
 export type SearchBarType = { placeholder: string; value: string };
-export type HobbyType = string;
 export type BottomType = { children: ReactNode };
+export type ListCategoryType = number;
+export type PostType = number;
 
 const headerState = atom<HeaderType>({
   key: "headerState",
@@ -21,9 +22,14 @@ const bottomState = atom<BottomType>({
   key: "bottomState",
   default: { children: null },
 });
-const hobbyState = atom<HobbyType>({
+const menuCategoryState = atom<ListCategoryType>({
   key: "hobbyState",
   default: null,
 });
+const postState = atom<PostType>({
+  key: "postState",
+  default: null,
+});
 
-export { headerState, searchBarState, hobbyState, bottomState };
+export { headerState, searchBarState, menuCategoryState, postState, bottomState };
+

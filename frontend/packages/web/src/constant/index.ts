@@ -14,6 +14,7 @@ export const ROUTES = {
   HOBBY: "/hobby",
   GROUP_DEAL: "/groupdeal",
   DEAL: "/deal",
+  EDITPROFILE: "/profile/edit",
 };
 
 export const QUERY_KEYS = {
