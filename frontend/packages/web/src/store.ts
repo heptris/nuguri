@@ -7,9 +7,9 @@ export type SearchBarType = {
   placeholder: string;
   value: string;
 };
-export type HobbyType = string;
+export type ListCategoryType = number;
 
-export type PostType=number;
+export type PostType = number;
 
 const headerState = atom<HeaderType>({
   key: "headerState",
@@ -23,13 +23,13 @@ const searchBarState = atom<SearchBarType>({
   },
 });
 
-const hobbyState = atom<HobbyType>({
+const menuCategoryState = atom<ListCategoryType>({
   key: "hobbyState",
   default: null,
 })
 
-const postState=atom<PostType>({
-  key:"postState",
-  default:null,
+const postState = atom<PostType>({
+  key: "postState",
+  default: null,
 })
-export { headerState, searchBarState, hobbyState, postState };
+export { headerState, searchBarState, menuCategoryState, postState };
