@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/app/member")
@@ -23,14 +24,15 @@ public class MemberController {
         );
     }
 
-    @PostMapping("/modify-nickname")
-    public ResponseEntity profileModify(@RequestBody MemberProfileModifyDto requestDto){
+    @PostMapping("/modify")
+    public ResponseEntity profileModify(@RequestPart(value = "file", required = false) MultipartFile profileImage,
+                                        @RequestPart(required = false) MemberProfileModifyDto requestDto){
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseDto<>(HttpStatus.OK.value(), "회원 프로필 수정", memberService.nicknameModify(requestDto))
+                new ResponseDto<>(HttpStatus.OK.value(), "회원 프로필 수정", memberService.nicknameModify(profileImage, requestDto))
         );
     }
 
-    @PostMapping("/modify-local")
+    @PostMapping("/modify/local")
     public ResponseEntity baseAddressModify(@RequestBody MemberLocalModifyDto requestDto){
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseDto<>(HttpStatus.OK.value(), "회원 지역 수정", memberService.baseAddressModify(requestDto))

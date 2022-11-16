@@ -99,7 +99,8 @@ public class Member extends BaseEntity {
         this.id = memberId;
     }
 
-    public void nicknameModify(String nickname) {
+    public void profileModify(String profileImage, String nickname) {
+        this.profileImage = profileImage;
         this.nickname = nickname;
     }
 

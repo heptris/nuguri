@@ -8,6 +8,7 @@ import com.ssafy.nuguri.domain.deal.DealHistory;
 import com.ssafy.nuguri.domain.deal.DealStatus;
 import com.ssafy.nuguri.domain.hobby.ApproveStatus;
 import com.ssafy.nuguri.domain.member.Member;
+import com.ssafy.nuguri.domain.s3.AwsS3;
 import com.ssafy.nuguri.dto.deal.DealListDto;
 import com.ssafy.nuguri.dto.hobby.HobbyHistoryResponseDto;
 import com.ssafy.nuguri.dto.member.MemberLocalModifyDto;
@@ -21,12 +22,15 @@ import com.ssafy.nuguri.repository.deal.DealHistoryRepository;
 import com.ssafy.nuguri.repository.deal.DealRepository;
 import com.ssafy.nuguri.repository.hobby.HobbyRepository;
 import com.ssafy.nuguri.repository.member.MemberRepository;
+import com.ssafy.nuguri.service.s3.AwsS3Service;
 import com.ssafy.nuguri.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +47,7 @@ public class MemberService {
     private final DealRepository dealRepository;
     private final DealFavoriteRepository dealFavoriteRepository;
     private final DealHistoryRepository dealHistoryRepository;
+    private final AwsS3Service awsS3Service;
 
     private final RedisService redisService;
 
@@ -75,13 +80,34 @@ public class MemberService {
      * 회원 닉네임 수정
      */
     @Transactional
-    public MemberProfileModifyDto nicknameModify(MemberProfileModifyDto requestDto){
+    public MemberProfileModifyDto nicknameModify(MultipartFile profileImage, MemberProfileModifyDto requestDto){
         Long memberId = SecurityUtil.getCurrentMemberId();
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
 
-        member.nicknameModify(requestDto.getNickname());
-        redisService.setValues(String.valueOf(memberId) + ".", requestDto.getNickname());
-        return new MemberProfileModifyDto(requestDto.getNickname());
+        String profileImageUrl;
+        String nickname;
+
+        if(profileImage == null){
+            profileImageUrl = member.getProfileImage();
+        }else{
+            AwsS3 awsS3 = new AwsS3();
+            try {
+                awsS3 = awsS3Service.upload(profileImage, "profileImage");
+            }catch (IOException e){
+                System.out.println(e);
+            }
+            profileImageUrl = awsS3.getPath();
+        }
+
+        if(requestDto == null){
+            nickname = member.getNickname();
+        } else {
+            nickname = requestDto.getNickname();
+        }
+
+        member.profileModify(profileImageUrl, nickname);
+        redisService.setValues(String.valueOf(memberId) + ".", nickname);
+        return new MemberProfileModifyDto(profileImageUrl, nickname);
     }
 
     /**
