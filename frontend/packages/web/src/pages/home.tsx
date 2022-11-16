@@ -170,6 +170,10 @@ const CardWapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
   @media screen and (max-width: 1799px) {
     width: 100%;
     overflow-x: scroll;
