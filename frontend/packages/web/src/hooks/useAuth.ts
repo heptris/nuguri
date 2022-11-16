@@ -30,8 +30,20 @@ export const useAuth = () => {
   }, []);
 
   useEffect(() => {
-    isLogined && postProfile();
+    isLogined &&
+      postProfile().catch(err => {
+        console.log(err);
+        if (err.response?.data.message === "유효하지 않은 accessToken 입니다.") {
+          getRefreshToken();
+        } else {
+          handleLogoutProcess();
+        }
+      });
   }, [isLogined]);
+
+  const getRefreshToken = async () => {
+    await axios.get(ENDPOINT_BFF + "/login").then(() => postProfile());
+  };
 
   const postLogin = async (form: LoginFormType) => {
     return await axios.post(ENDPOINT_BFF + "/login", form).then(({ data }) => {

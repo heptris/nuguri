@@ -26,7 +26,7 @@ export const useLocation = () => {
     userInfo && setCurBaseAddress(userInfo.baseAddress);
   }, [userInfo]);
   const postToFindBaseAddress = async (keyword: string) => await axios.post(ENDPOINT_API + `/base-address/${keyword}/search`).then(({ data }) => data);
-  const { data: searchedData, mutate: handleSearchAddress, isLoading: isSearching } = useMutation(postToFindBaseAddress);
+  const { data: searchedData, mutate: handleSearchAddress, isLoading: isSearching, reset: resetSearchedData } = useMutation(postToFindBaseAddress);
   const handleBaseAddress = ({ baseAddress, localId }: LocationInfoType) => {
     client.setQueryData([MY_PROFILE], { ...userInfo, baseAddress, localId });
   };
@@ -37,5 +37,5 @@ export const useLocation = () => {
     router.push(HOME);
   };
 
-  return { searchedData, handleSearchAddress, isSearching, handleSelectAddress, curBaseAddress };
+  return { searchedData, handleSearchAddress, isSearching, handleSelectAddress, curBaseAddress, resetSearchedData };
 };
