@@ -6,6 +6,7 @@ import { QUERY_KEYS, ROUTES } from "@/constant";
 import { ENDPOINT_API } from "./../api/endpoints";
 import { UserInfoType } from "@/types";
 import { useEffect, useState } from "react";
+import { apiInstance } from "@/api";
 
 const { HOME } = ROUTES;
 const { MY_PROFILE } = QUERY_KEYS;
@@ -32,8 +33,16 @@ export const useLocation = () => {
   };
   const router = useRouter();
 
+  const postBaseAddressModify = async (baseAddress: string) => {
+    const data = { baseAddress: baseAddress }
+    await apiInstance.post(ENDPOINT_API + `/member/modify/local`, data)
+      .then(res => console.log(res))
+      .catch(err => console.log(err))
+  }
+
   const handleSelectAddress = (locationInfo: LocationInfoType) => {
     handleBaseAddress(locationInfo);
+    postBaseAddressModify(locationInfo.baseAddress)
     router.push(HOME);
   };
 
