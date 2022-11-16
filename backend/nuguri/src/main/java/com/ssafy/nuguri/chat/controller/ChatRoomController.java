@@ -70,7 +70,7 @@ public class ChatRoomController {
     @GetMapping("/{memberId}")
     public List<ChatRoomResponseDto> getMyRoomList(@PathVariable Long memberId) {
         return chatRoomService.findMyRoomList(memberId);
-    }
+    } 
 
     @ApiOperation(value = "채팅방 파일 업로드", notes = "채팅방 파일 업로드 API")
     @PostMapping("/file")
