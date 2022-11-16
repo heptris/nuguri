@@ -1,4 +1,4 @@
-import { useCategory, useHeader } from "@/hooks";
+import { useHeader,  useUser, useCategory } from "@/hooks";
 import * as React from "react";
 import { Card, Menu, Text } from "@common/components";
 import styled from "@emotion/styled";
@@ -8,7 +8,7 @@ import { ROUTES } from "@/constant";
 import { useRecoilState } from "recoil";
 import { menuCategoryState } from "@/store";
 
-const { HOBBYLIST, DEALLIST, GROUPDEALLIST } = ROUTES;
+const { REGION, HOBBY, DEAL, GROUP_DEAL } = ROUTES;
 
 const HomePage = () => {
   const { options } = useCategory();
@@ -27,6 +27,9 @@ const HomePage = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const {
+    userInfo: { localId },
+  } = useUser();
 
   const newDate = new Date("2022-10-15 15:00:37");
   return (
@@ -50,7 +53,7 @@ const HomePage = () => {
           >
             취미모임
           </Text>
-          <Link href={HOBBYLIST}>
+          <Link href={REGION + `/${localId}` + HOBBY}>
             <Text
               css={css`
                 color: #5e6272;
@@ -65,7 +68,15 @@ const HomePage = () => {
           </Link>
         </TitleWrapper>
         <CardWapper>
-          <Card promiseDate={newDate} nowPeople={2} maxPeople={5} imgUrl={"/public/coding.jpg"} />
+          <Link
+            href={REGION + `/${localId}` + HOBBY + "/1"}
+            noLinkStyle
+            css={css`
+              display: contents;
+            `}
+          >
+            <Card promiseDate={newDate} nowPeople={2} maxPeople={5} imgUrl={"/public/coding.jpg"} />
+          </Link>
           <Card promiseDate={newDate} nowPeople={2} maxPeople={5} imgUrl={"/public/coding.jpg"} />
           <Card promiseDate={newDate} nowPeople={2} maxPeople={5} imgUrl={"/public/coding.jpg"} />
           <Card promiseDate={newDate} nowPeople={2} maxPeople={5} imgUrl={"/public/coding.jpg"} />
@@ -83,7 +94,7 @@ const HomePage = () => {
           >
             중고거래
           </Text>
-          <Link href={DEALLIST}>
+          <Link href={REGION + `/${localId}` + DEAL}>
             <Text
               css={css`
                 color: #5e6272;
@@ -98,7 +109,15 @@ const HomePage = () => {
           </Link>
         </TitleWrapper>
         <CardWapper>
-          <Card price={1000000} imgUrl={"/public/coding.jpg"} />
+          <Link
+            href={REGION + `/${localId}` + DEAL + `/1`}
+            noLinkStyle
+            css={css`
+              display: contents;
+            `}
+          >
+            <Card price={1000000} imgUrl={"/public/coding.jpg"} />
+          </Link>
           <Card price={1000000} imgUrl={"/public/coding.jpg"} />
           <Card price={1000000} imgUrl={"/public/coding.jpg"} />
           <Card price={1000000} imgUrl={"/public/coding.jpg"} />
@@ -116,7 +135,7 @@ const HomePage = () => {
           >
             공구목록
           </Text>
-          <Link href={GROUPDEALLIST}>
+          <Link href={REGION + `/${localId}` + GROUP_DEAL}>
             <Text
               css={css`
                 color: #5e6272;

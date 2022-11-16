@@ -2,7 +2,7 @@ import { Text } from "@common/components";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 
-const groupdeal = () => {
+const GroupDealListPage = () => {
   return (
     <MainWrapper>
       <Text
@@ -19,7 +19,7 @@ const groupdeal = () => {
     </MainWrapper>
   );
 };
-export default groupdeal;
+export default GroupDealListPage;
 
 const MainWrapper = styled.div`
   max-width: 1799px;

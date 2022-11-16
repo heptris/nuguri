@@ -8,13 +8,17 @@ const { MY_PROFILE } = QUERY_KEYS;
 export const useUser = () => {
   const client = useQueryClient();
 
+  const setUserInfo = (userInfo: UserInfoType) => {
+    client.setQueryData<UserInfoType>([MY_PROFILE], userInfo);
+    client.refetchQueries([MY_PROFILE]);
+  };
+
   const postProfile = async (nickname?: string) => {
     return await apiInstance
       .post(ENDPOINT_API + "/member", { nickname })
       .then(({ data }) => {
         console.log(data.data);
-        client.setQueryData<UserInfoType>([MY_PROFILE], data.data);
-        client.invalidateQueries([MY_PROFILE]);
+        setUserInfo(data.data);
         return data.data;
       })
       .catch(e => {
@@ -23,6 +27,7 @@ export const useUser = () => {
   };
 
   const { data: userInfo } = useQuery<UserInfoType>([MY_PROFILE]);
+  userInfo || setUserInfo({ ...userInfo, baseAddress: "전국", localId: 0 });
 
   return { postProfile, userInfo };
 };
