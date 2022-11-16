@@ -41,7 +41,7 @@ function SelectTab<T extends ElementType = "div">(props: SelectTabProps<T>, ref:
           <label
             key={i}
             css={css`
-              margin: 1rem 0rem;
+              margin: 0.5rem 0rem;
             `}
           >
             <input type="radio" value={menu} checked={select === menu} onChange={handleChange} />
@@ -75,6 +75,7 @@ const SelectTabContainer = styled.div`
   overflow: auto;
   justify-content: center;
   align-items: center;
+  padding-left: 1rem;
   -ms-overflow-style: none;
   &::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Opera*/
