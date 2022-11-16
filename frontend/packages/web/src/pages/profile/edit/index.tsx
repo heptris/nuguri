@@ -8,7 +8,7 @@ import styled from "@emotion/styled";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-const { HOME } = ROUTES;
+const { PROFILE } = ROUTES;
 
 const EditPage = () => {
   const { replace } = useRouter();
@@ -18,7 +18,7 @@ const EditPage = () => {
   const { handleAlertOpen } = useAlert();
 
   const [file, setFile] = useState(null);
-  const [nickName, setTitle] = useState(nickname);
+  const [nickName, setNickname] = useState(nickname);
 
   const onClickEditButton = async () => {
     const formData = new FormData();
@@ -31,17 +31,17 @@ const EditPage = () => {
     };
 
     const data = {
-      nickName,
+      nickname: nickName,
     };
 
-    formData.append("hobbyCreateRequestDto", new Blob([JSON.stringify(data)], { type: "application/json" }));
+    formData.append("requestDto", new Blob([JSON.stringify(data)], { type: "application/json" }));
 
     await apiInstance
-      .post(`${ENDPOINT_API}/member/modify-nickname`, formData, config)
+      .post(`${ENDPOINT_API}/member/modify`, formData, config)
       .then(res => {
         console.log(res);
         handleAlertOpen("프로필 수정이 완료되었습니다.", true, 1000);
-        replace(HOME);
+        replace(PROFILE);
         console.log(data);
       })
       .catch(err => {
@@ -65,7 +65,7 @@ const EditPage = () => {
         value={nickName}
         placeholder={"2~15 글자로 작성해주세요."}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          setTitle(event.target.value);
+          setNickname(event.target.value);
         }}
       />
       <Button
@@ -75,7 +75,7 @@ const EditPage = () => {
           margin-top: 2rem;
         `}
       >
-        등록
+        수정
       </Button>
     </ContainerWrapper>
   );
