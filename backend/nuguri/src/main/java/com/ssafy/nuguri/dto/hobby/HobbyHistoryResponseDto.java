@@ -26,7 +26,7 @@ public class HobbyHistoryResponseDto {
 
     private Integer maxNum;
 
-    private Long wishlistNum;
+    private Integer wishlistNum;
 
     private Integer chatNum;
 
