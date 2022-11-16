@@ -1,10 +1,10 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { useRecoilState } from "recoil";
 import { css } from "@emotion/react";
-import { AppBar, Icon, LabelInput, Text } from "@common/components";
+import { AppBar, Button, Icon, LabelInput, Text } from "@common/components";
 import { useRouter } from "next/router";
 
-import { useLocation } from "@/hooks";
+import { useAuth, useLocation } from "@/hooks";
 import { headerState, searchBarState } from "@/store";
 import Link from "../Link";
 import { ROUTES } from "@/constant";
@@ -16,7 +16,7 @@ const Header = () => {
   const [searchBar, setSearchBar] = useRecoilState(searchBarState);
   const router = useRouter();
   const { curBaseAddress: baseAddress } = useLocation();
-
+  const { handleLogout } = useAuth();
   const LeftChild = useMemo(() => {
     const GoBackComponent = <Icon mode={"GOBACK"} onClick={() => router.back()} />;
     switch (appBarMode) {
@@ -61,7 +61,20 @@ const Header = () => {
         return (
           <div>
             {NotificaationComponent}
-            <Icon mode={"MENU"} />
+            <Button
+              onClick={() => handleLogout()}
+              css={css`
+                border-radius: 2rem;
+              `}
+            >
+              <Text
+                css={css`
+                  color: white;
+                `}
+              >
+                로그아웃
+              </Text>
+            </Button>
           </div>
         );
       case "LIST":
