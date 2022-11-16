@@ -1,4 +1,4 @@
-import { useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
@@ -9,7 +9,7 @@ import { QUERY_KEYS } from "@/constant";
 import type { ChatRoomInfoFindType, ChatRoomInfoGetHistoryType, ChatRoomMessageInfoType, ChatRoomType, UserInfoType } from "@/types";
 
 const CHAT_API = "/pub/chat";
-const { MY_PROFILE } = QUERY_KEYS;
+const { MY_PROFILE, CHAT_ROOM_HISTORY } = QUERY_KEYS;
 
 const JSONToString = <T>(json: T) => JSON.stringify(json);
 
@@ -30,62 +30,69 @@ const useChatRoom = <T extends ChatRoomType>(props: ChatRoomInfoGetHistoryType<T
 
   const getChatRoomHistory = async (info: ChatRoomInfoGetHistoryType<T>) => {
     return await apiInstance.post(ENDPOINT_API + "/chat/room/log", info).then(data => {
-      console.log(data);
-      return data;
+      console.log("history 불러온 것", data);
+      return data.data.data;
     });
   };
+  const { data: chatHistoryData, fetchPreviousPage: fetchPreviousHistory } = useInfiniteQuery([CHAT_ROOM_HISTORY, roomId], {
+    queryFn: () => getChatRoomHistory({ receiverId, roomId, senderId, roomName }),
+    getPreviousPageParam: (firstPage, pages) => firstPage.cursorId,
+  });
+  const [chatData, setChatData] = useState();
 
   useEffect(() => {
     const socket = new SockJS(ENDPOINT_WS);
-
     wsClient.current = Stomp.over(socket);
     getChatRoomHistory({ receiverId, roomId, senderId, roomName });
     wsClient.current.connect({}, function () {
       wsClient.current.subscribe(`/sub/chat/room/${roomId}`, function (greeting) {
-        console.log("연결시", JSON.parse(greeting.body));
+        // console.log(JSON.parse(greeting.body));
+        setChatData(JSON.parse(greeting.body));
       });
-      wsClient.current.send(
-        CHAT_API,
-        {},
-        JSONToString<ChatRoomMessageInfoType<"ENTER">>({
-          senderId,
-          roomId,
-          messageType: "ENTER",
-        }),
-      );
+      // wsClient.current.send(
+      //   CHAT_API,
+      //   {},
+      //   JSONToString<ChatRoomMessageInfoType<"ENTER">>({
+      //     senderId,
+      //     roomId,
+      //     messageType: "ENTER",
+      //   }),
+      // );
     });
 
     return () => {
+      leaveChatRoom();
       wsClient.current.disconnect();
     };
   }, []);
 
   const sendMessage = () => {
-    wsClient.current.send(
-      CHAT_API,
-      {},
-      JSONToString<ChatRoomMessageInfoType<"TALK">>({
-        message,
-        senderId,
-        roomId,
-        messageType: "TALK",
-      }),
-    );
+    !!message &&
+      wsClient.current.send(
+        CHAT_API,
+        {},
+        JSONToString<ChatRoomMessageInfoType<"TALK">>({
+          message,
+          senderId,
+          roomId,
+          messageType: "TALK",
+        }),
+      );
   };
 
   const leaveChatRoom = async () => {
-    wsClient.current.send(
-      CHAT_API,
-      {},
-      JSONToString<ChatRoomMessageInfoType<"LEAVE">>({
-        messageType: "LEAVE",
-        roomId,
-        senderId,
-      }),
-    );
+    // wsClient.current.send(
+    //   CHAT_API,
+    //   {},
+    //   JSONToString<ChatRoomMessageInfoType<"LEAVE">>({
+    //     messageType: "LEAVE",
+    //     roomId,
+    //     senderId,
+    //   }),
+    // );
   };
 
-  return { setMessage, message, sendMessage, leaveChatRoom };
+  return { setMessage, message, sendMessage, leaveChatRoom, chatData, chatHistoryData, fetchPreviousHistory };
 };
 
 const findChatRoom = async <T extends ChatRoomType>(info: ChatRoomInfoFindType<T>) => {
