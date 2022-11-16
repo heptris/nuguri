@@ -22,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
-import static com.ssafy.nuguri.chat.domain.ChatMessage.MessageType.*;
 import static com.ssafy.nuguri.exception.ex.ErrorCode.FILE_UPLOAD_ERROR;
 
 @RequiredArgsConstructor
@@ -43,11 +42,11 @@ public class ChatController {
 
         log.info("message : {}", message);
         String sender = redisService.getValues(String.valueOf(message.getSenderId()) + ".");
-        if (message.getMessageType().equals(ENTER)) {
-            message.setMessage(sender + " 님이 입장하셨습니다.");
-        } else if (message.getMessageType().equals(LEAVE)) {
-            message.setMessage(sender + "님이 나갔습니다");
-        }
+//        if (message.getMessageType().equals(ENTER)) {
+//            message.setMessage(sender + " 님이 입장하셨습니다.");
+//        } else if (message.getMessageType().equals(LEAVE)) {
+//            message.setMessage(sender + "님이 나갔습니다");
+//        }
 
         ChatMessage chatMessage = chatService.save(message);
         ChatMessageResponseDto chatMessageResponseDto = chatMessage.toChatMessageResponseDto();

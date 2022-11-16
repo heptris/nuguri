@@ -19,9 +19,9 @@ import java.time.LocalDateTime;
 @Document(collection = "chat")
 public class ChatMessage {
 
-    public enum MessageType {
-        TALK, ENTER, LEAVE
-    }
+//    public enum MessageType {
+//        TALK, ENTER, LEAVE
+//    }
 
     @Transient
     public static final String SEQUENCE_NAME = "chat_sequence";
@@ -33,10 +33,10 @@ public class ChatMessage {
     private String message;
     private LocalDateTime createdDate;
     private Long roomId;
-    private MessageType messageType;
+   // private MessageType messageType;
 
     public ChatMessageResponseDto toChatMessageResponseDto() {
-        return ChatMessageResponseDto.builder().message(message).messageType(messageType).chatTime(createdDate)
+        return ChatMessageResponseDto.builder().message(message).chatTime(createdDate)
                 .build();
     }
 }
