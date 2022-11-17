@@ -14,7 +14,7 @@ const ChatListPage = () => {
       {chatListData?.map(({ lastChatMessage, lastChatTime, roomId, roomName }) => {
         return (
           <Link noLinkStyle href={CHAT + `/${roomId}`}>
-            <ChatListItem chatRoomImg="" content={lastChatMessage} date={lastChatTime} title={roomName ?? roomId} unread />;
+            <ChatListItem chatRoomImg="" content={lastChatMessage} date={lastChatTime} title={roomName ?? roomId} unread />
           </Link>
         );
       })}

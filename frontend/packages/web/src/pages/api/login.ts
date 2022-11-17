@@ -51,8 +51,9 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         })
         .catch(e => {
           const { response } = e;
-          const { status, data } = response;
-          res.status(status ?? 404).json(data ?? "잘못된 요청입니다.");
+          // const { status, data } = response;
+          console.error(e);
+          res.status(response?.status ?? 404).json(response?.data ?? "잘못된 요청입니다.");
         });
       break;
     // 토큰 재발행 케이스
