@@ -1,18 +1,19 @@
 import { apiInstance, ENDPOINT_API } from "@/api";
 
-export const useProfile = () => {
+export const useProfile = (nickname) => {
   const postHobbyReady = async () => {
     await apiInstance
-      .post(ENDPOINT_API + `/member/hobby/ready`)
+      .post(ENDPOINT_API + `/member/hobby/ready`, { nickname })
       .then(res => {
         console.log(res);
+        return res;
       })
       .catch(err => console.log(err));
   };
 
   const postHobbyParticipation = async () => {
     await apiInstance
-      .post(ENDPOINT_API + `/member/hobby/participation`)
+      .post(ENDPOINT_API + `/member/hobby/participation`, { nickname })
       .then(res => {
         console.log(res);
       })
@@ -20,7 +21,7 @@ export const useProfile = () => {
   };
   const postHobbyManage = async () => {
     await apiInstance
-      .post(ENDPOINT_API + `/member/hobby/manage`)
+      .post(ENDPOINT_API + `/member/hobby/manage`, { nickname })
       .then(res => {
         console.log(res);
       })
@@ -28,7 +29,7 @@ export const useProfile = () => {
   };
   const postHobbyFavorite = async () => {
     await apiInstance
-      .post(ENDPOINT_API + `/member/hobby/favorite`)
+      .post(ENDPOINT_API + `/member/hobby/favorite`, { nickname })
       .then(res => {
         console.log(res);
       })
@@ -36,7 +37,7 @@ export const useProfile = () => {
   };
   const postDealSoldOut = async () => {
     await apiInstance
-      .post(ENDPOINT_API + `/member/deal/sold-out`)
+      .post(ENDPOINT_API + `/member/deal/sold-out`, { nickname })
       .then(res => {
         console.log(res);
       })
@@ -44,7 +45,7 @@ export const useProfile = () => {
   };
   const postDealPurchase = async () => {
     await apiInstance
-      .post(ENDPOINT_API + `/member/deal/purchase`)
+      .post(ENDPOINT_API + `/member/deal/purchase`, { nickname })
       .then(res => {
         console.log(res);
       })
@@ -52,7 +53,7 @@ export const useProfile = () => {
   };
   const postDealOnSale = async () => {
     await apiInstance
-      .post(ENDPOINT_API + `/member/deal/on-sale`)
+      .post(ENDPOINT_API + `/member/deal/on-sale`, { nickname })
       .then(res => {
         console.log(res);
       })
@@ -60,7 +61,7 @@ export const useProfile = () => {
   };
   const postDealFavorite = async () => {
     await apiInstance
-      .post(ENDPOINT_API + `/member/deal/favorite`)
+      .post(ENDPOINT_API + `/member/deal/favorite`, { nickname })
       .then(res => {
         console.log(res);
       })
