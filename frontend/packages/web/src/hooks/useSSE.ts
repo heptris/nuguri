@@ -21,7 +21,7 @@ const useSSE = () => {
     };
     const connectNewMessage = event => {
       console.log("새 메세지", JSON.parse(event.data));
-      setBottom({ ...bottom, newMessage: true });
+      setBottom({ ...bottom });
     };
     const connectAlarm = event => {
       console.log("새 알람", JSON.parse(event.data));
