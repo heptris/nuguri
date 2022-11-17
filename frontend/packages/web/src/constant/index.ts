@@ -24,4 +24,5 @@ export const QUERY_KEYS = {
   HOBBY_LIST: "hobbyList",
   DEAL_LIST: "dealList",
   CHAT_ROOM_HISTORY: "chatRoomHistory",
+  CHAT_LIST: "chatList",
 };

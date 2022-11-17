@@ -20,6 +20,7 @@ export const AppBar = forwardRef<HTMLDivElement, AppBarProps>((props, ref) => {
         z-index: 3;
         border-bottom: 1px solid ${theme.color.text.hover};
         background-color: ${theme.color.background.submain};
+        top: 0;
       `}
       component={"header"}
     >

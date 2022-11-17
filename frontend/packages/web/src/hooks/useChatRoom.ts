@@ -13,29 +13,29 @@ const { MY_PROFILE, CHAT_ROOM_HISTORY } = QUERY_KEYS;
 
 const JSONToString = <T>(json: T) => JSON.stringify(json);
 
-const useChatRoom = <T extends ChatRoomType>(props: ChatRoomInfoGetHistoryType<T>) => {
-  const getProps = () => {
-    if ("receiverId" in props) {
-      const { roomId, receiverId } = props;
-      return { roomId, receiverId };
-    }
-    const { roomId, roomName } = props;
-    return { roomId, roomName };
-  };
-  const { roomId, receiverId, roomName } = getProps();
+const useChatRoom = <T extends ChatRoomType>(props: { roomId: string }) => {
+  // const getProps = () => {
+  //   if ("receiverId" in props) {
+  //     const { roomId, receiverId } = props;
+  //     return { roomId, receiverId };
+  //   }
+  //   const { roomId, roomName } = props;
+  //   return { roomId, roomName };
+  // };
+  const { roomId } = props;
   const [message, setMessage] = useState("");
   const queryClient = useQueryClient();
   const { memberId: senderId } = queryClient.getQueryData<UserInfoType>([MY_PROFILE]);
   const wsClient = useRef(null);
 
-  const getChatRoomHistory = async (info: ChatRoomInfoGetHistoryType<T>) => {
+  const getChatRoomHistory = async (info: { roomId: string }) => {
     return await apiInstance.post(ENDPOINT_API + "/chat/room/log", info).then(data => {
       console.log("history 불러온 것", data);
       return data.data.data;
     });
   };
   const { data: chatHistoryData, fetchPreviousPage: fetchPreviousHistory } = useInfiniteQuery([CHAT_ROOM_HISTORY, roomId], {
-    queryFn: () => getChatRoomHistory({ receiverId, roomId, senderId, roomName }),
+    queryFn: () => getChatRoomHistory({ roomId }),
     getPreviousPageParam: (firstPage, pages) => firstPage.cursorId,
   });
   const [chatData, setChatData] = useState();
@@ -43,7 +43,7 @@ const useChatRoom = <T extends ChatRoomType>(props: ChatRoomInfoGetHistoryType<T
   useEffect(() => {
     const socket = new SockJS(ENDPOINT_WS);
     wsClient.current = Stomp.over(socket);
-    getChatRoomHistory({ receiverId, roomId, senderId, roomName });
+    getChatRoomHistory({ roomId });
     wsClient.current.connect({}, function () {
       wsClient.current.subscribe(`/sub/chat/room/${roomId}`, function (greeting) {
         // console.log(JSON.parse(greeting.body));
