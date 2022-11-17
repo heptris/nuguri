@@ -11,10 +11,10 @@ import { IconButton } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 const { REGION, HOBBY, DEAL, GROUP_DEAL } = ROUTES;
 
-export const DealCard = ({ dealDatas, categoryId, localId }) => {
+export const DealCard = ({ dealList, categoryId, localId }) => {
   return (
     <>
-      {dealDatas?.pages[0].content.map(({ dealId, dealImage, price, title, hit, deal }: DealItemDetailType) => {
+      {dealList?.map(({ dealId, dealImage, price, title, hit, deal }: DealItemDetailType) => {
         return (
           <Link
             href={REGION + `/${localId}` + DEAL + `/${dealId}`}

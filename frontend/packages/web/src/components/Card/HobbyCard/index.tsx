@@ -15,10 +15,10 @@ import { useUser } from "@/hooks";
 
 const { REGION, HOBBY, DEAL, GROUP_DEAL } = ROUTES;
 
-const HobbyCard = ({ hobbyDatas, categoryId, localId }) => {
+const HobbyCard = ({ hobbyList, categoryId, localId }) => {
   return (
     <>
-      {hobbyDatas?.map(({ highAgeLimit, categoryId, curNum, endDate, hobbyId, hobbyImage, maxNum, title, sexLimit }: HobbyRoomType) => {
+      {hobbyList?.map(({ highAgeLimit, categoryId, curNum, endDate, hobbyId, hobbyImage, maxNum, title, sexLimit }: HobbyRoomType) => {
         return (
           <Link
             href={REGION + `/${localId}` + HOBBY + `/${hobbyId}`}
