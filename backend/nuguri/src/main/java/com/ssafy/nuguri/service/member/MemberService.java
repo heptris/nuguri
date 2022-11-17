@@ -371,7 +371,7 @@ public class MemberService {
         List<Member> memberList = memberRepository.findAll();
         memberList.forEach(member -> {
             redisService.setValues(String.valueOf(member.getId()) + ".", member.getNickname());
-            redisService.setValues(String.valueOf(member.getId()) + "@", member.getProfileImage());
+          //  redisService.setValues(String.valueOf(member.getId()) + "@", member.getProfileImage());
         });
     }
 
