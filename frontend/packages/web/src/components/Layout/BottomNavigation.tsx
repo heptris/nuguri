@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { HomeOutlined, ChatBubbleOutlineOutlined, AddBoxOutlined, PersonOutlineOutlined, LoginOutlined } from "@mui/icons-material";
+import { HomeOutlined, ChatBubbleOutlineOutlined, AddBoxOutlined, PersonOutlineOutlined } from "@mui/icons-material";
 
 import { ROUTES } from "@/constant";
 import { BottomNavbar, BottomNavbarItem } from "@common/components";
@@ -8,16 +8,18 @@ import { useRecoilState } from "recoil";
 import { bottomState } from "@/store";
 import withAuth from "@/utils/withAuth";
 
-const { HOME, CHAT, LOUNGE, PROFILE, LOGIN, MAIN } = ROUTES;
+const { HOME, CHAT, LOUNGE, PROFILE } = ROUTES;
 
 const BottomNavigation = () => {
-  const [{ children: BottomComponent }] = useRecoilState(bottomState);
+  const [bottom] = useRecoilState(bottomState);
+  const { children: BottomComponent } = bottom;
   const router = useRouter();
-  // if (router.pathname === MAIN) return <></>;
   return (
     <>
       {BottomComponent !== null ? (
         <BottomNavbar>{BottomComponent}</BottomNavbar>
+      ) : BottomComponent === <></> ? (
+        { BottomComponent }
       ) : (
         <BottomNavbar value={router.pathname}>
           <BottomNavbarItem label={"홈"} value={HOME} icon={<HomeOutlined />} component={Link} noLinkStyle href={HOME} />
