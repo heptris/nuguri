@@ -32,6 +32,7 @@ public class ChatController {
     private final SimpMessagingTemplate template;
     private final RedisService redisService;
 
+
     //@GetMapping()
     public List<ChatMessage> chatLog() {
         return chatService.getChatLog();

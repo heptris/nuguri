@@ -16,7 +16,7 @@ public class ChatMessageDto {
 
     public ChatMessage toChatMessage() {
         ChatMessage chatMessage = ChatMessage.builder().message(message).senderId(senderId).
-        createdDate(LocalDateTime.now()).roomId(roomId).build();
+                createdDate(LocalDateTime.now()).roomId(roomId).build();
         return chatMessage;
     }
 }

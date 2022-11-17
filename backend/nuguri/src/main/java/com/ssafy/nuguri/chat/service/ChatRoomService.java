@@ -10,6 +10,7 @@ import com.ssafy.nuguri.exception.ex.CustomException;
 import com.ssafy.nuguri.exception.ex.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,8 +28,10 @@ public class ChatRoomService {
 
     private final ChatRoomRepository chatRoomRepository;
     private final ChatRepository chatRepository;
-
     private final RedisService redisService;
+
+    private final ApplicationEventPublisher eventPublisher;
+
 
     public List<ChatRoom> findAll() {
         return chatRoomRepository.findAll();
@@ -203,9 +206,8 @@ public class ChatRoomService {
      */
     public void joinTest(Long roomId) {
         List<ChatMessage> chatMessages = chatRepository.findChatMessageByRoomIdOrderByCreatedDateDesc(roomId);
-        chatMessages.forEach(chatMessage -> {
-            System.out.println(chatMessage);
-        });
+        chatMessages.forEach(System.out::println);
     }
+
 
 }

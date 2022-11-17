@@ -10,12 +10,14 @@ import com.ssafy.nuguri.service.s3.AwsS3Service;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.ssafy.nuguri.exception.ex.ErrorCode.FILE_UPLOAD_ERROR;
@@ -28,6 +30,7 @@ public class ChatRoomController {
 
     private final ChatRoomService chatRoomService;
     private final AwsS3Service awsS3Service;
+
 
     /**
      * 채팅방 생성
@@ -70,7 +73,7 @@ public class ChatRoomController {
     @GetMapping("/{memberId}")
     public List<ChatRoomResponseDto> getMyRoomList(@PathVariable Long memberId) {
         return chatRoomService.findMyRoomList(memberId);
-    } 
+    }
 
     @ApiOperation(value = "채팅방 파일 업로드", notes = "채팅방 파일 업로드 API")
     @PostMapping("/file")
@@ -84,4 +87,5 @@ public class ChatRoomController {
             throw new CustomException(FILE_UPLOAD_ERROR);
         }
     }
+
 }

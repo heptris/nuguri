@@ -8,7 +8,10 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
 
@@ -20,8 +23,15 @@ public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
         Query query = new Query();
         Update update = new Update();
 
-        query.addCriteria(Criteria.where("_id").is(roomId));
+        query.addCriteria(where("_id").is(roomId));
         update.set("userList", userList);
         mongoTemplate.updateMulti(query, update, "chatroom");
+    }
+
+    @Override
+    public Optional<ChatRoom> findChatRoomByRoomId(Long roomId) {
+        Query query = new Query();
+        query.addCriteria(where("_id").is(roomId));
+        return Optional.ofNullable(mongoTemplate.findOne(query, ChatRoom.class));
     }
 }
