@@ -1,29 +1,16 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 import { useRecoilState } from "recoil";
 
-import IconButton from "@mui/material/IconButton";
-import ShareIcon from "@mui/icons-material/Share";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
-import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
-import WcIcon from "@mui/icons-material/Wc";
-import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
-
-import { useHeader, useHome, useUser, useCategory } from "@/hooks";
-import { Card, Menu, Text } from "@common/components";
+import { useHeader, useUser, useCategory } from "@/hooks";
+import { Menu, Text } from "@common/components";
 import Link from "@/components/Link";
 import { ROUTES } from "@/constant";
 import { menuCategoryState } from "@/store";
-import { DealItemDetailType, HobbyRoomType } from "@/types";
-import Image from "next/image";
 import { racconsThemes } from "@common/components/src/styles/theme";
-import { apiInstance, ENDPOINT_API } from "@/api";
-import HobbyCard from "@/components/Card/HobbyCard";
-import { DealCard } from "@/components/Card/DealCard";
+import { HobbyCardList } from "@/components/List/HobbyCardList";
+import { DealCardList } from "@/components/List/DealCardList";
 import { useList } from "@/hooks/useList";
 
 const { REGION, HOBBY, DEAL, GROUP_DEAL } = ROUTES;
@@ -90,7 +77,7 @@ const HomePage = () => {
           </Link>
         </TitleWrapper>
         <CardWapper>
-          <HobbyCard hobbyList={hobbyList} categoryId={categoryId} localId={localId} />
+          <HobbyCardList hobbyList={hobbyList} categoryId={categoryId} localId={localId} />
         </CardWapper>
       </CategorytWrapper>
       <CategorytWrapper>
@@ -120,7 +107,7 @@ const HomePage = () => {
           </Link>
         </TitleWrapper>
         <CardWapper>
-          <DealCard dealList={dealList} categoryId={categoryId} localId={localId} />
+          <DealCardList dealList={dealList} categoryId={categoryId} localId={localId} />
         </CardWapper>
       </CategorytWrapper>
       <CategorytWrapper>
