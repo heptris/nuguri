@@ -15,12 +15,18 @@ import java.time.LocalDateTime;
 @Data
 public class HobbyHistoryResponseDto {
 
+    private Long hobbyId;
+
+    private Long localId;
+
     private Long categoryId;
 
     private String title;
 
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime endDate;
+
+    private boolean isClosed;
 
     private Integer curNum;
 
