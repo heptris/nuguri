@@ -61,6 +61,7 @@ public class HobbyHistoryRepositoryImpl implements HobbyHistoryRepositoryCustom{
     @Override
     public List<HobbyHistoryResponseDto> findByStatus(Long userId, ApproveStatus status) {
         List<HobbyHistoryResponseDto> hobbyHistoryResponseDtoList = queryFactory.select(Projections.constructor(HobbyHistoryResponseDto.class,
+                        hobby.id,
                         hobby.baseAddress.id,
                         category.id,
                         hobby.title,
@@ -89,6 +90,7 @@ public class HobbyHistoryRepositoryImpl implements HobbyHistoryRepositoryCustom{
     public List<HobbyHistoryResponseDto> findOperatings(Long userId) {
 
         List<HobbyHistoryResponseDto> hobbyHistoryResponseDtoList = queryFactory.select(Projections.constructor(HobbyHistoryResponseDto.class,
+                        hobby.id,
                         hobby.baseAddress.id,
                         category.id,
                         hobby.title,

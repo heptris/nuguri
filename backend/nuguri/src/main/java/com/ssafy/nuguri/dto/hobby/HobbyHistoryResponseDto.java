@@ -15,6 +15,8 @@ import java.time.LocalDateTime;
 @Data
 public class HobbyHistoryResponseDto {
 
+    private Long hobbyId;
+
     private Long localId;
 
     private Long categoryId;
