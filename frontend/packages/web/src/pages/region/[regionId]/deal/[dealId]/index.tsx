@@ -8,6 +8,7 @@ import { css } from "@emotion/react";
 import { Card, IconButton } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import Image from "next/image";
+import { useEffect } from "react";
 
 export async function getServerSideProps(context) {
   const { query } = context;
@@ -32,38 +33,45 @@ const DealDetailPage = (props: { regionId: number; dealDetailInfo: DealItemDetai
   const { mutateToGetDealHistoryId } = useDealItem({ sellerId, dealId });
   const { isLogined } = useAuth();
   useHeader({ mode: "ITEM" });
-  useBottom(
-    <div
-      css={css`
-        position: fixed;
-        bottom: 0;
-        display: flex;
-        width: 100%;
-        justify-content: space-evenly;
-        align-items: center;
-        padding: 0.5rem;
-      `}
-    >
-      <IconButton disabled={!isLogined}>
-        <FavoriteIcon fontSize="large" />
-      </IconButton>
-      <Text
-        css={css`
-          font-size: 1.5rem;
-          font-weight: bold;
-        `}
-      >
-        {price} 원
-      </Text>
-      {isLogined ? (
-        <Button size="large" onClick={() => mutateToGetDealHistoryId()}>
-          채팅하기
-        </Button>
-      ) : (
-        <Button disabled>로그인이 필요합니다</Button>
-      )}
-    </div>,
-  );
+  const { setBottom } = useBottom(<></>);
+
+  useEffect(() => {
+    isLogined &&
+      setBottom({
+        children: (
+          <div
+            css={css`
+              position: fixed;
+              bottom: 0;
+              display: flex;
+              width: 100%;
+              justify-content: space-evenly;
+              align-items: center;
+              padding: 0.5rem;
+            `}
+          >
+            <IconButton disabled={!isLogined}>
+              <FavoriteIcon fontSize="large" />
+            </IconButton>
+            <Text
+              css={css`
+                font-size: 1.5rem;
+                font-weight: bold;
+              `}
+            >
+              {price} 원
+            </Text>
+            {isLogined ? (
+              <Button size="large" onClick={() => mutateToGetDealHistoryId()}>
+                채팅하기
+              </Button>
+            ) : (
+              <Button disabled>로그인이 필요합니다</Button>
+            )}
+          </div>
+        ),
+      });
+  }, [isLogined]);
   return (
     <div
       css={css`

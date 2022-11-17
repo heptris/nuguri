@@ -13,8 +13,9 @@ import axios from "axios";
 import { Avatar, Button, Text } from "@common/components";
 
 import { ACCESS_TOKEN, ENDPOINT_API } from "@/api";
-import { useBottom, useHeader, useHobbyRoom } from "@/hooks";
+import { useAuth, useBottom, useHeader, useHobbyRoom } from "@/hooks";
 import { HobbyRoomType } from "@/types";
+import { useEffect } from "react";
 
 export async function getServerSideProps({ params, query, req }) {
   const { regionId, hobbyId } = query;
@@ -33,29 +34,36 @@ const HobbyDetailPage = ({ hobbyRoomDefaultInfo }: { hobbyRoomDefaultInfo: Hobby
   const { hobbyRoomInfo, refetchHobbyRoomInfo } = useHobbyRoom(hobbyRoomDefaultInfo);
   const { highAgeLimit, rowAgeLimit, categoryId, closed, content, curNum, endDate, fee, hobbyId, hobbyImage, localId, maxNum, meetingPlace, sexLimit, title } = hobbyRoomInfo;
   useHeader({ mode: "ITEM" });
-  useBottom(
-    <div
-      css={css`
-        position: fixed;
-        bottom: 0;
-        display: flex;
-        width: 100%;
-        justify-content: center;
-        padding: 0.5rem;
-      `}
-    >
-      <IconButton>
-        <FavoriteIcon fontSize="large" />
-      </IconButton>
-      <Button
-        css={css`
-          width: 80%;
-        `}
-      >
-        참여 신청하기
-      </Button>
-    </div>,
-  );
+  const { isLogined } = useAuth();
+  const { setBottom } = useBottom(<></>);
+  useEffect(() => {
+    isLogined &&
+      setBottom({
+        children: (
+          <div
+            css={css`
+              position: fixed;
+              bottom: 0;
+              display: flex;
+              width: 100%;
+              justify-content: center;
+              padding: 0.5rem;
+            `}
+          >
+            <IconButton>
+              <FavoriteIcon fontSize="large" />
+            </IconButton>
+            <Button
+              css={css`
+                width: 80%;
+              `}
+            >
+              참여 신청하기
+            </Button>
+          </div>
+        ),
+      });
+  }, [isLogined]);
   return (
     <div
       css={css`
