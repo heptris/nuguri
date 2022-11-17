@@ -14,3 +14,4 @@ export * from "./useBottom";
 export * from "./useCategory";
 export * from "./useHome";
 export * from "./useChatList";
+export * from "./useSSE";

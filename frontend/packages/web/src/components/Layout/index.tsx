@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import { Alert } from "@common/components";
 
-import { useAlert, useAuth, useLoading } from "@/hooks";
+import { useAlert, useAuth, useLoading, useSSE } from "@/hooks";
 import Header from "./Header";
 import BottomNavigation from "./BottomNavigation";
 import { useRouter } from "next/router";
@@ -15,7 +15,7 @@ const Layout = ({ children }) => {
   const { pageLoading } = useLoading();
   useAuth();
   const { pathname } = useRouter();
-
+  useSSE();
   return (
     <>
       {pageLoading && (
