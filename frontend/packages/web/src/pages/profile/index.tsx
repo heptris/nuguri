@@ -16,10 +16,10 @@ import SelectTab from "@/components/SelectTab";
 import Link from "@/components/Link";
 import { ROUTES } from "@/constant";
 import { useProfile } from "@/hooks/useProfile";
-import HobbyCard from "@/components/Card/HobbyCard";
+import {HobbyCardList} from "@/components/List/HobbyCardList";
 import { useRecoilState } from "recoil";
 import { menuCategoryState } from "@/store";
-import { DealCard } from "@/components/Card/DealCard";
+import { DealCardList } from "@/components/List/DealCardList";
 
 const { EDITPROFILE } = ROUTES;
 
@@ -161,10 +161,10 @@ const ProfilePage = () => {
           <TabPanel value={value} index={1} nickname={nickname}>
             <SelectTab menus={hobbyMenus} onSelectHandler={onSelectHobbyHandler} />
             <ListWrapper>
-              {selectedHobbyMenu === hobbyMenus[0] && <HobbyCard hobbyList={hobbyReadyList} categoryId={categoryId} localId={localId} />}
-              {selectedHobbyMenu === hobbyMenus[1] && <HobbyCard hobbyList={hobbyParticipationList} categoryId={categoryId} localId={localId} />}
-              {selectedHobbyMenu === hobbyMenus[2] && <HobbyCard hobbyList={hobbyManageList} categoryId={categoryId} localId={localId} />}
-              {selectedHobbyMenu === hobbyMenus[3] && <HobbyCard hobbyList={hobbyFavoriteList} categoryId={categoryId} localId={localId} />}
+              {selectedHobbyMenu === hobbyMenus[0] && <HobbyCardList hobbyList={hobbyReadyList} categoryId={categoryId} localId={localId} />}
+              {selectedHobbyMenu === hobbyMenus[1] && <HobbyCardList hobbyList={hobbyParticipationList} categoryId={categoryId} localId={localId} />}
+              {selectedHobbyMenu === hobbyMenus[2] && <HobbyCardList hobbyList={hobbyManageList} categoryId={categoryId} localId={localId} />}
+              {selectedHobbyMenu === hobbyMenus[3] && <HobbyCardList hobbyList={hobbyFavoriteList} categoryId={categoryId} localId={localId} />}
             </ListWrapper>
           </TabPanel>
           <TabPanel value={value} index={2} nickname={nickname}>
@@ -176,10 +176,10 @@ const ProfilePage = () => {
               `}
             />
             <ListWrapper>
-              {selectedDealMenu === dealMenus[0] && <DealCard dealList={dealSoldOutList} categoryId={categoryId} localId={localId} />}
-              {selectedDealMenu === dealMenus[1] && <DealCard dealList={dealPurchaseList} categoryId={categoryId} localId={localId} />}
-              {selectedDealMenu === dealMenus[2] && <DealCard dealList={dealOnSaleList} categoryId={categoryId} localId={localId} />}
-              {selectedDealMenu === dealMenus[3] && <DealCard dealList={dealFavoriteList} categoryId={categoryId} localId={localId} />}
+              {selectedDealMenu === dealMenus[0] && <DealCardList dealList={dealSoldOutList} categoryId={categoryId} localId={localId} />}
+              {selectedDealMenu === dealMenus[1] && <DealCardList dealList={dealPurchaseList} categoryId={categoryId} localId={localId} />}
+              {selectedDealMenu === dealMenus[2] && <DealCardList dealList={dealOnSaleList} categoryId={categoryId} localId={localId} />}
+              {selectedDealMenu === dealMenus[3] && <DealCardList dealList={dealFavoriteList} categoryId={categoryId} localId={localId} />}
             </ListWrapper>
           </TabPanel>
           <TabPanel value={value} index={3} nickname={nickname}>
