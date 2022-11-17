@@ -41,4 +41,16 @@ type DealItemDetailType = {
   favorite?: boolean;
 };
 
-export type { UserInfoType, HobbyRoomType, DealItemDetailType };
+type DealItemType = {
+  categoryId: number;
+  deal: boolean;
+  dealId: number;
+  dealImage: string;
+  description: string;
+  hit: number;
+  localId: number;
+  price: number;
+  title: string;
+};
+
+export type { UserInfoType, HobbyRoomType, DealItemDetailType, DealItemType };
