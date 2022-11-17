@@ -22,35 +22,10 @@ import { DealItemDetailType, HobbyRoomType } from "@/types";
 import Image from "next/image";
 import { racconsThemes } from "@common/components/src/styles/theme";
 import { apiInstance, ENDPOINT_API } from "@/api";
+import HobbyCard from "@/components/Card/HobbyCard";
+import { DealCard } from "@/components/Card/DealCard";
 
 const { REGION, HOBBY, DEAL, GROUP_DEAL } = ROUTES;
-
-const postHobbyList = async ({ categoryId, localId }: { categoryId?: number; localId?: number }) => {
-  await apiInstance
-    .post(ENDPOINT_API + "/hobby/list", { categoryId, localId })
-    .then(({ data }) => {
-      const list = data.data;
-      console.log(data);
-      return list;
-    })
-    .catch(err => console.log(err));
-};
-
-const getHobbyList = ({ categoryId, localId }: { categoryId?: number; localId?: number }) => {
-  const [hobbyLists, setHobbyLists] = useState<any>();
-  useEffect(() => {
-    const List = postHobbyList({ categoryId, localId });
-    //promise 객체에서 배열로 바꿔주는 과정
-    const getData = () => {
-      List.then(data => {
-        setHobbyLists(data);
-      });
-    };
-    getData();
-  }, []);
-  console.log(hobbyLists);
-  return { hobbyLists };
-};
 
 const HomePage = () => {
   const { options } = useCategory();
@@ -60,12 +35,8 @@ const HomePage = () => {
   const {
     userInfo: { localId },
   } = useUser();
-  const { hobbyLists } = getHobbyList({ categoryId, localId });
-  console.log(hobbyLists);
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-  // const [hobbyDatas, setHobbyDatas] = useState(getHobbyList({ categoryId, localId }));
-
   const open = Boolean(anchorEl);
   const handleClickListItem = (selectedMenu: HTMLElement) => {
     setAnchorEl(selectedMenu);
@@ -79,16 +50,7 @@ const HomePage = () => {
     setAnchorEl(null);
   };
 
-  // const { dealDatas, hobbyDatas } = useHome({ categoryId, localId });
-  // console.log(dealDatas);
-
-  useEffect(() => {
-    // hobbyDatas=postHobbyList();
-  }, [categoryId]);
-
-  // useEffect(() => {
-  //   console.log(dealDatas?.pages[0].content, hobbyDatas);
-  // }, [dealDatas, hobbyDatas]);
+  const { dealDatas, hobbyDatas } = useHome({ categoryId, localId });
 
   return (
     <MainWrapper>
@@ -126,98 +88,7 @@ const HomePage = () => {
           </Link>
         </TitleWrapper>
         <CardWapper>
-          {hobbyLists?.map(({ highAgeLimit, categoryId, curNum, endDate, hobbyId, hobbyImage, maxNum, title, sexLimit }: HobbyRoomType) => {
-            return (
-              <Link
-                href={REGION + `/${localId}` + HOBBY + `/${hobbyId}`}
-                noLinkStyle
-                css={css`
-                  display: contents;
-                `}
-              >
-                <Card
-                  Image={<Image src={hobbyImage} width={500} height={300} />}
-                  Content={
-                    <>
-                      <ButtonDiv
-                        css={css`
-                          margin-bottom: 1rem;
-                        `}
-                      >
-                        <Text
-                          css={css`
-                            color: ${racconsThemes.defaultTheme.color.background.submain};
-                            padding: 0.3rem 0.5rem;
-                            @media screen and (max-width: 599px) {
-                              font-size: 0.6rem;
-                              padding: 0.1rem;
-                            }
-                          `}
-                        >
-                          {categoryId}
-                        </Text>
-                      </ButtonDiv>
-                      <Text
-                        as="h1"
-                        css={css`
-                          font-size: 1.2rem;
-                          @media screen and (max-width: 599px) {
-                            font-size: 1rem;
-                            flex-basis: 45%;
-                          }
-                          overflow: hidden;
-                          text-overflow: ellipsis;
-                          white-space: nowrap;
-                          margin-bottom: 0.5rem;
-                        `}
-                      >
-                        {title}
-                      </Text>
-
-                      {!!endDate && (
-                        <DateDiv
-                          css={css`
-                            @media screen and (max-width: 599px) {
-                              font-size: 0.8rem;
-                              overflow: hidden;
-                              text-overflow: ellipsis;
-                              white-space: nowrap;
-                            }
-                          `}
-                        >
-                          <CalendarMonthIcon color="disabled" />
-                          <Text
-                            as="span"
-                            css={css`
-                              margin-right: 1rem;
-                            `}
-                          >
-                            {endDate.slice(0, 10)}
-                          </Text>
-                          <PeopleAltIcon color="disabled" />
-                          <Text as="span">{curNum + "/" + maxNum}</Text>
-                        </DateDiv>
-                      )}
-                    </>
-                  }
-                  Bottom={
-                    <>
-                      <div>
-                        <IconButton aria-label="add to favorites">
-                          <WcIcon />
-                        </IconButton>
-                        <Text as="span">{sexLimit === "f" ? "여자만" : sexLimit === "m" ? "남자만" : "성별무관"}</Text>
-                        <IconButton aria-label="share">
-                          <RemoveCircleOutlineIcon />
-                        </IconButton>
-                        <Text as="span">{highAgeLimit}세 이하</Text>
-                      </div>
-                    </>
-                  }
-                />
-              </Link>
-            );
-          })}
+          <HobbyCard hobbyDatas={hobbyDatas} categoryId={categoryId} localId={localId} />
         </CardWapper>
       </CategorytWrapper>
       <CategorytWrapper>
@@ -247,83 +118,7 @@ const HomePage = () => {
           </Link>
         </TitleWrapper>
         <CardWapper>
-          {/* {dealDatas?.pages[0].content.map(({ dealId, dealImage, price, title, hit, deal }: DealItemDetailType) => {
-            return (
-              <Link
-                href={REGION + `/${localId}` + DEAL + `/${dealId}`}
-                noLinkStyle
-                css={css`
-                  display: contents;
-                `}
-              >
-                <Card
-                  Image={<Image src={dealImage} width={500} height={300} />}
-                  Content={
-                    <>
-                      <Text
-                        as="h1"
-                        css={css`
-                          font-size: 1.2rem;
-                          @media screen and (max-width: 599px) {
-                            font-size: 1rem;
-                            flex-basis: 45%;
-                          }
-                          overflow: hidden;
-                          text-overflow: ellipsis;
-                          white-space: nowrap;
-                          margin-bottom: 0.5rem;
-                        `}
-                      >
-                        {title}
-                      </Text>
-                      <Text
-                        as="h1"
-                        css={css`
-                          font-size: 1.2rem;
-                          @media screen and (max-width: 599px) {
-                            font-size: 1rem;
-                          }
-                          font-weight: 700;
-                          margin-bottom: 1rem;
-                        `}
-                      >
-                        {price.toLocaleString("ko-KR")}원
-                      </Text>
-                    </>
-                  }
-                  Bottom={
-                    <>
-                      <div>
-                        <IconButton aria-label="add to favorites">
-                          <FavoriteBorderIcon />
-                        </IconButton>
-                        <Text as="span">{hit}</Text>
-                      </div>
-                      <ButtonDiv
-                        css={css`
-                          border-radius: 0.5rem;
-                          background-color: ${racconsThemes.defaultTheme.color.text.sub};
-                        `}
-                      >
-                        <Text
-                          css={css`
-                            color: ${racconsThemes.defaultTheme.color.background.submain};
-                            padding: 0.2rem 0.5rem;
-                            @media screen and (max-width: 599px) {
-                              font-size: 0.6rem;
-                              padding: 0.1rem;
-                            }
-                          `}
-                        >
-                          {deal ? "판매" : "마감"}완료
-                        </Text>
-                      </ButtonDiv>
-                    </>
-                  }
-                />
-              </Link>
-            );
-          })} */}
+          <DealCard dealDatas={dealDatas} categoryId={categoryId} localId={localId} />
         </CardWapper>
       </CategorytWrapper>
       <CategorytWrapper>

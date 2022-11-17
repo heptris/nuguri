@@ -250,17 +250,31 @@ const BottomWrapper = styled.div`
   bottom: 0rem;
 `;
 
-const GridWrapper = styled.div`
-  width: 100%;
-  display: grid;
-  gap: 3vw;
-  grid-template-columns: repeat(2, 1fr);
-
-  @media screen and (max-width: 1799px) {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1vw;
+const CardWapper = styled.div`
+  max-width: 1799px;
+  display: flex;
+  flex-direction: row;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
   }
+  @media screen and (max-width: 1799px) {
+    width: 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+  }
+
+  @media screen and (max-width: 899px) {
+    /* 모바일 가로, 타블렛 세로 */
+    width: 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+  }
+
   @media screen and (max-width: 599px) {
-    grid-template-columns: repeat(4, 1fr);
+    /* 모바일 세로 */
+    width: 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
   }
 `;
