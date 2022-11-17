@@ -1,9 +1,9 @@
 import { css } from "@emotion/react";
 import { Card } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { useBottom, useChatRoom, useHeader, useUser } from "@/hooks";
-import { ChatMessageReceiveType, ChatRoomInfoGetHistoryType, ChatRoomMessageInfoType, ChatRoomType } from "@/types";
+import { ChatMessageReceiveType } from "@/types";
 import { Button, LabelInput, Text } from "@common/components";
 
 export async function getServerSideProps({ params, query }) {
@@ -23,6 +23,7 @@ const ChatRoomPage = (props: { roomId: string }) => {
   useHeader({ mode: "ITEM" });
   const scrollRef = useRef(null);
   const historyRef = useRef(null);
+  const inputRef = useRef(null);
   const scrollToBottom = () => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
@@ -56,6 +57,9 @@ const ChatRoomPage = (props: { roomId: string }) => {
               float: left;
               width: 100%;
             `}
+            autoComplete={"off"}
+            autoFocus
+            inputRef={inputRef}
           />
           <Button onClick={() => handleSendMessage()} size={"small"} type={"button"}>
             메세지 전송
@@ -83,6 +87,7 @@ const ChatRoomPage = (props: { roomId: string }) => {
   const handleSendMessage = () => {
     sendMessage();
     setMessage("");
+    inputRef?.current.focus();
   };
 
   return (
