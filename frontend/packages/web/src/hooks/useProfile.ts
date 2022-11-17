@@ -1,71 +1,114 @@
 import { apiInstance, ENDPOINT_API } from "@/api";
+import { QUERY_KEYS } from "@/constant";
+import { useQuery } from "@tanstack/react-query";
 
-export const useProfile = (nickname) => {
+const { HOBBY_READY_LIST, HOBBY_PARTICIPATION_LIST, HOBBY_MANAGE_LIST, HOBBY_FAVORITE_LIST,
+  DEAL_SOLDOUT_LIST, DEAL_PURCHASE_LIST, DEAL_ONSALE_LIST, DEAL_FAVORITE_LIST,
+} = QUERY_KEYS;
+
+export const useProfile = (nickname: string) => {
+
   const postHobbyReady = async () => {
-    await apiInstance
+    const { data } = await apiInstance
       .post(ENDPOINT_API + `/member/hobby/ready`, { nickname })
-      .then(res => {
-        console.log(res);
-        return res;
-      })
-      .catch(err => console.log(err));
+    return data.data;
   };
+  const hobbyReadyData = useQuery([HOBBY_READY_LIST, nickname], postHobbyReady, {
+    onSuccess: (data) => {
+      console.log(data)
+    },
+  })
+  const hobbyReadyList = hobbyReadyData.data
 
   const postHobbyParticipation = async () => {
-    await apiInstance
+    const { data } = await apiInstance
       .post(ENDPOINT_API + `/member/hobby/participation`, { nickname })
-      .then(res => {
-        console.log(res);
-      })
-      .catch(err => console.log(err));
+    return data.data;
   };
+  const hobbyParticipationData = useQuery([HOBBY_PARTICIPATION_LIST, nickname], postHobbyParticipation, {
+    onSuccess: (data) => {
+      console.log(data)
+    },
+  })
+  const hobbyParticipationList = hobbyParticipationData.data
+
   const postHobbyManage = async () => {
-    await apiInstance
+    const { data } = await apiInstance
       .post(ENDPOINT_API + `/member/hobby/manage`, { nickname })
-      .then(res => {
-        console.log(res);
-      })
-      .catch(err => console.log(err));
+    return data.data;
   };
+  const hobbyManageData = useQuery([HOBBY_MANAGE_LIST, nickname], postHobbyManage, {
+    onSuccess: (data) => {
+      console.log(data)
+    },
+  })
+  const hobbyManageList = hobbyManageData.data
+
   const postHobbyFavorite = async () => {
-    await apiInstance
+    const { data } = await apiInstance
       .post(ENDPOINT_API + `/member/hobby/favorite`, { nickname })
-      .then(res => {
-        console.log(res);
-      })
-      .catch(err => console.log(err));
+    return data.data;
+
   };
+  const hobbyFavoriteData = useQuery([HOBBY_FAVORITE_LIST, nickname], postHobbyFavorite, {
+    onSuccess: (data) => {
+      console.log(data)
+    },
+  })
+  const hobbyFavoriteList = hobbyFavoriteData.data
+
+
   const postDealSoldOut = async () => {
-    await apiInstance
+    const { data } = await apiInstance
       .post(ENDPOINT_API + `/member/deal/sold-out`, { nickname })
-      .then(res => {
-        console.log(res);
-      })
-      .catch(err => console.log(err));
+    return data.data;
   };
+  const dealSoldOutData = useQuery([DEAL_SOLDOUT_LIST, nickname], postDealSoldOut, {
+    onSuccess: (data) => {
+      console.log(data)
+    },
+  })
+  const dealSoldOutList = dealSoldOutData.data
+
   const postDealPurchase = async () => {
-    await apiInstance
+    const { data } = await apiInstance
       .post(ENDPOINT_API + `/member/deal/purchase`, { nickname })
-      .then(res => {
-        console.log(res);
-      })
-      .catch(err => console.log(err));
+    return data.data;
   };
+  const dealPurchaseData = useQuery([DEAL_PURCHASE_LIST, nickname], postDealPurchase, {
+    onSuccess: (data) => {
+      console.log(data)
+    },
+  })
+  const dealPurchaseList = dealPurchaseData.data
+
   const postDealOnSale = async () => {
-    await apiInstance
+    const { data } = await apiInstance
       .post(ENDPOINT_API + `/member/deal/on-sale`, { nickname })
-      .then(res => {
-        console.log(res);
-      })
-      .catch(err => console.log(err));
+    return data.data;
   };
+  const dealOnSaleData = useQuery([DEAL_ONSALE_LIST, nickname], postDealOnSale, {
+    onSuccess: (data) => {
+      console.log(data)
+    },
+  })
+  const dealOnSaleList = dealOnSaleData.data
+
   const postDealFavorite = async () => {
-    await apiInstance
+    const { data } = await apiInstance
       .post(ENDPOINT_API + `/member/deal/favorite`, { nickname })
-      .then(res => {
-        console.log(res);
-      })
-      .catch(err => console.log(err));
+    return data.data;
   };
-  return { postHobbyReady, postHobbyParticipation, postHobbyManage, postHobbyFavorite, postDealSoldOut, postDealPurchase, postDealOnSale, postDealFavorite };
+  const dealFavoriteData = useQuery([DEAL_FAVORITE_LIST, nickname], postDealFavorite, {
+    onSuccess: (data) => {
+      console.log(data)
+    },
+  })
+  const dealFavoriteList = dealFavoriteData.data
+
+  return {
+    hobbyReadyList, hobbyParticipationList, hobbyManageList,
+    hobbyFavoriteList, dealSoldOutList, dealPurchaseList,
+    dealOnSaleList, dealFavoriteList,
+  };
 };
