@@ -104,6 +104,7 @@ public class MemberService {
 
         member.profileModify(profileImageUrl, nickname);
         redisService.setValues(String.valueOf(memberId) + ".", nickname);
+        redisService.setValues(String.valueOf(memberId) + "@", profileImageUrl);
         return new MemberProfileModifyResponseDto(profileImageUrl, nickname);
     }
 
@@ -370,6 +371,7 @@ public class MemberService {
         List<Member> memberList = memberRepository.findAll();
         memberList.forEach(member -> {
             redisService.setValues(String.valueOf(member.getId()) + ".", member.getNickname());
+            redisService.setValues(String.valueOf(member.getId()) + "@", member.getProfileImage());
         });
     }
 

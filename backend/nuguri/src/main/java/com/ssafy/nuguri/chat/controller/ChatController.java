@@ -43,6 +43,7 @@ public class ChatController {
 
         log.info("message : {}", message);
         String sender = redisService.getValues(String.valueOf(message.getSenderId()) + ".");
+        String profile = redisService.getValues(String.valueOf(message.getSenderId()) + "@");
 //        if (message.getMessageType().equals(ENTER)) {
 //            message.setMessage(sender + " 님이 입장하셨습니다.");
 //        } else if (message.getMessageType().equals(LEAVE)) {
@@ -52,6 +53,7 @@ public class ChatController {
         ChatMessage chatMessage = chatService.save(message);
         ChatMessageResponseDto chatMessageResponseDto = chatMessage.toChatMessageResponseDto();
         chatMessageResponseDto.setSender(sender);
+        chatMessageResponseDto.setSenderImage(profile);
         template.convertAndSend("/sub/chat/room/" + message.getRoomId(), chatMessageResponseDto);
     }
 
