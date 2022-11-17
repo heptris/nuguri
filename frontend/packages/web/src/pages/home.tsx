@@ -24,6 +24,7 @@ import { racconsThemes } from "@common/components/src/styles/theme";
 import { apiInstance, ENDPOINT_API } from "@/api";
 import HobbyCard from "@/components/Card/HobbyCard";
 import { DealCard } from "@/components/Card/DealCard";
+import { useList } from "@/hooks/useList";
 
 const { REGION, HOBBY, DEAL, GROUP_DEAL } = ROUTES;
 
@@ -50,7 +51,8 @@ const HomePage = () => {
     setAnchorEl(null);
   };
 
-  const { dealDatas, hobbyDatas } = useHome({ categoryId, localId });
+  // const { dealDatas } = useHome({ categoryId, localId });
+  const { hobbyList, dealList } = useList({ categoryId, localId });
 
   return (
     <MainWrapper>
@@ -88,7 +90,7 @@ const HomePage = () => {
           </Link>
         </TitleWrapper>
         <CardWapper>
-          <HobbyCard hobbyDatas={hobbyDatas} categoryId={categoryId} localId={localId} />
+          <HobbyCard hobbyList={hobbyList} categoryId={categoryId} localId={localId} />
         </CardWapper>
       </CategorytWrapper>
       <CategorytWrapper>
@@ -118,7 +120,7 @@ const HomePage = () => {
           </Link>
         </TitleWrapper>
         <CardWapper>
-          <DealCard dealDatas={dealDatas} categoryId={categoryId} localId={localId} />
+          <DealCard dealList={dealList} categoryId={categoryId} localId={localId} />
         </CardWapper>
       </CategorytWrapper>
       <CategorytWrapper>
