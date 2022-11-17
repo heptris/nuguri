@@ -15,12 +15,16 @@ import java.time.LocalDateTime;
 @Data
 public class HobbyHistoryResponseDto {
 
+    private Long localId;
+
     private Long categoryId;
 
     private String title;
 
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime endDate;
+
+    private boolean isClosed;
 
     private Integer curNum;
 
@@ -30,7 +34,7 @@ public class HobbyHistoryResponseDto {
 
     private Integer chatNum;
 
-    private String imageurl;
+    private String imageUrl;
 
     private ApproveStatus approveStatus;
 

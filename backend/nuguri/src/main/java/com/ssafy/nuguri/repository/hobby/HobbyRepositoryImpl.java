@@ -125,9 +125,11 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
     @Override
     public List<HobbyHistoryResponseDto> findByMemberIdAndStatus(Long memberId, ApproveStatus approveStatus) {
         List<HobbyHistoryResponseDto> hobbyHistoryResponseDtoList = queryFactory.select(Projections.constructor(HobbyHistoryResponseDto.class,
+                        hobby.baseAddress.id,
                         category.id,
                         hobby.title,
                         hobby.endDate,
+                        hobby.isClosed,
                         hobby.curNum,
                         hobby.maxNum,
                         hobby.maxNum,
@@ -150,9 +152,10 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
     @Override
     public List<HobbyHistoryResponseDto> findByMemberIdAndPromoter(Long memberId, boolean isPromoter) {
         List<HobbyHistoryResponseDto> hobbyHistoryResponseDtoList = queryFactory.select(Projections.constructor(HobbyHistoryResponseDto.class,
-                        category.id,
+                        hobby.baseAddress.id,                        category.id,
                         hobby.title,
                         hobby.endDate,
+                        hobby.isClosed,
                         hobby.curNum,
                         hobby.maxNum,
                         hobby.maxNum,
@@ -175,9 +178,10 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
     @Override
     public List<HobbyHistoryResponseDto> findByMemberIdAndFavorite(Long memberId, boolean isFavorite) {
         List<HobbyHistoryResponseDto> hobbyHistoryResponseDtoList = queryFactory.select(Projections.constructor(HobbyHistoryResponseDto.class,
-                        category.id,
+                        hobby.baseAddress.id,                        category.id,
                         hobby.title,
                         hobby.endDate,
+                        hobby.isClosed,
                         hobby.curNum,
                         hobby.maxNum,
                         hobby.maxNum,
