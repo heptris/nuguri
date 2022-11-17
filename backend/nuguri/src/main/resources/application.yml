@@ -11,7 +11,7 @@ spring:
     password: ${MYSQL_PASSWORD}
   sql:
     init:
-      mode: always
+      mode: never
 #      schema-locations: classpath*:/schema.sql
 #      data-locations: classpath*:/data.sql
 
@@ -26,7 +26,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     properties:
       hibernate:
         format_sql: true
