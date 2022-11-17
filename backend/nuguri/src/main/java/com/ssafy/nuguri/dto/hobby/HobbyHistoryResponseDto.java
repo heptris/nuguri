@@ -36,7 +36,7 @@ public class HobbyHistoryResponseDto {
 
     private Integer chatNum;
 
-    private String imageUrl;
+    private String imageurl;
 
     private ApproveStatus approveStatus;
 
