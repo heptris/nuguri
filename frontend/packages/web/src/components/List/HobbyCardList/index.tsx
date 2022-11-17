@@ -15,7 +15,7 @@ import { useUser } from "@/hooks";
 
 const { REGION, HOBBY, DEAL, GROUP_DEAL } = ROUTES;
 
-const HobbyCard = ({ hobbyList, categoryId, localId }) => {
+const HobbyCardList = ({ hobbyList, categoryId, localId }) => {
   return (
     <>
       {hobbyList?.map(({ highAgeLimit, categoryId, curNum, endDate, hobbyId, hobbyImage, maxNum, title, sexLimit }: HobbyRoomType) => {
@@ -114,7 +114,7 @@ const HobbyCard = ({ hobbyList, categoryId, localId }) => {
   );
 };
 
-export default HobbyCard;
+export { HobbyCardList };
 
 const DateDiv = styled.div`
   width: 100%;

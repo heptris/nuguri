@@ -11,7 +11,7 @@ import { IconButton } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 const { REGION, HOBBY, DEAL, GROUP_DEAL } = ROUTES;
 
-export const DealCard = ({ dealList, categoryId, localId }) => {
+export const DealCardList = ({ dealList, categoryId, localId }) => {
   return (
     <>
       {dealList?.map(({ dealId, dealImage, price, title, hit, deal }: DealItemDetailType) => {
