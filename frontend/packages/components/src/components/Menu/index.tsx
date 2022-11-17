@@ -21,7 +21,7 @@ export type MenuButtomProps = MenuProps &
 
 export const Menu = forwardRef<HTMLDivElement, MenuButtomProps>(({ handleClickListItem, handleMenuItemClick, onCloseHandler, categoryId, options, open, anchorEl }, ref) => {
   const theme = racconsThemes.defaultTheme;
-  const [categoryName, setCategoryName] = React.useState("취미선택");
+  const [categoryName, setCategoryName] = React.useState("");
   const onHandleClose = () => {
     onCloseHandler();
   };
@@ -43,7 +43,7 @@ export const Menu = forwardRef<HTMLDivElement, MenuButtomProps>(({ handleClickLi
               color: ${theme.color.background.submain};
             `}
           >
-            {categoryName}
+            {categoryName ? categoryName : "취미선택"}
           </Text>
         </ListItem>
       </Button>
