@@ -13,7 +13,7 @@ import { useRecoilState } from "recoil";
 const { POST } = ROUTES;
 
 const PostPage = () => {
-  const { options } = useCategory();
+  const { hobbyDatas } = useCategory();
   const [, setPostState] = useRecoilState(postState);
   const [categoryId, setCategoryId] = useState(null);
 
@@ -69,7 +69,7 @@ const PostPage = () => {
               setCategoryId(event.target.value);
             }}
           >
-            {options?.map(option => (
+            {hobbyDatas?.map(option => (
               <MenuItem key={option.categoryId} value={option.categoryId}>
                 {option.categoryName}
               </MenuItem>

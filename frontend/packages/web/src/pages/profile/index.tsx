@@ -16,6 +16,10 @@ import SelectTab from "@/components/SelectTab";
 import Link from "@/components/Link";
 import { ROUTES } from "@/constant";
 import { useProfile } from "@/hooks/useProfile";
+import HobbyCard from "@/components/Card/HobbyCard";
+import { useRecoilState } from "recoil";
+import { menuCategoryState } from "@/store";
+import { DealCard } from "@/components/Card/DealCard";
 
 const { EDITPROFILE } = ROUTES;
 
@@ -28,8 +32,6 @@ interface TabPanelProps {
 
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, nickname, ...other } = props;
-  const { postDealFavorite, postDealOnSale, postDealPurchase, postDealSoldOut, postHobbyFavorite, postHobbyManage, postHobbyParticipation, postHobbyReady } = useProfile(nickname);
-  console.log(postHobbyReady);
 
   return (
     <div role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`} aria-labelledby={`simple-tab-${index}`} {...other}>
@@ -59,12 +61,17 @@ function a11yProps(index: number) {
 const ProfilePage = () => {
   useHeader({ mode: "ITEM", headingText: undefined });
   const { userInfo } = useUser();
-  const { temperature, nickname, profileImage } = userInfo;
+  const [categoryId, setCategoryId] = useRecoilState(menuCategoryState);
+
+  const { temperature, nickname, profileImage, localId } = userInfo;
   const [value, setValue] = useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
+  const { hobbyReadyList, hobbyParticipationList, hobbyManageList, hobbyFavoriteList, dealSoldOutList, dealPurchaseList, dealOnSaleList, dealFavoriteList } = useProfile(nickname);
+  console.log(hobbyReadyList);
 
   const hobbyMenus = ["대기", "참여", "운영", "찜"];
   const [selectedHobbyMenu, setSelectedHobbyMenu] = useState(hobbyMenus[0]);
@@ -154,10 +161,10 @@ const ProfilePage = () => {
           <TabPanel value={value} index={1} nickname={nickname}>
             <SelectTab menus={hobbyMenus} onSelectHandler={onSelectHobbyHandler} />
             <ListWrapper>
-              {selectedHobbyMenu === hobbyMenus[0] && <Card />}
-              {selectedHobbyMenu === hobbyMenus[1] && <Card />}
-              {selectedHobbyMenu === hobbyMenus[2] && <Card />}
-              {selectedHobbyMenu === hobbyMenus[3] && <Card />}
+              {selectedHobbyMenu === hobbyMenus[0] && <HobbyCard hobbyList={hobbyReadyList} categoryId={categoryId} localId={localId} />}
+              {selectedHobbyMenu === hobbyMenus[1] && <HobbyCard hobbyList={hobbyParticipationList} categoryId={categoryId} localId={localId} />}
+              {selectedHobbyMenu === hobbyMenus[2] && <HobbyCard hobbyList={hobbyManageList} categoryId={categoryId} localId={localId} />}
+              {selectedHobbyMenu === hobbyMenus[3] && <HobbyCard hobbyList={hobbyFavoriteList} categoryId={categoryId} localId={localId} />}
             </ListWrapper>
           </TabPanel>
           <TabPanel value={value} index={2} nickname={nickname}>
@@ -169,10 +176,10 @@ const ProfilePage = () => {
               `}
             />
             <ListWrapper>
-              {selectedDealMenu === dealMenus[0] && <Card />}
-              {selectedDealMenu === dealMenus[1] && <Card />}
-              {selectedDealMenu === dealMenus[2] && <Card />}
-              {selectedDealMenu === dealMenus[3] && <Card />}
+              {selectedDealMenu === dealMenus[0] && <DealCard dealList={dealSoldOutList} categoryId={categoryId} localId={localId} />}
+              {selectedDealMenu === dealMenus[1] && <DealCard dealList={dealPurchaseList} categoryId={categoryId} localId={localId} />}
+              {selectedDealMenu === dealMenus[2] && <DealCard dealList={dealOnSaleList} categoryId={categoryId} localId={localId} />}
+              {selectedDealMenu === dealMenus[3] && <DealCard dealList={dealFavoriteList} categoryId={categoryId} localId={localId} />}
             </ListWrapper>
           </TabPanel>
           <TabPanel value={value} index={3} nickname={nickname}>
