@@ -45,13 +45,11 @@ const HomePage = () => {
   const handleMenuItemClick = (categoryId: number) => {
     setCategoryId(categoryId);
     setAnchorEl(null);
-    console.log(categoryId);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
 
-  // const { dealDatas } = useHome({ categoryId, localId });
   const { hobbyList, dealList } = useList({ categoryId, localId });
 
   return (
@@ -166,7 +164,6 @@ const MainWrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding: 1rem;
-  background-color: #f2decb;
 `;
 
 const CategorytWrapper = styled.div`
