@@ -7,25 +7,16 @@ import { ChatMessageReceiveType, ChatRoomInfoGetHistoryType, ChatRoomMessageInfo
 import { Button, LabelInput, Text } from "@common/components";
 
 export async function getServerSideProps({ params, query }) {
-  const { roomId, receiverId } = query;
+  const { roomId } = query;
   return {
     props: {
       roomId,
-      receiverId,
     },
   };
 }
-const ChatRoomPage = <T extends ChatRoomType>(props: ChatRoomInfoGetHistoryType<T>) => {
-  const getProps = () => {
-    if ("receiverId" in props) {
-      const { roomId, receiverId } = props;
-      return { roomId, receiverId };
-    }
-    const { roomId, roomName } = props;
-    return { roomId, roomName };
-  };
-  const { roomId, receiverId, roomName } = getProps();
-  const { message, setMessage, sendMessage, chatData, chatHistoryData } = useChatRoom({ roomId, receiverId, roomName });
+const ChatRoomPage = (props: { roomId: string }) => {
+  const { roomId } = props;
+  const { message, setMessage, sendMessage, chatData, chatHistoryData } = useChatRoom({ roomId });
   const [chatRoomData, setChatRoomData] = useState<ChatMessageReceiveType[]>([]);
   const { userInfo } = useUser();
   const { nickname } = userInfo;
@@ -78,6 +69,7 @@ const ChatRoomPage = <T extends ChatRoomType>(props: ChatRoomInfoGetHistoryType<
   useEffect(() => {
     chatData && setChatRoomData([...chatRoomData, chatData]);
     console.log(chatRoomData);
+    scrollToBottom();
   }, [chatData]);
   useEffect(() => {
     setBottom({ children: BottomComponent });

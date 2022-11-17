@@ -16,7 +16,7 @@ const authState = atom<AuthType>({
   key: "authState",
   default: { isLogined: null },
 });
-const { HOME } = ROUTES;
+const { HOME, MAIN } = ROUTES;
 const { MY_PROFILE } = QUERY_KEYS;
 export const useAuth = () => {
   const [{ isLogined }, setAuthState] = useRecoilState(authState);
@@ -63,7 +63,7 @@ export const useAuth = () => {
   };
 
   const handleLogoutProcess = () => {
-    handleAlertOpen("로그아웃 완료!", true, 1000);
+    // handleAlertOpen("로그아웃 완료!", true, 1000);
     setAuthState({ isLogined: false });
     deleteCookie(ACCESS_TOKEN);
     deleteCookie(REFRESH_TOKEN);
@@ -88,7 +88,7 @@ export const useAuth = () => {
   });
 
   const handleLogout = async () => {
-    await push(HOME);
+    await push(MAIN);
     mutateLogout();
   };
 

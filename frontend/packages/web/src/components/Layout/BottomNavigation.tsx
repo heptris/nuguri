@@ -13,10 +13,10 @@ const { HOME, CHAT, LOUNGE, PROFILE, LOGIN, MAIN } = ROUTES;
 const BottomNavigation = () => {
   const [{ children: BottomComponent }] = useRecoilState(bottomState);
   const router = useRouter();
-  if (router.pathname === MAIN) return <></>;
+  // if (router.pathname === MAIN) return <></>;
   return (
     <>
-      {BottomComponent ? (
+      {BottomComponent !== null ? (
         <BottomNavbar>{BottomComponent}</BottomNavbar>
       ) : (
         <BottomNavbar value={router.pathname}>

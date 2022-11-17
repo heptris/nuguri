@@ -1,13 +1,23 @@
 import { List } from "@common/components";
 import ChatListItem from "@/components/ChatListItem";
-import { useHeader } from "@/hooks";
+import { useChatList, useHeader, useUser } from "@/hooks";
 import withAuth from "@/utils/withAuth";
+import { ROUTES } from "@/constant";
+import Link from "@/components/Link";
 
+const { CHAT } = ROUTES;
 const ChatListPage = () => {
   useHeader({ mode: "ITEM", headingText: "채팅" });
+  const { chatListData } = useChatList();
   return (
     <List>
-      <ChatListItem chatRoomImg="" content="채팅방 내용" date="2022.11.03" title="채팅방 제목" unread />
+      {chatListData?.map(({ lastChatMessage, lastChatTime, roomId, roomName }) => {
+        return (
+          <Link noLinkStyle href={CHAT + `/${roomId}`}>
+            <ChatListItem chatRoomImg="" content={lastChatMessage} date={lastChatTime} title={roomName ?? roomId} unread />;
+          </Link>
+        );
+      })}
     </List>
   );
 };

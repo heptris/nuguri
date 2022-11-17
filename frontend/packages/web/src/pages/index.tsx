@@ -5,8 +5,8 @@ import { Button, Text } from "@common/components";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import Image from "next/image";
-const { LOGIN, SIGNUP } = ROUTES;
 import mainImg from "../../public/assets/main.png";
+const { LOGIN, SIGNUP } = ROUTES;
 
 const MainPage = () => {
   useHeader({ mode: "NOTHING" });

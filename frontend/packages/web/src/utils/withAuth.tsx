@@ -10,9 +10,9 @@ const withAuth = (Component: NextPage | React.FC) => {
   const Auth = () => {
     const { isLogined } = useAuth();
     const router = useRouter();
-    const { handleAlertOpen } = useAlert();
+    // const { handleAlertOpen } = useAlert();
     useEffect(() => {
-      isLogined !== null && !isLogined && router.replace(MAIN) && handleAlertOpen("로그인이 필요한 서비스입니다.", false, 1000);
+      isLogined !== null && !isLogined && router.replace(MAIN); // && handleAlertOpen("로그인이 필요한 서비스입니다.", false, 1000);
     }, [isLogined]);
     if (isLogined) return <Component />;
   };
