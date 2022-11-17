@@ -15,6 +15,7 @@ import StandardImageList from "@/components/StandardImageList";
 import SelectTab from "@/components/SelectTab";
 import Link from "@/components/Link";
 import { ROUTES } from "@/constant";
+import { useProfile } from "@/hooks/useProfile";
 
 const { EDITPROFILE } = ROUTES;
 
@@ -22,10 +23,13 @@ interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
+  nickname: string;
 }
 
 function TabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
+  const { children, value, index, nickname, ...other } = props;
+  const { postDealFavorite, postDealOnSale, postDealPurchase, postDealSoldOut, postHobbyFavorite, postHobbyManage, postHobbyParticipation, postHobbyReady } = useProfile(nickname);
+  console.log(postHobbyReady);
 
   return (
     <div role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`} aria-labelledby={`simple-tab-${index}`} {...other}>
@@ -137,7 +141,7 @@ const ProfilePage = () => {
               <Tab label="공구거래" {...a11yProps(3)} />
             </Tabs>
           </Box>
-          <TabPanel value={value} index={0}>
+          <TabPanel value={value} index={0} nickname={nickname}>
             <div
               css={css`
                 display: flex;
@@ -147,7 +151,7 @@ const ProfilePage = () => {
               <StandardImageList />
             </div>
           </TabPanel>
-          <TabPanel value={value} index={1}>
+          <TabPanel value={value} index={1} nickname={nickname}>
             <SelectTab menus={hobbyMenus} onSelectHandler={onSelectHobbyHandler} />
             <ListWrapper>
               {selectedHobbyMenu === hobbyMenus[0] && <Card />}
@@ -156,7 +160,7 @@ const ProfilePage = () => {
               {selectedHobbyMenu === hobbyMenus[3] && <Card />}
             </ListWrapper>
           </TabPanel>
-          <TabPanel value={value} index={2}>
+          <TabPanel value={value} index={2} nickname={nickname}>
             <SelectTab
               menus={dealMenus}
               onSelectHandler={onSelecDealHandler}
@@ -171,7 +175,7 @@ const ProfilePage = () => {
               {selectedDealMenu === dealMenus[3] && <Card />}
             </ListWrapper>
           </TabPanel>
-          <TabPanel value={value} index={3}>
+          <TabPanel value={value} index={3} nickname={nickname}>
             <SelectTab
               menus={groupDealMenus}
               onSelectHandler={onSelectGroupDealHandler}
@@ -250,17 +254,31 @@ const BottomWrapper = styled.div`
   bottom: 0rem;
 `;
 
-const GridWrapper = styled.div`
-  width: 100%;
-  display: grid;
-  gap: 3vw;
-  grid-template-columns: repeat(2, 1fr);
-
-  @media screen and (max-width: 1799px) {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1vw;
+const CardWapper = styled.div`
+  max-width: 1799px;
+  display: flex;
+  flex-direction: row;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
   }
+  @media screen and (max-width: 1799px) {
+    width: 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+  }
+
+  @media screen and (max-width: 899px) {
+    /* 모바일 가로, 타블렛 세로 */
+    width: 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+  }
+
   @media screen and (max-width: 599px) {
-    grid-template-columns: repeat(4, 1fr);
+    /* 모바일 세로 */
+    width: 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
   }
 `;
