@@ -46,4 +46,8 @@ public class HobbyFavoriteService {
         return hobbyFavoriteRepository.getFavoriteNumberByHobbyId(hobbyId);
     }
 
+    public boolean favoritecheck(Long hobbyId){
+        Long memberId = SecurityUtil.getCurrentMemberId();
+        return hobbyFavoriteRepository.favoritecheck(memberId,hobbyId);
+    }
 }

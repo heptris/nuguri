@@ -30,6 +30,14 @@ public class HobbyFavoriteController {
         );
     }
 
+    @ApiOperation(value = "유저가 특정 취미방을 즐겨찾기 했는지 여부")
+    @GetMapping("/favoritecheck/{hobbyId}")
+    public ResponseEntity isFavorite(@PathVariable Long hobbyId){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseDto(HttpStatus.OK.value(),"취미방 즐겨찾기 여부",hobbyFavoriteService.favoritecheck(hobbyId))
+        );
+    }
+
 
 
 }

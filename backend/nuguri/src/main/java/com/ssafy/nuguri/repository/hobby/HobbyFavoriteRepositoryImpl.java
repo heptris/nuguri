@@ -31,4 +31,13 @@ public class HobbyFavoriteRepositoryImpl implements HobbyFavoriteRepositoryCusto
                 .where(hobbyFavorite.hobby.id.eq(hobbyId))
                 .fetch().size();
     }
+
+    @Override
+    public boolean favoritecheck(Long memberId, Long hobbyId) {
+        Integer result = queryFactory.selectFrom(hobbyFavorite)
+                .where(hobbyFavorite.member.id.eq(memberId)
+                        ,hobbyFavorite.hobby.id.eq(hobbyId))
+                .fetch().size();
+        return (result == 0)?false:true;
+    }
 }
