@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Text } from "@common/components";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
@@ -33,6 +33,9 @@ const DealListPage = ({ defaultDealList, localId }: { defaultDealList: DealItemT
   useHeader({ mode: "LIST" });
   const [dealList, setDealList] = useState(defaultDealList);
   const [categoryId, setCategoryId] = useRecoilState(menuCategoryState);
+  useEffect(() => {
+    setDealList(dealList.filter(item => item.categoryId === categoryId));
+  }, []);
   return (
     <MainWrapper>
       <Text

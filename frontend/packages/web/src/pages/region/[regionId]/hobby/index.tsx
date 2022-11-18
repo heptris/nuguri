@@ -1,9 +1,40 @@
+import { ENDPOINT_API } from "@/api";
+import { HobbyCardList } from "@/components/List/HobbyCardList";
+import { useHeader } from "@/hooks";
+import { menuCategoryState } from "@/store";
+import { HobbyRoomType } from "@/types";
 import { Card, Text } from "@common/components";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
 
-const HobbyListPage = () => {
-  const newDate = new Date("2022-10-15 15:00:37");
+export async function getServerSideProps({ params }) {
+  const { regionId } = params;
+
+  const postHobbyList = async () => {
+    const { data } = await axios.post(ENDPOINT_API + "/hobby/list", { localId: regionId });
+    return data.data;
+  };
+
+  const defaultHobbyList = await postHobbyList();
+
+  return {
+    props: {
+      defaultHobbyList,
+      localId: regionId,
+    },
+  };
+}
+
+const HobbyListPage = ({ defaultHobbyList, localId }: { defaultHobbyList: HobbyRoomType[]; localId: number }) => {
+  useHeader({ mode: "LIST" });
+  const [hobbyList, setHobbyList] = useState(defaultHobbyList);
+  const [categoryId] = useRecoilState(menuCategoryState);
+  useEffect(() => {
+    setHobbyList(hobbyList.filter(item => item.categoryId === categoryId));
+  }, []);
   return (
     <MainWrapper>
       <Text
@@ -16,7 +47,9 @@ const HobbyListPage = () => {
       >
         취미모임
       </Text>
-      <ListWrapper></ListWrapper>
+      <ListWrapper>
+        <HobbyCardList hobbyList={hobbyList} />
+      </ListWrapper>
     </MainWrapper>
   );
 };
