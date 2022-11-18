@@ -5,11 +5,12 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Box, Modal } from "@mui/material";
 
-import { Button, LabelInput } from "@common/components";
+import { Button, LabelInput, Text } from "@common/components";
 import { ROUTES } from "@/constant";
 import { useHeader, useLocation, useSearchBar, useAlert, useAuth, useBottom, useDebounce } from "@/hooks";
 import { searchBarState } from "@/store";
 import { apiInstance, ENDPOINT_AUTH } from "@/api";
+import SearchedItem from "@/components/Searcheditem";
 
 const { HOME } = ROUTES;
 
@@ -47,7 +48,7 @@ const SignUpPage = () => {
   const [searchBar, setSearchBar] = useRecoilState(searchBarState);
   const { placeholder, value } = searchBar;
   const { searchedValue } = useSearchBar("내 동네 이름(동, 읍, 면)으로 검색");
-  const { handleSearchAddress, searchedData, isSearching, resetSearchedData } = useLocation();
+  const { handleSearchAddress, searchedData, isSearching, resetSearchedData, handleSelectAddress } = useLocation();
   const debouncedSearchedValue = useDebounce(searchedValue);
   useEffect(() => {
     debouncedSearchedValue && handleSearchAddress(debouncedSearchedValue);
@@ -232,37 +233,46 @@ const SignUpPage = () => {
               handleSearchAddress(debouncedSearchedValue);
             }}
           />
-          <div> {!!debouncedSearchedValue ? searchedData?.message : "내 동네 검색하기"}</div>
           <div
             css={css`
-              overflow-y: auto;
-              height: 10rem;
+              display: flex;
+              flex-direction: column;
+              margin: 0.5rem;
             `}
           >
-            {!!debouncedSearchedValue && isSearching ? (
-              <div>Loading...</div>
-            ) : (
-              searchedData?.data.map(({ baseAddress, localId }) => {
-                return (
-                  <div
-                    css={css`
-                      cursor: pointer;
-                      border: 1px black solid;
-                      margin-bottom: 1rem;
-                    `}
-                    key={localId}
-                    onClick={() => {
-                      setBaseAddress(baseAddress);
-                      setSearchBar({ placeholder, value: "" });
-                      resetSearchedData();
-                      handleClose();
-                    }}
-                  >
-                    {baseAddress}
-                  </div>
-                );
-              })
-            )}
+            <Button size={"large"}>현재 위치로 찾기</Button>
+            <Text
+              css={css`
+                font-size: 1.2rem;
+                margin-top: 1.2rem;
+                font-weight: bold;
+              `}
+            >
+              {!!debouncedSearchedValue ? `'${debouncedSearchedValue}' 검색 결과` : isSearching ? "검색 중..." : "내 동네 검색하기"}
+            </Text>
+            <div
+              css={css`
+                overflow-y: scroll;
+                height: 15rem;
+              `}
+            >
+              {!!debouncedSearchedValue &&
+                searchedData?.data.map(({ baseAddress, localId }) => {
+                  return (
+                    <SearchedItem
+                      key={localId}
+                      onClick={() => {
+                        setBaseAddress(baseAddress);
+                        setSearchBar({ placeholder, value: "" });
+                        resetSearchedData();
+                        handleClose();
+                      }}
+                    >
+                      {baseAddress}
+                    </SearchedItem>
+                  );
+                })}
+            </div>
           </div>
         </Box>
       </Modal>

@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { useSearchBar, useHeader, useLocation, useDebounce } from "@/hooks";
 import { css } from "@emotion/react";
+import SearchedItem from "@/components/Searcheditem";
+import { Button, Text } from "@common/components";
 
 const LocationPage = () => {
   useHeader({ mode: "SEARCH", headingText: undefined });
@@ -10,31 +12,37 @@ const LocationPage = () => {
   useEffect(() => {
     debouncedSearchedValue && handleSearchAddress(debouncedSearchedValue);
   }, [debouncedSearchedValue]);
-
-  if (isSearching) return <div>Loading...</div>;
+  console.log(searchedData);
 
   return (
-    <>
-      <div> {!!debouncedSearchedValue ? searchedData?.message : "내 동네 검색하기"}</div>
+    <div
+      css={css`
+        display: flex;
+        flex-direction: column;
+        margin: 0.5rem;
+      `}
+    >
+      <Button size={"large"}>현재 위치로 찾기</Button>
+      <Text
+        css={css`
+          font-size: 1.2rem;
+          margin-top: 1.2rem;
+          font-weight: bold;
+        `}
+      >
+        {!!debouncedSearchedValue ? `'${debouncedSearchedValue}' 검색 결과` : isSearching ? "검색 중..." : "내 동네 검색하기"}
+      </Text>
       <>
         {!!debouncedSearchedValue &&
           searchedData?.data.map(({ baseAddress, localId }) => {
             return (
-              <div
-                css={css`
-                  cursor: pointer;
-                  border: 1px black solid;
-                  margin-bottom: 1rem;
-                `}
-                key={localId}
-                onClick={() => handleSelectAddress({ baseAddress, localId })}
-              >
+              <SearchedItem key={localId} onClick={() => handleSelectAddress({ baseAddress, localId })}>
                 {baseAddress}
-              </div>
+              </SearchedItem>
             );
           })}
       </>
-    </>
+    </div>
   );
 };
 
