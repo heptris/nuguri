@@ -49,7 +49,11 @@ const HobbyDetailPage = ({ hobbyRoomDefaultInfo }: { hobbyRoomDefaultInfo: Hobby
   const { isFavoriteHobby } = useFavoriteHobby(hobbyId);
   const { setBottom } = useBottom(<></>);
   const [favorite, setFavorite] = useState(isFavoriteHobby);
-  useEffect(() => {}, [favorite]);
+  console.log(isFavoriteHobby);
+  useEffect(() => {
+    console.log(favorite);
+  }, [favorite]);
+
   const { handleFavoriteHobby } = useFavHobbyRegist(hobbyId);
   const week = new Array("일", "월", "화", "수", "목", "금", "토");
   const getDate = new Date(endDate);
@@ -190,7 +194,7 @@ const HobbyDetailPage = ({ hobbyRoomDefaultInfo }: { hobbyRoomDefaultInfo: Hobby
             }
           `}
         >
-          {categoryName[categoryId]}
+          {categoryName[categoryId - 1]}
         </Text>
       </ButtonDiv>
 
