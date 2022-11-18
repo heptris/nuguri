@@ -29,6 +29,8 @@ type HobbyRoomType = {
   imageurl: string;
   closed: boolean;
   approveStatus: string;
+  nickname: string;
+  profileImage: string;
 };
 
 type DealItemDetailType = {
