@@ -16,7 +16,7 @@ import SelectTab from "@/components/SelectTab";
 import Link from "@/components/Link";
 import { ROUTES } from "@/constant";
 import { useProfile } from "@/hooks/useProfile";
-import {HobbyCardList} from "@/components/List/HobbyCardList";
+import { HobbyCardList } from "@/components/List/HobbyCardList";
 import { useRecoilState } from "recoil";
 import { menuCategoryState } from "@/store";
 import { DealCardList } from "@/components/List/DealCardList";
@@ -161,10 +161,10 @@ const ProfilePage = () => {
           <TabPanel value={value} index={1} nickname={nickname}>
             <SelectTab menus={hobbyMenus} onSelectHandler={onSelectHobbyHandler} />
             <ListWrapper>
-              {selectedHobbyMenu === hobbyMenus[0] && <HobbyCardList hobbyList={hobbyReadyList} categoryId={categoryId} localId={localId} />}
-              {selectedHobbyMenu === hobbyMenus[1] && <HobbyCardList hobbyList={hobbyParticipationList} categoryId={categoryId} localId={localId} />}
-              {selectedHobbyMenu === hobbyMenus[2] && <HobbyCardList hobbyList={hobbyManageList} categoryId={categoryId} localId={localId} />}
-              {selectedHobbyMenu === hobbyMenus[3] && <HobbyCardList hobbyList={hobbyFavoriteList} categoryId={categoryId} localId={localId} />}
+              {selectedHobbyMenu === hobbyMenus[0] && <HobbyCardList hobbyList={hobbyReadyList} />}
+              {selectedHobbyMenu === hobbyMenus[1] && <HobbyCardList hobbyList={hobbyParticipationList} />}
+              {selectedHobbyMenu === hobbyMenus[2] && <HobbyCardList hobbyList={hobbyManageList} />}
+              {selectedHobbyMenu === hobbyMenus[3] && <HobbyCardList hobbyList={hobbyFavoriteList} />}
             </ListWrapper>
           </TabPanel>
           <TabPanel value={value} index={2} nickname={nickname}>
