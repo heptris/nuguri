@@ -91,7 +91,8 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
                         hobby.rowAgeLimit,
                         hobby.highAgeLimit,
                         hobby.sexLimit,
-                        hobby.hobbyImage
+                        hobby.hobbyImage,
+                        member.profileImage
                 ))
                 .from(hobby)
                 .innerJoin(hobby.baseAddress, baseAddress)

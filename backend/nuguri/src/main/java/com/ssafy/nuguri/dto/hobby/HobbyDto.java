@@ -42,6 +42,7 @@ public class HobbyDto {
     private char sexLimit;
 
     private String imageurl;
+    private String profileImage;
 
 
 }
