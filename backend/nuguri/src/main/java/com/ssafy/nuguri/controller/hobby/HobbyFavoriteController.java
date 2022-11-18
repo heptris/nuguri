@@ -34,7 +34,7 @@ public class HobbyFavoriteController {
     @GetMapping("/favoritecheck/{hobbyId}")
     public ResponseEntity isFavorite(@PathVariable Long hobbyId){
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseDto(HttpStatus.OK.value(),"취미방 즐겨찾기 여부",hobbyFavoriteService.favoritecheck(hobbyId))
+                new ResponseDto(HttpStatus.OK.value(),"취미방 즐겨찾기 여부",hobbyFavoriteService.favoriteCheck(hobbyId))
         );
     }
 
