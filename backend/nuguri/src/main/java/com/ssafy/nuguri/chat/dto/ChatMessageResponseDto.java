@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 public class ChatMessageResponseDto {
 
     private String sender;
+    private String senderImage;
 //    private ChatMessage.MessageType messageType;
     private String message;
 

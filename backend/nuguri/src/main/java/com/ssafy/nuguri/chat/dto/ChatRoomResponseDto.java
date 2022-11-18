@@ -21,7 +21,7 @@ public class ChatRoomResponseDto implements Comparable<ChatRoomResponseDto> {
     private String lastChatMessage;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime lastChatTime;
-
+    private String senderImage;
 
     @Override
     public int compareTo(ChatRoomResponseDto o) {

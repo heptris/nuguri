@@ -38,16 +38,16 @@ class HobbyRepositoryImplTest {
 
     @Test
     public void 지역으로_찾기(){
-        List<HobbyDto> result = hobbyRepository.findByRegionAndCategory(1L,null);
-        for (HobbyDto a: result) {
+        List<HobbyHistoryResponseDto> result = hobbyRepository.findByRegionAndCategory(1L,null);
+        for (HobbyHistoryResponseDto a: result) {
             System.out.println("결과값: " + a.toString());
         }
     }
 
     @Test
     public void 지역과_카테고리로_찾기(){
-        List<HobbyDto> result = hobbyRepository.findByRegionAndCategory(1L,1L);
-        for (HobbyDto a: result) {
+        List<HobbyHistoryResponseDto> result = hobbyRepository.findByRegionAndCategory(1L,1L);
+        for (HobbyHistoryResponseDto a: result) {
             System.out.println("결과값: " + a.toString());
         }
     }

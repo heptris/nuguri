@@ -27,33 +27,32 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
 
 
 
-    public List<HobbyDto> findByRegionAndCategory(Long RegionId, Long CategoryId) {
-        List<HobbyDto> hobbyDtoList = queryFactory.select(Projections.constructor(HobbyDto.class,
+    public List<HobbyHistoryResponseDto> findByRegionAndCategory(Long RegionId, Long CategoryId) {
+        List<HobbyHistoryResponseDto> hobbyHistoryResponseDtoList = queryFactory.select(Projections.constructor(HobbyHistoryResponseDto.class,
                         hobby.id,
                         baseAddress.id,
                         category.id,
-                        hobby.member.id,
-                        hobby.member.nickname,
                         hobby.title,
-                        hobby.content,
                         hobby.endDate,
-                        hobby.meetingPlace,
                         hobby.isClosed,
                         hobby.curNum,
                         hobby.maxNum,
-                        hobby.fee,
-                        hobby.rowAgeLimit,
-                        hobby.highAgeLimit,
-                        hobby.sexLimit,
-                        hobby.hobbyImage
+                        hobby.maxNum,
+                        hobby.maxNum,
+                        hobby.hobbyImage,
+                        hobbyHistory.approveStatus
                 ))
                 .from(hobby)
+                .innerJoin(hobby.hobbyHistoryList, hobbyHistory)
+                .innerJoin(hobbyHistory.member, member)
+                .innerJoin(hobby.category, category)
+                .innerJoin(hobby.baseAddress, baseAddress)
                 .where(RegionEq(RegionId),
                         CategoryEq(CategoryId),
                         hobby.isClosed.eq(Boolean.FALSE)
                 )
                 .fetch();
-        return hobbyDtoList;
+        return hobbyHistoryResponseDtoList;
     }
 
     private BooleanExpression RegionEq(Long RegionId) {
@@ -95,39 +94,16 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
         return hobbyDto;
     }
 
-    @Override
-    public List<HobbyDto> findAllDto() {
-        return queryFactory.select(Projections.constructor(HobbyDto.class,
-                        hobby.id,
-                        baseAddress.id,
-                        category.id,
-                        hobby.member.id,
-                        hobby.member.nickname,
-                        hobby.title,
-                        hobby.content,
-                        hobby.endDate,
-                        hobby.meetingPlace,
-                        hobby.isClosed,
-                        hobby.curNum,
-                        hobby.maxNum,
-                        hobby.fee,
-                        hobby.rowAgeLimit,
-                        hobby.highAgeLimit,
-                        hobby.sexLimit,
-                        hobby.hobbyImage
-                ))
-                .from(hobby)
-                .where(hobby.isClosed.eq(Boolean.FALSE))
-                .fetch();
-
-    }
 
     @Override
     public List<HobbyHistoryResponseDto> findByMemberIdAndStatus(Long memberId, ApproveStatus approveStatus) {
         List<HobbyHistoryResponseDto> hobbyHistoryResponseDtoList = queryFactory.select(Projections.constructor(HobbyHistoryResponseDto.class,
+                        hobby.id,
+                        hobby.baseAddress.id,
                         category.id,
                         hobby.title,
                         hobby.endDate,
+                        hobby.isClosed,
                         hobby.curNum,
                         hobby.maxNum,
                         hobby.maxNum,
@@ -150,9 +126,12 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
     @Override
     public List<HobbyHistoryResponseDto> findByMemberIdAndPromoter(Long memberId, boolean isPromoter) {
         List<HobbyHistoryResponseDto> hobbyHistoryResponseDtoList = queryFactory.select(Projections.constructor(HobbyHistoryResponseDto.class,
+                        hobby.id,
+                        hobby.baseAddress.id,
                         category.id,
                         hobby.title,
                         hobby.endDate,
+                        hobby.isClosed,
                         hobby.curNum,
                         hobby.maxNum,
                         hobby.maxNum,
@@ -175,9 +154,12 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
     @Override
     public List<HobbyHistoryResponseDto> findByMemberIdAndFavorite(Long memberId, boolean isFavorite) {
         List<HobbyHistoryResponseDto> hobbyHistoryResponseDtoList = queryFactory.select(Projections.constructor(HobbyHistoryResponseDto.class,
+                        hobby.id,
+                        hobby.baseAddress.id,
                         category.id,
                         hobby.title,
                         hobby.endDate,
+                        hobby.isClosed,
                         hobby.curNum,
                         hobby.maxNum,
                         hobby.maxNum,

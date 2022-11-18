@@ -42,10 +42,17 @@ public class ChatService {
         ChatRoom chatRoom = chatRoomRepository.findChatRoomByRoomId(chatMessageDto.getRoomId()).orElseThrow(
                 () -> new CustomException(CHATROOM_NOT_FOUND)
         );
+
+        /**
+         * 채팅 메세지 알람 보내기
+         */
         List<Long> alarmReceivers = chatRoom.getUserList().stream().filter(memberId -> !memberId.equals(chatMessageDto.getSenderId())).collect(Collectors.toList());
         alarmReceivers.forEach(alarmReceiver -> {
             eventPublisher.publishEvent(new ChatAlarmDto(alarmReceiver, chatMessageDto.getMessage()));
         });
+        /**
+         * 채팅 메세지 알람 보내기 끝
+         */
 
         ChatMessage chatMessage = chatMessageDto.toChatMessage();
         return chatRepository.save(chatMessage);

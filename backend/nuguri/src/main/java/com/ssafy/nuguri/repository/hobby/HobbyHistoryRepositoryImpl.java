@@ -16,6 +16,7 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 import static com.querydsl.core.types.ExpressionUtils.count;
+import static com.ssafy.nuguri.domain.baseaddress.QBaseAddress.baseAddress;
 import static com.ssafy.nuguri.domain.category.QCategory.category;
 import static com.ssafy.nuguri.domain.hobby.QHobby.hobby;
 import static com.ssafy.nuguri.domain.hobby.QHobbyFavorite.hobbyFavorite;
@@ -60,13 +61,16 @@ public class HobbyHistoryRepositoryImpl implements HobbyHistoryRepositoryCustom{
     @Override
     public List<HobbyHistoryResponseDto> findByStatus(Long userId, ApproveStatus status) {
         List<HobbyHistoryResponseDto> hobbyHistoryResponseDtoList = queryFactory.select(Projections.constructor(HobbyHistoryResponseDto.class,
+                        hobby.id,
+                        hobby.baseAddress.id,
                         category.id,
                         hobby.title,
                         hobby.endDate,
+                        hobby.isClosed,
                         hobby.curNum,
                         hobby.maxNum,
-                        hobby.curNum.longValue(), // wishlistNum으로 변경
-                        hobby.curNum, // chatNum으로 변경
+                        hobby.maxNum,
+                        hobby.maxNum,
                         hobby.hobbyImage,
                         hobbyHistory.approveStatus
                 ))
@@ -86,19 +90,16 @@ public class HobbyHistoryRepositoryImpl implements HobbyHistoryRepositoryCustom{
     public List<HobbyHistoryResponseDto> findOperatings(Long userId) {
 
         List<HobbyHistoryResponseDto> hobbyHistoryResponseDtoList = queryFactory.select(Projections.constructor(HobbyHistoryResponseDto.class,
+                        hobby.id,
+                        hobby.baseAddress.id,
                         category.id,
                         hobby.title,
                         hobby.endDate,
+                        hobby.isClosed,
                         hobby.curNum,
                         hobby.maxNum,
-                        ExpressionUtils.as(
-                                JPAExpressions.select(count(hobbyFavorite.hobby))
-                                        .from(hobbyFavorite)
-                                        .where(
-                                                hobbyFavorite.hobby.id.eq(hobby.id)
-                                        ),"wishlistNum"
-                        ), // 서브쿼리를 이용한 즐겨찾기 수 구하기 -> hobby에 즐겨찾기 숫자 변수를 가지도록 변경하는 방식으로 바꿀 예정
-                        hobby.curNum, // chatNum으로 변경
+                        hobby.maxNum,
+                        hobby.maxNum,
                         hobby.hobbyImage,
                         hobbyHistory.approveStatus
                 ))
