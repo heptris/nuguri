@@ -22,7 +22,7 @@ const getDate = endDate => {};
 const HobbyCardList = ({ hobbyList }) => {
   return (
     <>
-      {hobbyList?.map(({ hobbyId, localId, categoryId, title, curNum, endDate, maxNum, wishlistNum, chatNum, highAgeLimit, imageurl, sexLimit, closed, approveStatus }: HobbyRoomType) => {
+      {hobbyList?.map(({ hobbyId, localId, categoryId, title, curNum, endDate, maxNum, wishlistNum, rowAgeLimit, highAgeLimit, imageurl, sexLimit, closed }: HobbyRoomType) => {
         const week = new Array("일", "월", "화", "수", "목", "금", "토");
         const getDate = new Date(endDate);
         const DayOfWeek = week[getDate.getDay()];
@@ -85,7 +85,7 @@ const HobbyCardList = ({ hobbyList }) => {
 
                   {!!endDate && (
                     <>
-                      <DivWrapper css={css``}>
+                      <DivWrapper>
                         <CalendarMonthIcon color="action" sx={{ fontSize: "1.2rem", marginRight: "0.2rem" }} />
                         <Text as="span">{`${Month}.${Day}(${DayOfWeek}) ${hour}시`}</Text>
                         <IconButton>
@@ -93,14 +93,22 @@ const HobbyCardList = ({ hobbyList }) => {
                         </IconButton>
                         <Text as="span">{curNum + "/" + maxNum}</Text>
                       </DivWrapper>
-                      {/* <DivWrapper>
-                        <WcIcon color="action" sx={{ fontSize: "20px", marginRight: "5px" }} />
+                      <DivWrapper>
+                        <WcIcon color="action" sx={{ fontSize: "1.2rem", marginRight: "0.2rem" }} />
                         <Text as="span">{sexLimit === "f" ? "여자만" : sexLimit === "m" ? "남자만" : "성별무관"}</Text>
                         <IconButton>
-                          <RemoveCircleOutlineIcon sx={{ fontSize: "20px" }} />
+                          <RemoveCircleOutlineIcon sx={{ fontSize: "1.2rem" }} />
                         </IconButton>
-                        <Text as="span">{highAgeLimit}세 이하</Text>
-                      </DivWrapper> */}
+                        <div
+                          css={css`
+                            display: flex;
+                            flex-direction: column;
+                          `}
+                        >
+                          <Text as="span">{rowAgeLimit}세 이상</Text>
+                          <Text as="span">{highAgeLimit}세 이하</Text>
+                        </div>
+                      </DivWrapper>
                     </>
                   )}
                 </>
@@ -115,8 +123,6 @@ const HobbyCardList = ({ hobbyList }) => {
                     <IconWrapper>
                       <FavoriteBorderIcon color="action" sx={{ fontSize: "1.3rem", marginRight: "0.3rem" }} />
                       <Text as="span">{wishlistNum}</Text>
-                      <ChatBubbleOutlineIcon color="action" sx={{ fontSize: "1.3rem", marginRight: "0.3rem", marginLeft: "0.5rem" }} />
-                      <Text as="span">{chatNum}</Text>
                     </IconWrapper>
                     {closed && (
                       <Button
