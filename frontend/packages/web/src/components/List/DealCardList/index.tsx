@@ -24,7 +24,7 @@ export const DealCardList = ({ dealList, categoryId, localId }) => {
             `}
           >
             <Card
-              Image={<Image src={dealImage} width={500} height={300} />}
+              Image={<Image src={dealImage} width={500} height={400} />}
               Content={
                 <>
                   <Text

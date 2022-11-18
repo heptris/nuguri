@@ -60,7 +60,7 @@ const HomePage = () => {
           >
             취미모임
           </Text>
-          <Link href={REGION + `/${localId}` + HOBBY}>
+          <Link href={REGION + `/${localId}` + HOBBY} noLinkStyle>
             <Text
               css={css`
                 color: #5e6272;
@@ -75,7 +75,7 @@ const HomePage = () => {
           </Link>
         </TitleWrapper>
         <CardWapper>
-          <HobbyCardList hobbyList={hobbyList} categoryId={categoryId} localId={localId} />
+          <HobbyCardList hobbyList={hobbyList} />
         </CardWapper>
       </CategorytWrapper>
       <CategorytWrapper>
@@ -90,7 +90,7 @@ const HomePage = () => {
           >
             중고거래
           </Text>
-          <Link href={REGION + `/${localId}` + DEAL}>
+          <Link href={REGION + `/${localId}` + DEAL} noLinkStyle>
             <Text
               css={css`
                 color: #5e6272;
@@ -120,7 +120,7 @@ const HomePage = () => {
           >
             공구목록
           </Text>
-          <Link href={REGION + `/${localId}` + GROUP_DEAL}>
+          <Link href={REGION + `/${localId}` + GROUP_DEAL} noLinkStyle>
             <Text
               css={css`
                 color: #5e6272;

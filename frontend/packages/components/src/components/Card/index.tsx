@@ -52,14 +52,23 @@ export const Card = forwardRef<HTMLDivElement, AllCardProps>((props, ref) => {
       `}
     >
       {Image}
-      <CardContent>{Content}</CardContent>
+      <CardContent
+        css={css`
+          padding: 0rem 1rem;
+          @media screen and (max-width: 599px) {
+            padding: 0rem 0.5rem;
+          }
+        `}
+      >
+        {Content}
+      </CardContent>
       <CardActions
-        disableSpacing
         css={css`
           display: flex;
-          justify-content: space-between;
+          padding: 1rem;
           @media screen and (max-width: 599px) {
-            font-size: 0.6rem;
+            font-size: 0.7rem;
+            padding: 0.5rem;
           }
         `}
       >
