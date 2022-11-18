@@ -200,10 +200,10 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
                         hobbyHistory.approveStatus
                 ))
                 .from(hobby)
-//                .leftJoin(hobby.hobbyHistoryList, hobbyHistory)
-//                .innerJoin(hobby.hobbyFavoriteList, hobbyFavorite)
-//                .innerJoin(hobbyFavorite.member, member)
-//                .innerJoin(hobby.category, category)
+                .leftJoin(hobby.hobbyHistoryList, hobbyHistory)
+                .innerJoin(hobby.hobbyFavoriteList, hobbyFavorite)
+                .innerJoin(hobbyFavorite.member, member)
+                .innerJoin(hobby.category, category)
                 .where(
                         member.id.eq(memberId)
                                 .and(hobbyFavorite.isFavorite.eq(isFavorite))

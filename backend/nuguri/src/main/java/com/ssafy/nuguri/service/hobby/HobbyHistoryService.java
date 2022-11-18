@@ -45,12 +45,12 @@ public class HobbyHistoryService {
 
 
 
-//        // 조건 미달
-//        if(hobby.getCurNum() >= hobby.getMaxNum()) throw new CustomException(FULL_HOBBY_ERROR); // 정원초과
-//        else if(hobby.getRowAgeLimit() > member.getAge()) throw new CustomException(AGE_LIMIT_ERROR); // 나이제한
-//        else if(hobby.getHighAgeLimit() < member.getAge()) throw new CustomException(AGE_LIMIT_ERROR); // 나이제한
-//        else if(hobby.getSexLimit() ==  member.getSex()) throw new CustomException(SEX_LIMIT_ERROR); // 성별제한
-//        else if(hobby.getBaseAddress() != member.getBaseAddress()) throw new CustomException(DIFF_ADDRESS_ERROR); // 나이제한
+        // 조건 미달
+        if(hobby.getCurNum() >= hobby.getMaxNum()) throw new CustomException(FULL_HOBBY_ERROR); // 정원초과
+        else if(hobby.getRowAgeLimit() > member.getAge()) throw new CustomException(AGE_LIMIT_ERROR); // 나이제한
+        else if(hobby.getHighAgeLimit() < member.getAge()) throw new CustomException(AGE_LIMIT_ERROR); // 나이제한
+        else if(hobby.getSexLimit() ==  member.getSex()) throw new CustomException(SEX_LIMIT_ERROR); // 성별제한
+        else if(hobby.getBaseAddress() != member.getBaseAddress()) throw new CustomException(DIFF_ADDRESS_ERROR); // 나이제한
 
         HobbyHistory hobbyHistoryEntity = HobbyHistory.builder()
                 .member(member)
