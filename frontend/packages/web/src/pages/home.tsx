@@ -108,7 +108,7 @@ const HomePage = () => {
           <DealCardList dealList={dealList} categoryId={categoryId} localId={localId} />
         </CardWapper>
       </CategorytWrapper>
-      <CategorytWrapper>
+      {/* <CategorytWrapper>
         <TitleWrapper>
           <Text
             as="p"
@@ -135,12 +135,9 @@ const HomePage = () => {
           </Link>
         </TitleWrapper>
         <CardWapper>
-          {/* <Card promiseDate={newDate} nowPeople={2} maxPeople={5} price={1000000} imgUrl={"/public/coding.jpg"} /> */}
-          {/* <Card promiseDate={newDate} nowPeople={2} maxPeople={5} price={1000000} imgUrl={"/public/coding.jpg"} /> */}
-          {/* <Card promiseDate={newDate} nowPeople={2} maxPeople={5} price={1000000} imgUrl={"/public/coding.jpg"} /> */}
-          {/* <Card promiseDate={newDate} nowPeople={2} maxPeople={5} price={1000000} imgUrl={"/public/coding.jpg"} /> */}
+          
         </CardWapper>
-      </CategorytWrapper>
+      </CategorytWrapper> */}
     </MainWrapper>
   );
 };
