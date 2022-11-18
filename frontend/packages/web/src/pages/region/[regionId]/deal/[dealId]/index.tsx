@@ -75,14 +75,15 @@ const DealDetailPage = (props: { regionId: number; dealDetailInfo: DealItemDetai
   return (
     <div
       css={css`
-        position: relative;
+        width: 100%;
+        position: absolute;
       `}
     >
-      <Image src={dealImage} alt={title} height={350} width={500} />
+      <Image src={dealImage} alt={title} layout={"fill"} />
       <div
         css={css`
           position: relative;
-          top: -3rem;
+          top: 10rem;
           display: flex;
           flex-direction: column;
           width: 90%;

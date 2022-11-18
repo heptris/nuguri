@@ -20,12 +20,15 @@ type HobbyRoomType = {
   meetingPlace: string;
   curNum: number;
   maxNum: number;
+  wishlistNum: number;
+  chatNum: number;
   fee: number;
   highAgeLimit?: number;
   rowAgeLimit?: number;
   sexLimit?: "f" | "m";
-  hobbyImage: string;
+  imageurl: string;
   closed: boolean;
+  approveStatus: string;
 };
 
 type DealItemDetailType = {
