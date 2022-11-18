@@ -63,7 +63,7 @@ const HobbyCardList = ({ hobbyList }) => {
                         }
                       `}
                     >
-                      {categoryName[categoryId]}
+                      {categoryName[categoryId - 1]}
                     </Text>
                   </ButtonDiv>
                   <Text
