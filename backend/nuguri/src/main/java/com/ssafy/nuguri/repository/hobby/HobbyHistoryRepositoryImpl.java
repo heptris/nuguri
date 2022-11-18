@@ -69,8 +69,15 @@ public class HobbyHistoryRepositoryImpl implements HobbyHistoryRepositoryCustom{
                         hobby.isClosed,
                         hobby.curNum,
                         hobby.maxNum,
-                        hobby.maxNum,
-                        hobby.maxNum,
+                        ExpressionUtils.as(
+                                JPAExpressions
+                                        .select(count(hobbyFavorite.id))
+                                        .from(hobbyFavorite)
+                                        .where(hobbyFavorite.hobby.id.eq(hobby.id)),"wishlistNum"
+                        ),
+                        hobby.rowAgeLimit,
+                        hobby.highAgeLimit,
+                        hobby.sexLimit,
                         hobby.hobbyImage,
                         hobbyHistory.approveStatus
                 ))
@@ -98,8 +105,15 @@ public class HobbyHistoryRepositoryImpl implements HobbyHistoryRepositoryCustom{
                         hobby.isClosed,
                         hobby.curNum,
                         hobby.maxNum,
-                        hobby.maxNum,
-                        hobby.maxNum,
+                        ExpressionUtils.as(
+                                JPAExpressions
+                                        .select(count(hobbyFavorite.id))
+                                        .from(hobbyFavorite)
+                                        .where(hobbyFavorite.hobby.id.eq(hobby.id)),"wishlistNum"
+                        ),
+                        hobby.rowAgeLimit,
+                        hobby.highAgeLimit,
+                        hobby.sexLimit,
                         hobby.hobbyImage,
                         hobbyHistory.approveStatus
                 ))

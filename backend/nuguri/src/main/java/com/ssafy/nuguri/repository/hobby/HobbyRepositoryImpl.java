@@ -1,7 +1,9 @@
 package com.ssafy.nuguri.repository.hobby;
 
+import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.nuguri.domain.hobby.ApproveStatus;
 import com.ssafy.nuguri.dto.hobby.HobbyDto;
@@ -10,6 +12,7 @@ import com.ssafy.nuguri.dto.hobby.HobbyHistoryResponseDto;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static com.querydsl.core.types.ExpressionUtils.count;
 import static com.ssafy.nuguri.domain.baseaddress.QBaseAddress.baseAddress;
 import static com.ssafy.nuguri.domain.category.QCategory.category;
 import static com.ssafy.nuguri.domain.hobby.QHobby.hobby;
@@ -37,8 +40,15 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
                         hobby.isClosed,
                         hobby.curNum,
                         hobby.maxNum,
-                        hobby.maxNum,
-                        hobby.maxNum,
+                        ExpressionUtils.as(
+                                JPAExpressions
+                                        .select(count(hobbyFavorite.id))
+                                        .from(hobbyFavorite)
+                                        .where(hobbyFavorite.hobby.id.eq(hobby.id)),"wishlistNum"
+                        ),
+                        hobby.rowAgeLimit,
+                        hobby.highAgeLimit,
+                        hobby.sexLimit,
                         hobby.hobbyImage,
                         hobbyHistory.approveStatus
                 ))
@@ -106,8 +116,15 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
                         hobby.isClosed,
                         hobby.curNum,
                         hobby.maxNum,
-                        hobby.maxNum,
-                        hobby.maxNum,
+                        ExpressionUtils.as(
+                                JPAExpressions
+                                        .select(count(hobbyFavorite.id))
+                                        .from(hobbyFavorite)
+                                        .where(hobbyFavorite.hobby.id.eq(hobby.id)),"wishlistNum"
+                        ),
+                        hobby.rowAgeLimit,
+                        hobby.highAgeLimit,
+                        hobby.sexLimit,
                         hobby.hobbyImage,
                         hobbyHistory.approveStatus
                 ))
@@ -134,8 +151,15 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
                         hobby.isClosed,
                         hobby.curNum,
                         hobby.maxNum,
-                        hobby.maxNum,
-                        hobby.maxNum,
+                        ExpressionUtils.as(
+                                JPAExpressions
+                                        .select(count(hobbyFavorite.id))
+                                        .from(hobbyFavorite)
+                                        .where(hobbyFavorite.hobby.id.eq(hobby.id)),"wishlistNum"
+                        ),
+                        hobby.rowAgeLimit,
+                        hobby.highAgeLimit,
+                        hobby.sexLimit,
                         hobby.hobbyImage,
                         hobbyHistory.approveStatus
                 ))
@@ -162,8 +186,15 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
                         hobby.isClosed,
                         hobby.curNum,
                         hobby.maxNum,
-                        hobby.maxNum,
-                        hobby.maxNum,
+                        ExpressionUtils.as(
+                                JPAExpressions
+                                        .select(count(hobbyFavorite.id))
+                                        .from(hobbyFavorite)
+                                        .where(hobbyFavorite.hobby.id.eq(hobby.id)),"wishlistNum"
+                        ),
+                        hobby.rowAgeLimit,
+                        hobby.highAgeLimit,
+                        hobby.sexLimit,
                         hobby.hobbyImage,
                         hobbyHistory.approveStatus
                 ))

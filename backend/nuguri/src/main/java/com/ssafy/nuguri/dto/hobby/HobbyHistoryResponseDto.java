@@ -32,9 +32,13 @@ public class HobbyHistoryResponseDto {
 
     private Integer maxNum;
 
-    private Integer wishlistNum;
+    private Long wishlistNum;
 
-    private Integer chatNum;
+    private int rowAgeLimit;
+
+    private int highAgeLimit;
+
+    private char sexLimit;
 
     private String imageurl;
 
