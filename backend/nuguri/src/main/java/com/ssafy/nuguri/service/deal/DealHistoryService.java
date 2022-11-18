@@ -4,11 +4,13 @@ import com.ssafy.nuguri.domain.deal.Deal;
 import com.ssafy.nuguri.domain.deal.DealHistory;
 import com.ssafy.nuguri.domain.deal.DealStatus;
 import com.ssafy.nuguri.domain.member.Member;
+import com.ssafy.nuguri.dto.deal.DealChatFavCountDto;
 import com.ssafy.nuguri.dto.deal.DealFinishedDto;
 import com.ssafy.nuguri.dto.deal.DealHistoryResponseDto;
 import com.ssafy.nuguri.dto.deal.DealHistoryUpdateDto;
 import com.ssafy.nuguri.exception.ex.CustomException;
 import com.ssafy.nuguri.exception.ex.ErrorCode;
+import com.ssafy.nuguri.repository.deal.DealFavoriteRepository;
 import com.ssafy.nuguri.repository.deal.DealHistoryRepository;
 import com.ssafy.nuguri.repository.deal.DealRepository;
 import com.ssafy.nuguri.repository.member.MemberRepository;
@@ -28,6 +30,7 @@ public class DealHistoryService {
     private final DealHistoryRepository dealHistoryRepository;
     private final MemberRepository memberRepository;
     private final DealRepository dealRepository;
+    private final DealFavoriteRepository dealFavoriteRepository;
 
     @Transactional
     public DealHistoryResponseDto createDealHistory(Long memberId, Long dealId){
@@ -82,5 +85,15 @@ public class DealHistoryService {
         if(dealHistory == null) throw new CustomException(DEAL_HISTORY_NOT_FOUND);
 
         dealHistory.dealFinished();
+    }
+
+    public DealChatFavCountDto countDealChatFav(Long dealId){
+        int chatCnt = dealHistoryRepository.countDealHistoryByDealId(dealId);
+        int favCnt = dealFavoriteRepository.countDealFavoriteByDealId(dealId);
+
+        return DealChatFavCountDto.builder()
+                .favCnt(favCnt)
+                .chatCnt(chatCnt)
+                .build();
     }
 }
