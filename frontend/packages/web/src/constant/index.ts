@@ -15,6 +15,8 @@ export const ROUTES = {
   GROUP_DEAL: "/groupdeal",
   DEAL: "/deal",
   EDITPROFILE: "/profile/edit",
+  APPLY: "/apply",
+  ADMIN: "/admin",
 };
 
 export const QUERY_KEYS = {
@@ -27,10 +29,10 @@ export const QUERY_KEYS = {
   HOBBY_MANAGE_LIST: "hobbyManageList",
   HOBBY_FAVORITE_LIST: "hobbyFavoriteList",
   DEAL_LIST: "dealList",
-  DEAL_SOLDOUT_LIST:"dealSoldOutList",
-  DEAL_PURCHASE_LIST:"dealPurchaseList",
-  DEAL_ONSALE_LIST:"dealOnSaleList",
-  DEAL_FAVORITE_LIST:"dealFavoriteList",
+  DEAL_SOLDOUT_LIST: "dealSoldOutList",
+  DEAL_PURCHASE_LIST: "dealPurchaseList",
+  DEAL_ONSALE_LIST: "dealOnSaleList",
+  DEAL_FAVORITE_LIST: "dealFavoriteList",
   CHAT_ROOM_HISTORY: "chatRoomHistory",
   CHAT_LIST: "chatList",
 };
