@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface DealHistoryRepository extends JpaRepository<DealHistory, Long> {
+public interface DealHistoryRepository extends JpaRepository<DealHistory, Long>, DealHistoryRepositoryCustom {
     DealHistory findByMemberIdAndDealId(Long memberId, Long dealId);
     List<DealHistory> findByMemberIdAndDealStatus(Long memberId, DealStatus dealStatus);
 }

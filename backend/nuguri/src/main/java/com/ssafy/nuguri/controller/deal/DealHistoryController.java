@@ -47,4 +47,14 @@ public class DealHistoryController {
                 new ResponseDto(HttpStatus.OK.value(), "해당 구매자, 판매자 판매 완료 처리", "판매완료 처리 완료 !!")
         );
     }
+
+    @ApiOperation(value = "중고거래에 해당 즐겨찾기, 진행 중 채팅 개수")
+    @GetMapping("/{dealId}/count")
+    public ResponseEntity countDealChatFav(@PathVariable Long dealId){
+
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseDto(HttpStatus.OK.value(), "중고거래에 해당 즐겨찾기, 진행 중 채팅 개수"
+                        , dealHistoryService.countDealChatFav(dealId))
+        );
+    }
 }
