@@ -29,11 +29,11 @@ values (now(), now(), '성장!, 자기계발', null),
        (now(), now(), '국내여행', 6);
 
 insert into deal (created_date, last_modified_date, deal_image, description, hit, is_deal, price, title, local_id, category_id, member_id)
-values (now(), now(), 'https://uniqon-bucket.s3.ap-northeast-2.amazonaws.com/startup/95101c8f-0719-4e15-8a2f-15461fb4b877uniqonlogo4.png', '설명1', 2, false, 2000, '제목1', 1, 8, 1),
-       (now(), now(), 'https://uniqon-bucket.s3.ap-northeast-2.amazonaws.com/startup/ac3f047b-c782-4fe7-b2de-0d22e5892179uniqonlogo1.png', '설명2', 5, false, 6000, '제목2', 2, 8, 2),
-       (now(), now(), 'https://uniqon-bucket.s3.ap-northeast-2.amazonaws.com/startup/ac3f047b-c782-4fe7-b2de-0d22e5892179uniqonlogo2.png', '설명3', 3, false, 5000, '제목3', 3, 8, 3),
-       (now(), now(), 'https://uniqon-bucket.s3.ap-northeast-2.amazonaws.com/startup/ac3f047b-c782-4fe7-b2de-0d22e5892179uniqonlogo3.png', '설명4', 10, false, 6000, '제목4', 950, 8, 4),
-       (now(), now(), 'https://uniqon-bucket.s3.ap-northeast-2.amazonaws.com/startup/ac3f047b-c782-4fe7-b2de-0d22e5892179uniqonlogo1.png', '설명5', 6, false, 6000, '제목5', 4, 9, 5);
+values (now(), now(), 'https://uniqon-bucket.s3.ap-northeast-2.amazonaws.com/startup/95101c8f-0719-4e15-8a2f-15461fb4b877uniqonlogo4.png', '설명1', 2, false, 2000, '제목1', 1, 1, 1),
+       (now(), now(), 'https://uniqon-bucket.s3.ap-northeast-2.amazonaws.com/startup/ac3f047b-c782-4fe7-b2de-0d22e5892179uniqonlogo1.png', '설명2', 5, false, 6000, '제목2', 2, 1, 2),
+       (now(), now(), 'https://uniqon-bucket.s3.ap-northeast-2.amazonaws.com/startup/ac3f047b-c782-4fe7-b2de-0d22e5892179uniqonlogo2.png', '설명3', 3, false, 5000, '제목3', 3, 2, 3),
+       (now(), now(), 'https://uniqon-bucket.s3.ap-northeast-2.amazonaws.com/startup/ac3f047b-c782-4fe7-b2de-0d22e5892179uniqonlogo3.png', '설명4', 10, false, 6000, '제목4', 950, 3, 4),
+       (now(), now(), 'https://uniqon-bucket.s3.ap-northeast-2.amazonaws.com/startup/ac3f047b-c782-4fe7-b2de-0d22e5892179uniqonlogo1.png', '설명5', 6, false, 6000, '제목5', 4, 5, 5);
 
 insert into deal_favorite (created_date, last_modified_date, is_favorite, deal_id, member_id)
 values (now(), now(), true, 1, 1),
