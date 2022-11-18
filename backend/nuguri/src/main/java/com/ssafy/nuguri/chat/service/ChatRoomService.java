@@ -63,9 +63,7 @@ public class ChatRoomService {
                 ChatRoomResponseDto chatRoomResponseDto = null;
                 if (chatRoom.getDealHistoryId() != null) {
                     String roomName = null;
-                    Iterator<Long> iterator = chatRoom.getUserList().iterator();
-                    while (iterator.hasNext()) {
-                        Long next = iterator.next();
+                    for (Long next : chatRoom.getUserList()) {
                         if (!next.equals(memberId)) {
                             roomName = redisService.getValues(String.valueOf(next) + ".");
                         }
@@ -74,10 +72,12 @@ public class ChatRoomService {
                             .roomName(roomName)
                             .roomId(chatRoom.getId()).lastChatMessage(chatMessage.getMessage())
                             .lastChatTime(chatMessage.getCreatedDate()).build();
+                    chatRoomResponseDto.setSenderImage(redisService.getValues(String.valueOf(chatMessage.getSenderId()) + "@"));
                 } else if (chatRoom.getHobbyId() != null) {
                     chatRoomResponseDto = ChatRoomResponseDto.builder().roomName(chatRoom.getRoomName())
                             .roomId(chatRoom.getId()).lastChatMessage(chatMessage.getMessage())
                             .lastChatTime(chatMessage.getCreatedDate()).build();
+                    chatRoomResponseDto.setSenderImage(redisService.getValues(String.valueOf(chatMessage.getSenderId()) + "@"));
                 }
                 chatRoomResponseDtoList.add(chatRoomResponseDto);
             }
