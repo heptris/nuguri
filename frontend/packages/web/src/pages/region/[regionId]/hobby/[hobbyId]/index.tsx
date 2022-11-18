@@ -47,14 +47,11 @@ const HobbyDetailPage = ({ hobbyRoomDefaultInfo }: { hobbyRoomDefaultInfo: Hobby
   const { userInfo } = useUser();
   const { isLogined } = useAuth();
   const { isFavoriteHobby } = useFavoriteHobby(hobbyId);
-  const { setBottom } = useBottom(<></>);
+  console.log(hobbyId, isFavoriteHobby);
   const [favorite, setFavorite] = useState(isFavoriteHobby);
-  console.log(isFavoriteHobby);
-  useEffect(() => {
-    console.log(favorite);
-  }, [favorite]);
+  const { setBottom } = useBottom(<></>);
 
-  const { handleFavoriteHobby } = useFavHobbyRegist(hobbyId);
+  const { postFavoriteHobbyRegist } = useFavHobbyRegist(hobbyId);
   const week = new Array("일", "월", "화", "수", "목", "금", "토");
   const getDate = new Date(endDate);
   const DayOfWeek = week[getDate.getDay()];
@@ -83,10 +80,10 @@ const HobbyDetailPage = ({ hobbyRoomDefaultInfo }: { hobbyRoomDefaultInfo: Hobby
               position: relative;
             `}
           >
-            {favorite && userInfo.nickname !== nickname && (
+            {!favorite && userInfo.nickname !== nickname && (
               <FavoriteBtn
                 onClick={() => {
-                  handleFavoriteHobby();
+                  postFavoriteHobbyRegist();
                   setFavorite(prev => !prev);
                 }}
                 css={css`
@@ -106,10 +103,10 @@ const HobbyDetailPage = ({ hobbyRoomDefaultInfo }: { hobbyRoomDefaultInfo: Hobby
                 />
               </FavoriteBtn>
             )}
-            {!favorite && userInfo.nickname !== nickname && (
+            {favorite && userInfo.nickname !== nickname && (
               <FavoriteBtn
                 onClick={() => {
-                  handleFavoriteHobby();
+                  postFavoriteHobbyRegist();
                   setFavorite(prev => !prev);
                 }}
                 css={css`
@@ -169,7 +166,8 @@ const HobbyDetailPage = ({ hobbyRoomDefaultInfo }: { hobbyRoomDefaultInfo: Hobby
           </div>
         ),
       });
-  }, [isLogined]);
+  }, [isLogined, favorite]);
+
   return (
     <div
       css={css`
@@ -287,7 +285,7 @@ const HobbyDetailPage = ({ hobbyRoomDefaultInfo }: { hobbyRoomDefaultInfo: Hobby
                 <Text>
                   {rowAgeLimit + "세 이상 "}
                   {highAgeLimit + "세 이하 "}
-                  {sexLimit === "f" ? "여자만" : sexLimit === "m" ? "남자만" : "무관"}
+                  {sexLimit === "f" ? "여자만" : sexLimit === "m" ? "남자만" : "누구나"}
                 </Text>
               </IconTextWrapper>
               <IconTextWrapper>
