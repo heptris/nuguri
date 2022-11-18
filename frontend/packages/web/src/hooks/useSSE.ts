@@ -1,7 +1,8 @@
 import { ENDPOINT_SSE } from "@/api";
-import { bottomState } from "@/store";
+
 import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useAlert } from "./useAlert";
+
 import { useUser } from "./useUser";
 
 const useSSE = () => {
@@ -10,9 +11,9 @@ const useSSE = () => {
   } = useUser();
   const [meventSource, msetEventSource] = useState(undefined);
   const [data, setData] = useState(null);
-  const [bottom, setBottom] = useRecoilState(bottomState);
   const [newAlarm, setNewAlarm] = useState(null);
   const [listening, setListening] = useState(false);
+  const { handleAlertOpen } = useAlert();
   let eventSource: EventSource | undefined = undefined;
   useEffect(() => {
     const connectFunc = event => {
@@ -21,14 +22,14 @@ const useSSE = () => {
     };
     const connectNewMessage = event => {
       console.log("새 메세지", JSON.parse(event.data));
-      setBottom({ ...bottom });
+      handleAlertOpen("새로운 메세지가 있어요", true, 2000);
     };
     const connectAlarm = event => {
       console.log("새 알람", JSON.parse(event.data));
       setNewAlarm(JSON.parse(event.data));
     };
     if (!listening) {
-      memberId &&
+      memberId > 0 &&
         (() => {
           try {
             eventSource = new EventSource(ENDPOINT_SSE + `/${memberId}`, {
@@ -68,11 +69,11 @@ const useSSE = () => {
               console.log("알람 확인", event);
             };
             meventSource.onerror = function (event) {
-              console.log(event.target);
+              console.log("onerror", event);
               // if (event.target.readyState === mEventSource.CLOSED) {
               //   console.log("SSE closed (" + event.target.readyState + ")");
               // }
-              meventSource.close();
+              // meventSource.close();
             };
             setListening(true);
           } catch (err) {
