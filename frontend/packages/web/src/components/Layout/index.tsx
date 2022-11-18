@@ -6,6 +6,7 @@ import Header from "./Header";
 import BottomNavigation from "./BottomNavigation";
 import { useRouter } from "next/router";
 import { ROUTES } from "@/constant";
+import { CircularProgress } from "@mui/material";
 
 const { MAIN } = ROUTES;
 const Layout = ({ children }) => {
@@ -26,11 +27,20 @@ const Layout = ({ children }) => {
             bottom: 0;
             left: 0;
             right: 0;
-            background-color: rgba(255, 255, 255, 0.8);
+            background-color: rgba(0, 0, 0, 0.6);
             z-index: 1000;
           `}
         >
-          Loading...
+          <div
+            css={css`
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              height: 100%;
+            `}
+          >
+            <CircularProgress size={"15rem"} />
+          </div>
         </div>
       )}
       <Header />

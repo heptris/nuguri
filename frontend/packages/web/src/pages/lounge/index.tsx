@@ -1,9 +1,9 @@
 import { useHeader } from "@/hooks";
 
 const LoungePage = () => {
-  useHeader({ mode: "LIST", headingText: "너구리 라운지" });
+  useHeader({ mode: "LIST" });
 
-  return <div>LoungePage</div>;
+  return <div>LoungePage 개발 예정</div>;
 };
 
 export default LoungePage;
