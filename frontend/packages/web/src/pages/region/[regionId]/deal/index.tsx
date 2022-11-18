@@ -34,7 +34,7 @@ const DealListPage = ({ defaultDealList, localId }: { defaultDealList: DealItemT
   const [dealList, setDealList] = useState(defaultDealList);
   const [categoryId, setCategoryId] = useRecoilState(menuCategoryState);
   useEffect(() => {
-    setDealList(dealList.filter(item => item.categoryId === categoryId));
+    categoryId !== null && setDealList(dealList.filter(item => item.categoryId === categoryId));
   }, []);
   return (
     <MainWrapper>

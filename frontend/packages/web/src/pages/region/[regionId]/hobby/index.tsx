@@ -33,7 +33,7 @@ const HobbyListPage = ({ defaultHobbyList, localId }: { defaultHobbyList: HobbyR
   const [hobbyList, setHobbyList] = useState(defaultHobbyList);
   const [categoryId] = useRecoilState(menuCategoryState);
   useEffect(() => {
-    setHobbyList(hobbyList.filter(item => item.categoryId === categoryId));
+    categoryId !== null && setHobbyList(hobbyList.filter(item => item.categoryId === categoryId));
   }, []);
   return (
     <MainWrapper>
