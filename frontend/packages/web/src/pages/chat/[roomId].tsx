@@ -24,7 +24,7 @@ const ChatRoomPage = (props: { roomId: string }) => {
   const scrollRef = useRef(null);
   const historyRef = useRef(null);
   const inputRef = useRef(null);
-  const scrollToBottom = () => {
+  const scrollToTop = () => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
   const BottomComponent = (
@@ -58,7 +58,6 @@ const ChatRoomPage = (props: { roomId: string }) => {
               width: 100%;
             `}
             autoComplete={"off"}
-            autoFocus
             inputRef={inputRef}
           />
           <Button onClick={() => handleSendMessage()} size={"small"} type={"button"}>
@@ -73,15 +72,15 @@ const ChatRoomPage = (props: { roomId: string }) => {
   useEffect(() => {
     chatData && setChatRoomData([...chatRoomData, chatData]);
     console.log(chatRoomData);
-    scrollToBottom();
+    scrollToTop();
   }, [chatData]);
   useEffect(() => {
     setBottom({ children: BottomComponent });
-    scrollToBottom();
+    scrollToTop();
   }, [message]);
 
   useEffect(() => {
-    console.log("방에서의 히스토리 정보", chatHistoryData);
+    scrollToTop();
   }, []);
 
   const handleSendMessage = () => {
