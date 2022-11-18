@@ -11,6 +11,7 @@ import com.ssafy.nuguri.domain.hobby.HobbyHistory;
 import com.ssafy.nuguri.domain.member.Member;
 import com.ssafy.nuguri.dto.hobby.ChangeStatusRequestDto;
 import com.ssafy.nuguri.dto.hobby.HobbyHistoryDto;
+import com.ssafy.nuguri.dto.hobby.HobbyHistoryListDto;
 import com.ssafy.nuguri.dto.hobby.HobbyHistoryResponseDto;
 import com.ssafy.nuguri.repository.baseaddress.BaseaddressRepository;
 import com.ssafy.nuguri.repository.category.CategoryRepository;
@@ -61,8 +62,8 @@ class HobbyHistoryServiceTest {
 
     @Test
     public void 취미1_승인_대기자(){
-        List<HobbyHistoryDto> result = hobbyHistoryService.findWaitingMemberList(1L);
-        for (HobbyHistoryDto h: result
+        List<HobbyHistoryListDto> result = hobbyHistoryService.findWaitingMemberList(1L);
+        for (HobbyHistoryListDto h: result
         ) {
             System.out.println("취미1 승인 대기자: " + h);
         }
@@ -73,8 +74,8 @@ class HobbyHistoryServiceTest {
     public void 취미1_참여자() {
         System.out.println("====취미1에 참여중인 사람====");
 
-        List<HobbyHistoryDto> result2 = hobbyHistoryService.findParticipantList(1L);
-        for (HobbyHistoryDto h: result2
+        List<HobbyHistoryListDto> result2 = hobbyHistoryService.findParticipantList(1L);
+        for (HobbyHistoryListDto h: result2
 
         ) {
             System.out.println("취미1 참여자: " + h);

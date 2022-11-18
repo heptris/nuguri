@@ -4,13 +4,14 @@ package com.ssafy.nuguri.repository.hobby;
 import com.ssafy.nuguri.domain.hobby.ApproveStatus;
 import com.ssafy.nuguri.domain.hobby.Hobby;
 import com.ssafy.nuguri.dto.hobby.HobbyHistoryDto;
+import com.ssafy.nuguri.dto.hobby.HobbyHistoryListDto;
 import com.ssafy.nuguri.dto.hobby.HobbyHistoryResponseDto;
 
 import java.util.List;
 
 public interface HobbyHistoryRepositoryCustom {
 
-    List<HobbyHistoryDto> userByStatus(Long hobbyId, ApproveStatus approveStatus);
+    List<HobbyHistoryListDto> userByStatus(Long hobbyId, ApproveStatus approveStatus);
 
 
     // 방장이 승인여부를 변경했을 때 (True -> 승인, False -> 반려)
