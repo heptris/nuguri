@@ -58,4 +58,14 @@ type DealItemType = {
   title: string;
 };
 
-export type { UserInfoType, HobbyRoomType, DealItemDetailType, DealItemType };
+type HobbyMemberType = {
+  [x: string]: any;
+  hobbyHistoryId: number;
+  hobbyId: number;
+  memberId: number;
+  approveStatus: string;
+  nickname: string;
+  imageUrl: string;
+  promoter: boolean;
+};
+export type { UserInfoType, HobbyRoomType, DealItemDetailType, DealItemType, HobbyMemberType };
