@@ -1,6 +1,6 @@
 import { useHeader, useAuth, useUser } from "@/hooks";
 import withAuth from "@/utils/withAuth";
-import { Card, Text } from "@common/components";
+import { Button, Card, Text } from "@common/components";
 import styled from "@emotion/styled";
 import { Avatar } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
@@ -133,7 +133,7 @@ const ProfilePage = () => {
               color: white;
             `}
           >
-            {temperature}
+            {temperature}°C
           </Text>
         </TempBtn>
       </TopWrapper>
@@ -242,14 +242,11 @@ const EditBtn = styled.div`
   }
 `;
 
-const TempBtn = styled.div`
+const TempBtn = styled(Button)`
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 1rem;
-  width: 4rem;
-  height: 2rem;
-  background-color: #5a3d1c;
 `;
 
 const BottomWrapper = styled.div`
