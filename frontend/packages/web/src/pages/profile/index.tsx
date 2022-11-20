@@ -142,13 +142,13 @@ const ProfilePage = () => {
         <Box sx={{ width: "100%" }}>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <Tabs value={value} onChange={handleChange} centered>
-              <Tab label="피드" {...a11yProps(0)} />
-              <Tab label="취미거리" {...a11yProps(1)} />
-              <Tab label="중고거래" {...a11yProps(2)} />
-              <Tab label="공구거래" {...a11yProps(3)} />
+              {/* <Tab label="피드" {...a11yProps(0)} /> */}
+              <Tab label="취미거리" {...a11yProps(0)} />
+              <Tab label="중고거래" {...a11yProps(1)} />
+              {/* <Tab label="공구거래" {...a11yProps(2)} /> */}
             </Tabs>
           </Box>
-          <TabPanel value={value} index={0} nickname={nickname}>
+          {/* <TabPanel value={value} index={0} nickname={nickname}>
             <div
               css={css`
                 display: flex;
@@ -157,8 +157,8 @@ const ProfilePage = () => {
             >
               <StandardImageList />
             </div>
-          </TabPanel>
-          <TabPanel value={value} index={1} nickname={nickname}>
+          </TabPanel> */}
+          <TabPanel value={value} index={0} nickname={nickname}>
             <SelectTab menus={hobbyMenus} onSelectHandler={onSelectHobbyHandler} />
             <ListWrapper>
               {selectedHobbyMenu === hobbyMenus[0] && <HobbyCardList hobbyList={hobbyReadyList} />}
@@ -167,7 +167,7 @@ const ProfilePage = () => {
               {selectedHobbyMenu === hobbyMenus[3] && <HobbyCardList hobbyList={hobbyFavoriteList} />}
             </ListWrapper>
           </TabPanel>
-          <TabPanel value={value} index={2} nickname={nickname}>
+          <TabPanel value={value} index={1} nickname={nickname}>
             <SelectTab
               menus={dealMenus}
               onSelectHandler={onSelecDealHandler}
@@ -176,13 +176,13 @@ const ProfilePage = () => {
               `}
             />
             <ListWrapper>
-              {selectedDealMenu === dealMenus[0] && <DealCardList dealList={dealSoldOutList} categoryId={categoryId} localId={localId} />}
-              {selectedDealMenu === dealMenus[1] && <DealCardList dealList={dealPurchaseList} categoryId={categoryId} localId={localId} />}
-              {selectedDealMenu === dealMenus[2] && <DealCardList dealList={dealOnSaleList} categoryId={categoryId} localId={localId} />}
-              {selectedDealMenu === dealMenus[3] && <DealCardList dealList={dealFavoriteList} categoryId={categoryId} localId={localId} />}
+              {selectedDealMenu === dealMenus[0] && <DealCardList dealList={dealSoldOutList} />}
+              {selectedDealMenu === dealMenus[1] && <DealCardList dealList={dealPurchaseList} />}
+              {selectedDealMenu === dealMenus[2] && <DealCardList dealList={dealOnSaleList} />}
+              {selectedDealMenu === dealMenus[3] && <DealCardList dealList={dealFavoriteList} />}
             </ListWrapper>
           </TabPanel>
-          <TabPanel value={value} index={3} nickname={nickname}>
+          {/* <TabPanel value={value} index={2} nickname={nickname}>
             <SelectTab
               menus={groupDealMenus}
               onSelectHandler={onSelectGroupDealHandler}
@@ -195,7 +195,7 @@ const ProfilePage = () => {
               {selectedGroupDealMenu === groupDealMenus[1] && <Card />}
               {selectedGroupDealMenu === groupDealMenus[2] && <Card />}
             </ListWrapper>
-          </TabPanel>
+          </TabPanel> */}
         </Box>
       </BottomWrapper>
     </div>
