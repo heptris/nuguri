@@ -170,6 +170,15 @@ public class HobbyHistoryRepositoryImpl implements HobbyHistoryRepositoryCustom{
     }
 
     @Override
+    public boolean DuplicateCheck(Long memberId, Long hobbyId) {
+        int result = queryFactory.selectFrom(hobbyHistory)
+                .where(hobbyHistory.member.id.eq(memberId)
+                        ,hobbyHistory.hobby.id.eq(hobbyId)).fetch().size();
+        if(result == 0) return false; // 신규
+        else return true; // 이미 있음
+    }
+
+    @Override
     public Long findOwnerId(Hobby hobby) {
         Long ownerId = queryFactory
                 .select(hobbyHistory.member.id)

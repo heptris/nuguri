@@ -10,10 +10,7 @@ import com.ssafy.nuguri.domain.hobby.HobbyFavorite;
 import com.ssafy.nuguri.domain.hobby.HobbyHistory;
 import com.ssafy.nuguri.domain.member.Member;
 import com.ssafy.nuguri.domain.s3.AwsS3;
-import com.ssafy.nuguri.dto.hobby.HobbyCreateRequestDto;
-import com.ssafy.nuguri.dto.hobby.HobbyDto;
-import com.ssafy.nuguri.dto.hobby.HobbyHistoryResponseDto;
-import com.ssafy.nuguri.dto.hobby.HobbyListRequestDto;
+import com.ssafy.nuguri.dto.hobby.*;
 import com.ssafy.nuguri.exception.ex.CustomException;
 import com.ssafy.nuguri.repository.baseaddress.BaseaddressRepository;
 import com.ssafy.nuguri.repository.category.CategoryRepository;
@@ -48,7 +45,7 @@ public class HobbyService {
     private final AwsS3Service awsS3Service;
 
     @Transactional
-    public List<HobbyHistoryResponseDto> findLocalCategoryHobbyList(HobbyListRequestDto hobbyListRequestDto){ // 지역과 카테고리로 취미방 찾기
+    public List<HobbyHistoryRegionCategoryRequestDto> findLocalCategoryHobbyList(HobbyListRequestDto hobbyListRequestDto){ // 지역과 카테고리로 취미방 찾기
         return hobbyRepository.findByRegionAndCategory(hobbyListRequestDto.getLocalId(),hobbyListRequestDto.getCategoryId());
     }
 

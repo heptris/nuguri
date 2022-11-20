@@ -44,7 +44,7 @@ public class HobbyHistoryService {
 
         Hobby hobby = hobbyRepository.findById(hobbyId).orElseThrow(() -> new CustomException(HOBBY_NOT_FOUND));
 
-
+        if(hobbyHistoryRepository.DuplicateCheck(memberId,hobbyId)) throw new CustomException(ALREADY_USED_HOBBY_HISTORY);
 
         // 조건 미달
         if(hobby.getCurNum() >= hobby.getMaxNum()) throw new CustomException(FULL_HOBBY_ERROR); // 정원초과

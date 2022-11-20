@@ -7,10 +7,7 @@ import com.ssafy.nuguri.domain.hobby.Hobby;
 import com.ssafy.nuguri.domain.hobby.HobbyHistory;
 import com.ssafy.nuguri.domain.member.Member;
 import com.ssafy.nuguri.domain.s3.AwsS3;
-import com.ssafy.nuguri.dto.hobby.HobbyCreateRequestDto;
-import com.ssafy.nuguri.dto.hobby.HobbyDto;
-import com.ssafy.nuguri.dto.hobby.HobbyHistoryResponseDto;
-import com.ssafy.nuguri.dto.hobby.HobbyListRequestDto;
+import com.ssafy.nuguri.dto.hobby.*;
 import com.ssafy.nuguri.exception.ex.CustomException;
 import com.ssafy.nuguri.repository.baseaddress.BaseaddressRepository;
 import com.ssafy.nuguri.repository.category.CategoryRepository;
@@ -134,8 +131,8 @@ class HobbyServiceTest {
     @Test
     public void 지역으로_취미방_찾기(){
         HobbyListRequestDto hobbyListRequestDto = HobbyListRequestDto.builder().localId(10L).categoryId(null).build();
-        List<HobbyHistoryResponseDto> result = hobbyService.findLocalCategoryHobbyList(hobbyListRequestDto);
-        for (HobbyHistoryResponseDto h:result
+        List<HobbyHistoryRegionCategoryRequestDto> result = hobbyService.findLocalCategoryHobbyList(hobbyListRequestDto);
+        for (HobbyHistoryRegionCategoryRequestDto h:result
         ) {
             System.out.println("지역이 10L인 데이터: "+h);
         }
@@ -144,8 +141,8 @@ class HobbyServiceTest {
     @Test
     public void 지역과_카테고리로_취미방_찾기(){
         HobbyListRequestDto hobbyListRequestDto = HobbyListRequestDto.builder().localId(10L).categoryId(2L).build();
-        List<HobbyHistoryResponseDto> result2 = hobbyService.findLocalCategoryHobbyList(hobbyListRequestDto);
-        for (HobbyHistoryResponseDto h:result2
+        List<HobbyHistoryRegionCategoryRequestDto> result2 = hobbyService.findLocalCategoryHobbyList(hobbyListRequestDto);
+        for (HobbyHistoryRegionCategoryRequestDto h:result2
         ) {
             System.out.println("지역이 10L, 카테고리가 30L인 데이터: "+h);
         }

@@ -28,5 +28,7 @@ public interface HobbyHistoryRepositoryCustom {
 
     HobbyHistoryDto findByIdDto(Long hobbyHistoryId);
 
+    boolean DuplicateCheck(Long memberId, Long hobbyId);
+
     Long findOwnerId(Hobby hobby);
 }

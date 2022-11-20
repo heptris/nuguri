@@ -43,7 +43,8 @@ public enum ErrorCode {
     //409 CONFLICT 중복된 리소스
     ALREADY_SAVED_MEMBER(409, "이미 가입되어 있는 회원입니다."),
     ALREADY_USED_NICKNAME(409, "이미 사용중인 닉네임입니다."),
-    ALREADY_USED_DEAL_HISTORY(409, "이미 채팅 신청한 중고거래입니다.");
+    ALREADY_USED_DEAL_HISTORY(409, "이미 채팅 신청한 중고거래입니다."),
+    ALREADY_USED_HOBBY_HISTORY(409,"이미 신청한 취미방입니다.");
 
     private final int status;
     private final String message;
