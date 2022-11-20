@@ -6,17 +6,17 @@ import { useAlert } from "./useAlert";
 export const useFavHobbyRegist = (hobbyId: number) => {
   const { handleAlertOpen } = useAlert();
   const postFavoriteHobbyRegist = async () => {
-    await apiInstance.post(ENDPOINT_API + "/hobby/favorite/regist" + `/${hobbyId}`, hobbyId);
+    await apiInstance
+      .post(ENDPOINT_API + "/hobby/favorite/regist" + `/${hobbyId}`, hobbyId)
+      .then(res => {
+        console.log(res);
+        handleAlertOpen("즐겨찾기 해제/등록에 성공했습니다.", true, 2000);
+      })
+      .catch(err => {
+        console.log(err);
+        handleAlertOpen("즐겨찾기 해제/등록에 실패했습니다.", false, 2000);
+      });
   };
 
-  const { mutate: mutateFavoriteHobby } = useMutation(postFavoriteHobbyRegist, {
-    onSettled: () => {
-      handleAlertOpen("즐겨찾기 해제/등록에 성공했습니다.", true, 1000);
-    },
-  });
-
-  const handleFavoriteHobby = async () => {
-    mutateFavoriteHobby();
-  };
-  return { handleFavoriteHobby };
+  return { postFavoriteHobbyRegist };
 };

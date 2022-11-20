@@ -13,9 +13,9 @@ import axios from "axios";
 
 import { Avatar, Button, Text } from "@common/components";
 
-import { ACCESS_TOKEN, ENDPOINT_API } from "@/api";
+import { ACCESS_TOKEN, apiInstance, ENDPOINT_API } from "@/api";
 import { useAuth, useBottom, useHeader, useHobbyRoom, useUser } from "@/hooks";
-import { HobbyRoomType } from "@/types";
+import { HobbyMemberType, HobbyRoomType } from "@/types";
 import { useEffect, useState } from "react";
 import { racconsThemes } from "@common/components/src/styles/theme";
 import { ROUTES } from "@/constant";
@@ -23,6 +23,7 @@ import { useRouter } from "next/router";
 import Link from "@/components/Link";
 import { useFavoriteHobby } from "@/hooks/useFavoriteHobby";
 import { useFavHobbyRegist } from "@/hooks/useFavHobbyRegist";
+import { useMemberHobby } from "@/hooks/useMemberHobby";
 
 const { APPLY, ADMIN } = ROUTES;
 
@@ -43,24 +44,32 @@ const HobbyDetailPage = ({ hobbyRoomDefaultInfo }: { hobbyRoomDefaultInfo: Hobby
   const { hobbyRoomInfo, refetchHobbyRoomInfo } = useHobbyRoom(hobbyRoomDefaultInfo);
   const { highAgeLimit, rowAgeLimit, categoryId, closed, content, curNum, endDate, fee, hobbyId, imageurl, localId, maxNum, meetingPlace, sexLimit, title, nickname, profileImage } = hobbyRoomInfo;
   useHeader({ mode: "ITEM" });
+  const { setBottom } = useBottom(<></>);
   const { replace, push } = useRouter();
   const { userInfo } = useUser();
   const { isLogined } = useAuth();
-  const { isFavoriteHobby } = useFavoriteHobby(hobbyId);
-  const { setBottom } = useBottom(<></>);
-  const [favorite, setFavorite] = useState(isFavoriteHobby);
-  console.log(isFavoriteHobby);
+  const [favorite, setFavorite] = useState<boolean>();
+  const getHobbyFavorite = async () => {
+    const { data } = await apiInstance.get(ENDPOINT_API + "/hobby/favorite/favoritecheck" + `/${hobbyId}`);
+    console.log(data);
+    return data.data;
+  };
   useEffect(() => {
-    console.log(favorite);
-  }, [favorite]);
+    getHobbyFavorite().then(data => {
+      setFavorite(data);
+    });
+  }, []);
+  const { hobbyMemberList } = useMemberHobby(hobbyId);
+  console.log(hobbyId);
 
-  const { handleFavoriteHobby } = useFavHobbyRegist(hobbyId);
+  const { postFavoriteHobbyRegist } = useFavHobbyRegist(hobbyId);
   const week = new Array("일", "월", "화", "수", "목", "금", "토");
   const getDate = new Date(endDate);
   const DayOfWeek = week[getDate.getDay()];
   const Month = getDate.getMonth() + 1;
   const Day = getDate.getDate();
   const hours = getDate.getHours();
+  const minutes = getDate.getMinutes();
   let hour;
   if (hours > 12) hour = "오후 " + (hours - 12);
   else if (hours === 12) hour = "오후 " + hours;
@@ -83,10 +92,10 @@ const HobbyDetailPage = ({ hobbyRoomDefaultInfo }: { hobbyRoomDefaultInfo: Hobby
               position: relative;
             `}
           >
-            {favorite && userInfo.nickname !== nickname && (
+            {favorite && (
               <FavoriteBtn
                 onClick={() => {
-                  handleFavoriteHobby();
+                  postFavoriteHobbyRegist();
                   setFavorite(prev => !prev);
                 }}
                 css={css`
@@ -106,10 +115,10 @@ const HobbyDetailPage = ({ hobbyRoomDefaultInfo }: { hobbyRoomDefaultInfo: Hobby
                 />
               </FavoriteBtn>
             )}
-            {!favorite && userInfo.nickname !== nickname && (
+            {!favorite && (
               <FavoriteBtn
                 onClick={() => {
-                  handleFavoriteHobby();
+                  postFavoriteHobbyRegist();
                   setFavorite(prev => !prev);
                 }}
                 css={css`
@@ -169,7 +178,8 @@ const HobbyDetailPage = ({ hobbyRoomDefaultInfo }: { hobbyRoomDefaultInfo: Hobby
           </div>
         ),
       });
-  }, [isLogined]);
+  }, [isLogined, favorite]);
+
   return (
     <div
       css={css`
@@ -217,20 +227,22 @@ const HobbyDetailPage = ({ hobbyRoomDefaultInfo }: { hobbyRoomDefaultInfo: Hobby
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 2rem 1rem;
+            padding: 2rem 1rem 1rem 1rem;
             width: inherit;
           `}
         >
           <Avatar
             src={profileImage}
-            sx={{ width: 80, height: 80 }}
+            sx={{ width: 100, height: 100 }}
             css={css`
               position: absolute;
               top: -3rem;
+              border: 1px solid ${racconsThemes.defaultTheme.color.text.sub};
             `}
           />
           <Text
             css={css`
+              margin-top: 1.5rem;
               display: block;
               font-size: 1.2rem;
             `}
@@ -249,7 +261,7 @@ const HobbyDetailPage = ({ hobbyRoomDefaultInfo }: { hobbyRoomDefaultInfo: Hobby
         </Card>
         <DivWrapper>
           <CalendarMonthIcon color="action" sx={{ fontSize: "1.2rem", marginRight: "0.2rem" }} />
-          <Text as="span">{`${Month}.${Day}(${DayOfWeek}) ${hour}시`}</Text>
+          <Text as="span">{`${Month}.${Day}(${DayOfWeek}) ${hour}시 ${minutes}분`}</Text>
         </DivWrapper>
         <MainWrapper>
           <Text
@@ -287,7 +299,7 @@ const HobbyDetailPage = ({ hobbyRoomDefaultInfo }: { hobbyRoomDefaultInfo: Hobby
                 <Text>
                   {rowAgeLimit + "세 이상 "}
                   {highAgeLimit + "세 이하 "}
-                  {sexLimit === "f" ? "여자만" : sexLimit === "m" ? "남자만" : "무관"}
+                  {sexLimit === "f" ? "여자만" : sexLimit === "m" ? "남자만" : "누구나"}
                 </Text>
               </IconTextWrapper>
               <IconTextWrapper>
@@ -311,7 +323,32 @@ const HobbyDetailPage = ({ hobbyRoomDefaultInfo }: { hobbyRoomDefaultInfo: Hobby
             >
               참여멤버
             </Text>
-            <div></div>
+            {hobbyMemberList?.map(({ imageUrl, nickname }: HobbyMemberType) => (
+              <div
+                css={css`
+                  display: flex;
+                  flex-direction: row;
+                  align-items: center;
+                `}
+              >
+                <Avatar
+                  src={imageUrl}
+                  sx={{ width: 70, height: 70 }}
+                  css={css`
+                    border: 1px solid ${racconsThemes.defaultTheme.color.text.sub};
+                    margin-right: 1rem;
+                  `}
+                />
+                <Text
+                  css={css`
+                    display: block;
+                    font-size: 1.2rem;
+                  `}
+                >
+                  {nickname}
+                </Text>
+              </div>
+            ))}
           </div>
         </MainWrapper>
       </div>
