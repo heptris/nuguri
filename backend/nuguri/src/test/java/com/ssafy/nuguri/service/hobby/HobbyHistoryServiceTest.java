@@ -1,97 +1,143 @@
 package com.ssafy.nuguri.service.hobby;
 
+import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.nuguri.alarm.dto.HobbyAlarmEventDto;
+import com.ssafy.nuguri.domain.baseaddress.BaseAddress;
+import com.ssafy.nuguri.domain.category.Category;
 import com.ssafy.nuguri.domain.hobby.ApproveStatus;
 import com.ssafy.nuguri.domain.hobby.Hobby;
 import com.ssafy.nuguri.domain.hobby.HobbyHistory;
 import com.ssafy.nuguri.domain.member.Member;
+import com.ssafy.nuguri.dto.hobby.ChangeStatusRequestDto;
 import com.ssafy.nuguri.dto.hobby.HobbyHistoryDto;
-import com.ssafy.nuguri.dto.hobby.HobbyStatusDto;
+import com.ssafy.nuguri.dto.hobby.HobbyHistoryListDto;
+import com.ssafy.nuguri.dto.hobby.HobbyHistoryResponseDto;
+import com.ssafy.nuguri.repository.baseaddress.BaseaddressRepository;
+import com.ssafy.nuguri.repository.category.CategoryRepository;
 import com.ssafy.nuguri.repository.hobby.HobbyHistoryRepository;
 import com.ssafy.nuguri.repository.hobby.HobbyRepository;
 import com.ssafy.nuguri.repository.member.MemberRepository;
+import com.ssafy.nuguri.util.SecurityUtil;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.test.context.jdbc.Sql;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static com.ssafy.nuguri.domain.alarm.AlarmCode.HOBBY_OWNER_ALARM;
+import static com.ssafy.nuguri.domain.baseaddress.QBaseAddress.baseAddress;
+import static com.ssafy.nuguri.domain.category.QCategory.category;
+import static com.ssafy.nuguri.domain.hobby.QHobby.hobby;
+import static com.ssafy.nuguri.domain.hobby.QHobbyHistory.hobbyHistory;
+import static com.ssafy.nuguri.domain.member.QMember.member;
+import static java.lang.Boolean.FALSE;
+
 @SpringBootTest
 @Transactional
+//@Sql("classpath:tableInit.sql")
 class HobbyHistoryServiceTest {
-
     @Autowired
-    HobbyHistoryRepository hobbyHistoryRepository;
-    @Autowired
-    MemberRepository memberRepository;
+    HobbyHistoryService hobbyHistoryService;
     @Autowired
     HobbyRepository hobbyRepository;
+    @Autowired
+    HobbyHistoryRepository hobbyHistoryRepository;
 
-    public Long createHobbyHistory(HobbyHistoryDto hobbyHistoryDto){ // 취미방 생성 또는 참여신청
-        Member member = memberRepository.findById(hobbyHistoryDto.getMemberId()).orElseThrow();
-        Hobby hobby = hobbyRepository.findById(hobbyHistoryDto.getHobbyId()).orElseThrow();
+    @Autowired
+    EntityManager em;
+    JPAQueryFactory queryFactory;
 
-        // 조건 미달
-        if(!hobbyHistoryDto.isPromoter() // 방장이 아니면서
-                && hobby.getCurNum() >= hobby.getMaxNum() // 정원초과
-                || hobby.getAgeLimit() > member.getAge() // 나이제한
-                || hobby.getSexLimit() ==  member.getSex() // 성별제한
-                || LocalDateTime.now().isAfter(hobby.getEndDate()) // 만료된 모임
-                || hobby.getBaseAddress() != member.getBaseAddress()){ // 주소가 다름
-            return -1L;
+
+    @Test
+    public void 취미1_승인_대기자(){
+        List<HobbyHistoryListDto> result = hobbyHistoryService.findWaitingMemberList(1L);
+        for (HobbyHistoryListDto h: result
+        ) {
+            System.out.println("취미1 승인 대기자: " + h);
         }
 
-        HobbyHistory hobbyHistoryEntity = HobbyHistory.builder()
-                .member(member)
-                .hobby(hobby)
-                .isPromoter(hobbyHistoryDto.isPromoter())
-                .approveStatus(hobbyHistoryDto.getApproveStatus())
+    }
+
+    @Test
+    public void 취미1_참여자() {
+        System.out.println("====취미1에 참여중인 사람====");
+
+        List<HobbyHistoryListDto> result2 = hobbyHistoryService.findParticipantList(1L);
+        for (HobbyHistoryListDto h: result2
+
+        ) {
+            System.out.println("취미1 참여자: " + h);
+        }
+
+    }
+
+    @Test
+    public void 멤버1_참여_현황() {
+
+        List<HobbyHistoryResponseDto> result4 = hobbyHistoryService.findStatusHobbyList(1L, ApproveStatus.APPROVE);
+        for (HobbyHistoryResponseDto h: result4
+
+        ) {
+            System.out.println("멤버1의 참여방: " + h);
+        }
+
+    }
+
+    @Test
+    public void 멤버1_대기_현황() {
+
+        List<HobbyHistoryResponseDto> result4 = hobbyHistoryService.findStatusHobbyList(1L, ApproveStatus.READY);
+        for (HobbyHistoryResponseDto h: result4
+
+        ) {
+            System.out.println("멤버1의 대기방: " + h);
+        }
+
+    }
+
+    @Test
+    public void 멤버1_거절_현황(){
+        List<HobbyHistoryResponseDto> result5 = hobbyHistoryService.findStatusHobbyList(1L, ApproveStatus.REJECT);
+        for (HobbyHistoryResponseDto h: result5
+
+        ) {
+            System.out.println("멤버1의 거절방: " + h);
+        }
+    }
+
+    @Test
+    public void 취미방_정보_변경(){
+        HobbyHistoryDto before = hobbyHistoryService.findByIdDto(3L);
+        System.out.println("변경 전: "+before.toString());
+        ChangeStatusRequestDto changeStatusRequestDto = ChangeStatusRequestDto.builder()
+                .hobbyId(before.getHobbyId())
+                .participantId(before.getMemberId())
+                .approveStatus(ApproveStatus.REJECT)
                 .build();
 
-        return hobbyHistoryRepository.save(hobbyHistoryEntity).getId();
+        hobbyHistoryService.changeStatus(changeStatusRequestDto);
+
+        System.out.println("변경 후: "+hobbyHistoryService.findByIdDto(1L).toString());
     }
+
     @Test
-    public void test1(){
-
+    public void 운영중인_방_찾기(){
+        List<HobbyHistoryResponseDto> result = hobbyHistoryService.findOperatingsByUserId(1L);
+        for (HobbyHistoryResponseDto hobbyHistoryResponseDto:result
+             ) {
+            System.out.println("hobbyHistoryResponseDto = " + hobbyHistoryResponseDto);
+        }
     }
-
-
-    public List<HobbyHistoryDto> findWaitingMemberList(Long hobbyId){ // 해당 취미방 신청 대기자
-        return hobbyHistoryRepository.waiter(hobbyId);
-    }
-    @Test
-    public void test2(){
-
-    }
-
-
-    public List<HobbyHistoryDto> findParticipantList(Long hobbyId){ // 해당 취미방 참여자
-        return hobbyHistoryRepository.participant(hobbyId);
-    }
-    @Test
-    public void test3(){
-
-    }
-
-
-    public boolean changeStatus(Long hobbyHistoryId, ApproveStatus status){ // 취미방 신청을 승인 또는 거절하기
-        return hobbyHistoryRepository.changeStatus(hobbyHistoryId,status);
-    }
-    @Test
-    public void test4(){
-
-    }
-
-
-    public List<HobbyStatusDto> findStatusHobbyList(Long userId, ApproveStatus status){ //유저의 참여중인, 대기중인, 만료된 방 목록 보여주기
-        return hobbyHistoryRepository.findByStatus(userId,status);
-    }
-    @Test
-    public void test5(){
-
-    }
-
 }

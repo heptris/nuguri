@@ -47,6 +47,7 @@ public class Deal extends BaseEntity {
 
     private String title;
 
+    @Lob
     private String description;
 
     private int price;

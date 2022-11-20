@@ -1,4 +1,4 @@
-package com.ssafy.nuguri.dto.deal;
+package com.ssafy.nuguri.dto.baseaddress;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,10 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DealListRequestDto {
+public class BaseAddressResponseDto {
 
     private Long localId;
-
-    private Long categoryId;
-
+    private String baseAddress;
 }

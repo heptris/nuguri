@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface BaseaddressRepository extends JpaRepository<BaseAddress, Long> {
+public interface BaseaddressRepository extends JpaRepository<BaseAddress, Long>, BaseaddressRepositoryCustom {
     Optional<BaseAddress> findBySidoAndGugunAndDong(String sido, String gugun, String dong);
 }

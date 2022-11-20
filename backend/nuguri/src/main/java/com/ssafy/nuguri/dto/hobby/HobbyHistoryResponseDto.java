@@ -13,8 +13,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @Data
-public class HobbyStatusDto {
+public class HobbyHistoryResponseDto {
+
     private Long hobbyId;
+
+    private Long localId;
 
     private Long categoryId;
 
@@ -23,13 +26,19 @@ public class HobbyStatusDto {
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime endDate;
 
-    private int curNum;
+    private boolean isClosed;
 
-    private int maxNum;
+    private Integer curNum;
 
-    private int wishlistNum;
+    private Integer maxNum;
 
-    private int chatNum;
+    private Long wishlistNum;
+
+    private int rowAgeLimit;
+
+    private int highAgeLimit;
+
+    private char sexLimit;
 
     private String imageurl;
 

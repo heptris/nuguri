@@ -2,10 +2,12 @@ package com.ssafy.nuguri.repository.deal;
 
 import com.ssafy.nuguri.dto.deal.DealDetailDto;
 import com.ssafy.nuguri.dto.deal.DealListDto;
+import com.ssafy.nuguri.dto.deal.DealListRequestCondition;
 import com.ssafy.nuguri.dto.deal.DealLoginDetailDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 
 import javax.transaction.Transactional;
 
@@ -22,7 +24,11 @@ class DealRepositoryImplTest {
 
     @Test
     public void 중고거래목록() throws Exception{
-        List<DealListDto> localCategoryDealList = dealRepository.findLocalCategoryDealList(2L, 8L);
+        DealListRequestCondition condition = new DealListRequestCondition(2L, 8L);
+        Page<DealListDto> localCategoryDealList = dealRepository.findLocalCategoryDealList(condition, null);
+//        categoryId가 없을 경우 전체 목록 조회
+//        List<DealListDto> localCategoryDealList = dealRepository.findLocalCategoryDealList(2L, null);
+
         for (DealListDto dealListDto : localCategoryDealList) {
             System.out.println("dealListDto = " + dealListDto);
         }
@@ -58,5 +64,16 @@ class DealRepositoryImplTest {
         System.out.println("bool3 = " + bool3);
 
     }
+
+    @Test
+    public void 로컬아이디() throws Exception{
+        //given
+
+
+        //when
+
+        //then
+
+     }
 
 }

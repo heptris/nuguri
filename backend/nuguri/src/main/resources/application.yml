@@ -11,7 +11,9 @@ spring:
     password: ${MYSQL_PASSWORD}
   sql:
     init:
-      mode: always
+      mode: never
+#      schema-locations: classpath*:/schema.sql
+#      data-locations: classpath*:/data.sql
 
   data:
     mongodb:
@@ -24,13 +26,13 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     properties:
       hibernate:
         format_sql: true
         default_batch_fetch_size: 1000
     defer-datasource-initialization: true
-
+    open-in-view: false
   redis:
     host: localhost
     port: 6379

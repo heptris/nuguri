@@ -25,4 +25,10 @@ class DealHistoryRepositoryTest {
         }
      }
 
+     @Test
+     public void 해당중고거래채팅개수() throws Exception{
+         int i = dealHistoryRepository.countDealHistoryByDealId(4L);
+         System.out.println("i = " + i);
+     }
+
 }

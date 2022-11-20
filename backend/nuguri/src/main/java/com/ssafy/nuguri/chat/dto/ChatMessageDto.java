@@ -8,13 +8,15 @@ import java.time.LocalDateTime;
 @Data
 public class ChatMessageDto {
 
-    private String sender;
+    private Long senderId;
     private String message;
-    private String roomId;
+    private Long roomId;
+
+   // private ChatMessage.MessageType messageType;
 
     public ChatMessage toChatMessage() {
-        ChatMessage chatMessage = ChatMessage.builder().message(message).sender(sender).
-        createdDate(LocalDateTime.now()).roomId(roomId).build();
+        ChatMessage chatMessage = ChatMessage.builder().message(message).senderId(senderId).
+                createdDate(LocalDateTime.now()).roomId(roomId).build();
         return chatMessage;
     }
 }

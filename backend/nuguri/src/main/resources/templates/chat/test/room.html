@@ -31,7 +31,7 @@
     $(document).ready(function(){
 
         var roomName = [[${room.roomName}]];
-        var roomId = [[${room.roomId}]];
+        var roomId = [[${room.Id}]];
         var username = prompt("닉네임 입력하세요");
 
         console.log(roomName + ", " + roomId + ", " + username);
@@ -39,6 +39,8 @@
         var sockJs = new SockJS("/ws-connection");
         //1. SockJS를 내부에 들고있는 stomp를 내어줌
         var stomp = Stomp.over(sockJs);
+
+        console.log(sockJs);
 
         //2. connection이 맺어지면 실행
         stomp.connect({}, function (){

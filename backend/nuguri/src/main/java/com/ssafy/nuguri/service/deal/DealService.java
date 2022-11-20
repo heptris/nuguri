@@ -17,6 +17,8 @@ import com.ssafy.nuguri.repository.member.MemberRepository;
 import com.ssafy.nuguri.service.s3.AwsS3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -88,8 +90,12 @@ public class DealService {
         deal.updateDeal(dealUpdateDto.getTitle(), dealUpdateDto.getDescription(), dealUpdateDto.getPrice(), dealImageUrl);
     }
 
-    public List<DealListDto> findLocalCategoryDealList(Long localId, Long categoryId){
-        return dealRepository.findLocalCategoryDealList(localId, categoryId);
+    public Page<DealListDto> findLocalCategoryDealList(DealListRequestCondition condition, Pageable pageable){
+        if(condition.getLocalId() != null) {
+            return dealRepository.findLocalCategoryDealList(condition, pageable);
+        }else {
+            return dealRepository.findDealListIfLocalIdNull(condition.getCategoryId(), pageable);
+        }
     }
 
     /*
@@ -125,6 +131,7 @@ public class DealService {
                 .dong(dealDetailDto.getDong())
                 .isFavorite(isDealFavorite)
                 .sellerId(dealDetailDto.getSellerId())
+                .sellerNickname(dealDetailDto.getSellerNickname())
                 .build();
     }
 

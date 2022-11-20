@@ -1,8 +1,10 @@
 package com.ssafy.nuguri.chat.domain;
 
+import com.ssafy.nuguri.chat.dto.ChatMessageResponseDto;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Entity;
@@ -17,11 +19,24 @@ import java.time.LocalDateTime;
 @Document(collection = "chat")
 public class ChatMessage {
 
-    @Id
-    private String id;
+//    public enum MessageType {
+//        TALK, ENTER, LEAVE
+//    }
 
-    private String sender;  // 보내는 사람 닉네임
+    @Transient
+    public static final String SEQUENCE_NAME = "chat_sequence";
+
+    @Id
+    private Long id;
+
+    private Long senderId;  // 보내는 사람 Id
     private String message;
     private LocalDateTime createdDate;
-    private String roomId;
+    private Long roomId;
+   // private MessageType messageType;
+
+    public ChatMessageResponseDto toChatMessageResponseDto() {
+        return ChatMessageResponseDto.builder().message(message).chatTime(createdDate)
+                .build();
+    }
 }

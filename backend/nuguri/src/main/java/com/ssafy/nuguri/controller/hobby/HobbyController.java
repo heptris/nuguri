@@ -2,8 +2,10 @@ package com.ssafy.nuguri.controller.hobby;
 
 import com.ssafy.nuguri.domain.hobby.ApproveStatus;
 import com.ssafy.nuguri.domain.hobby.HobbyHistory;
+import com.ssafy.nuguri.dto.hobby.HobbyCreateRequestDto;
 import com.ssafy.nuguri.dto.hobby.HobbyDto;
 import com.ssafy.nuguri.dto.hobby.HobbyHistoryDto;
+import com.ssafy.nuguri.dto.hobby.HobbyListRequestDto;
 import com.ssafy.nuguri.dto.response.ResponseDto;
 import com.ssafy.nuguri.service.hobby.HobbyHistoryService;
 import com.ssafy.nuguri.service.hobby.HobbyService;
@@ -13,27 +15,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/hobby")
+@RequestMapping("/app/hobby")
 public class HobbyController {
     private final HobbyService hobbyService;
-    private final HobbyHistoryService hobbyHistoryService;
 
-    @ApiOperation(value ="해당 지역에 대한 취미방 목록 조회")
-    @GetMapping("/{localId}/list")
-    public ResponseEntity findLocalHobbyList(@PathVariable Long localId){
+    @ApiOperation(value ="해당 지역과 카데고리에 대한 취미방 목록 조회, 카테고리가 null인 경우 지역에 대한 취미방만 조회")
+    @PostMapping("/list")
+    public ResponseEntity findLocalCategoryHobbyList(@RequestBody HobbyListRequestDto hobbyListRequestDto){
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseDto(HttpStatus.OK.value(), "지역기반 취미방 목록",hobbyService.findLocalHobbyList(localId))
-        );
-    }
-
-    @ApiOperation(value ="해당 지역과 카테고리에 대한 취미방 목록 조회")
-    @GetMapping("/{localId}/{categoryId}/list")
-    public ResponseEntity findLocalCategoryHobbyList(@PathVariable Long localId, @PathVariable Long categoryId){
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseDto(HttpStatus.OK.value(), "지역과 카테고리 기반 취미방 목록",hobbyService.findLocalCategoryHobbyList(localId, categoryId))
+                new ResponseDto(HttpStatus.OK.value(), "지역기반 취미방 목록",hobbyService.findLocalCategoryHobbyList(hobbyListRequestDto))
         );
     }
 
@@ -47,17 +41,15 @@ public class HobbyController {
 
     @ApiOperation(value="취미방 생성")
     @PostMapping("/regist")
-    public ResponseEntity regist(HobbyDto hobbyDto){
-        Long memberId = SecurityUtil.getCurrentMemberId();
-
+    public ResponseEntity regist(@RequestPart HobbyCreateRequestDto hobbyCreateRequestDto,
+                                 @RequestPart(value = "file", required = false) MultipartFile hobbyImage){
         // 취미방 생성
-        Long hobbyId = hobbyService.createHobby(hobbyDto);
-        HobbyHistoryDto hobbyHistoryDto = HobbyHistoryDto.builder().hobbyId(hobbyId).memberId(memberId).isPromoter(true).approveStatus(ApproveStatus.READY).build();
-
+        hobbyService.createHobby(hobbyCreateRequestDto,hobbyImage);
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseDto(HttpStatus.OK.value(), "취미방 생성 완료",hobbyHistoryService.createHobbyHistory(hobbyHistoryDto))
+                new ResponseDto(HttpStatus.OK.value(), "취미방 생성","취미방 생성 완료")
         );
     }
+
 
 
 

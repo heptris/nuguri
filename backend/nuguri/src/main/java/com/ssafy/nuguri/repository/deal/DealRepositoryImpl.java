@@ -2,12 +2,17 @@ package com.ssafy.nuguri.repository.deal;
 
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.nuguri.domain.deal.QDealFavorite;
 import com.ssafy.nuguri.domain.member.QMember;
 import com.ssafy.nuguri.dto.deal.DealDetailDto;
+import com.ssafy.nuguri.dto.deal.DealListRequestCondition;
 import com.ssafy.nuguri.dto.deal.DealLoginDetailDto;
 import com.ssafy.nuguri.dto.deal.DealListDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -28,8 +33,8 @@ public class DealRepositoryImpl implements DealRepositoryCustom{
     }
 
     @Override
-    public List<DealListDto> findLocalCategoryDealList(Long localId, Long categoryId) {
-        double[] latLng = findLatLng(localId);
+    public Page<DealListDto> findLocalCategoryDealList(DealListRequestCondition condition, Pageable pageable) {
+        double[] latLng = findLatLng(condition.getLocalId());
         double lat = latLng[0];
         double lng = latLng[1];
 
@@ -49,10 +54,59 @@ public class DealRepositoryImpl implements DealRepositoryCustom{
                 .innerJoin(deal.category, category)
                 .where(baseAddress.lat.between(Double.toString(lat - 0.01), Double.toString(lat + 0.01))
                         .and(baseAddress.lng.between(Double.toString(lng - 0.01), Double.toString(lng + 0.01)))
-                        .and(category.id.eq(categoryId)))
+                        .and(categoryIdEq(condition.getCategoryId())))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
 
-        return dealListDtoList;
+        long total = queryFactory
+                .select(deal.id)
+                .from(deal)
+                .innerJoin(deal.baseAddress, baseAddress)
+                .where(baseAddress.lat.between(Double.toString(lat - 0.01), Double.toString(lat + 0.01))
+                        .and(baseAddress.lng.between(Double.toString(lng - 0.01), Double.toString(lng + 0.01)))
+                        .and(categoryIdEqTotal(condition.getCategoryId())))
+                .fetch().size();
+
+        return new PageImpl<>(dealListDtoList, pageable, total);
+    }
+
+    @Override
+    public Page<DealListDto> findDealListIfLocalIdNull(Long categoryId, Pageable pageable) {
+        List<DealListDto> dealListDtoList = queryFactory.select(Projections.constructor(DealListDto.class,
+                        deal.id,
+                        category.id,
+                        baseAddress.id,
+                        deal.title,
+                        deal.description,
+                        deal.price,
+                        deal.hit,
+                        deal.isDeal,
+                        deal.dealImage
+                ))
+                .from(baseAddress)
+                .innerJoin(baseAddress.dealList, deal)
+                .innerJoin(deal.category, category)
+                .where(categoryIdEq(categoryId))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        long total = queryFactory
+                .select(deal.id)
+                .from(deal)
+                .where(categoryIdEqTotal(categoryId))
+                .fetch().size();
+
+        return new PageImpl<>(dealListDtoList, pageable, total);
+    }
+
+    private BooleanExpression categoryIdEq(Long categoryId){
+        return categoryId == null ? null : category.id.eq(categoryId);
+    }
+
+    private BooleanExpression categoryIdEqTotal(Long categoryId){
+        return categoryId == null ? null : deal.category.id.eq(categoryId);
     }
 
     @Override
@@ -67,7 +121,8 @@ public class DealRepositoryImpl implements DealRepositoryCustom{
                         deal.isDeal,
                         deal.dealImage,
                         baseAddress.dong,
-                        deal.member.id
+                        deal.member.id,
+                        deal.member.nickname
                 ))
                 .from(deal)
                 .innerJoin(deal.baseAddress, baseAddress)
@@ -129,4 +184,5 @@ public class DealRepositoryImpl implements DealRepositoryCustom{
         System.out.println("lng = " + lng);
         return new double[] {lat, lng};
     }
+
 }

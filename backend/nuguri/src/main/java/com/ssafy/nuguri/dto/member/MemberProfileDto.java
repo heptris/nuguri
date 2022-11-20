@@ -8,11 +8,13 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MemberProfileDto {
+    private Long memberId;
     private String email;
     private String name;
     private String nickname;
     private String description;
     private Double temperature;
     private String profileImage;
-    private BaseAddress baseAddress;
+    private String baseAddress;
+    private Long localId;
 }

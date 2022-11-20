@@ -30,4 +30,9 @@ public class HobbyFavorite {
 
     private boolean isFavorite;
 
+    public boolean changeFavorite(){
+        this.isFavorite = !this.isFavorite;
+        return this.isFavorite;
+    }
+
 }

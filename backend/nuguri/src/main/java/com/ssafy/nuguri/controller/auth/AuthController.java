@@ -8,6 +8,9 @@ import com.ssafy.nuguri.dto.token.TokenRequestDto;
 import com.ssafy.nuguri.exception.ex.CustomException;
 import com.ssafy.nuguri.exception.ex.CustomValidationException;
 import com.ssafy.nuguri.service.member.AuthService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +18,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
@@ -58,5 +62,13 @@ public class AuthController {
     public ResponseEntity<?> reissue(@RequestBody TokenRequestDto tokenRequestDto) {
         return new ResponseEntity<ResponseDto>(new ResponseDto<>(200, "토큰 재발행",
                 authService.reissue(tokenRequestDto)), HttpStatus.OK);
+    }
+
+    @GetMapping("/logout")
+    public ResponseEntity logout(HttpServletRequest request) {
+        String accessToken = request.getHeader("Authorization").substring(7);
+        authService.logout(accessToken);
+        return new ResponseEntity<>(new ResponseDto<>(200, "로그아웃 완료", null)
+                , HttpStatus.OK);
     }
 }

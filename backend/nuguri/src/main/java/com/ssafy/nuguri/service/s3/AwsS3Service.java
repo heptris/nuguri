@@ -70,7 +70,6 @@ public class AwsS3Service {
 
     private void removeFile(File file) {
         file.delete();
-        System.out.println("실행?");
     }
 
     public Optional<File> convertMultipartFileToFile(MultipartFile multipartFile) throws IOException {

@@ -5,11 +5,11 @@
         <div class="container">
             <div>
                 <ul th:each="room : ${list}">
-                    <li><a th:href="@{/chat/room(roomId=${room.roomId})}">[[${room.roomName}]]</a></li>
+                    <li><a th:href="@{/chat/test/room(roomId=${room.Id})}">[[${room.roomName}]]</a></li>
                 </ul>
             </div>
         </div>
-        <form th:action="@{/chat/room}" method="post">
+        <form th:action="@{/chat/test/room}" method="post">
             <input type="text" name="name" class="form-control">
             <button class="btn btn-secondary">make</button>
         </form>

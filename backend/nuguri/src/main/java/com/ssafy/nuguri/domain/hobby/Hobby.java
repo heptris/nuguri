@@ -3,6 +3,7 @@ package com.ssafy.nuguri.domain.hobby;
 import com.ssafy.nuguri.domain.BaseEntity;
 import com.ssafy.nuguri.domain.baseaddress.BaseAddress;
 import com.ssafy.nuguri.domain.category.Category;
+import com.ssafy.nuguri.domain.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,6 +42,10 @@ public class Hobby extends BaseEntity {
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
     private String title;
 
     private String content;
@@ -57,7 +62,9 @@ public class Hobby extends BaseEntity {
 
     private int fee;
 
-    private int ageLimit;
+    private int rowAgeLimit;
+
+    private int highAgeLimit;
 
     private char sexLimit;
 

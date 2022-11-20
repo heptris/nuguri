@@ -1,27 +1,37 @@
-//package com.ssafy.nuguri.chat.repository;
-//
-//import com.querydsl.mongodb.morphia.MorphiaQuery;
-//import com.ssafy.nuguri.chat.domain.ChatRoom;
-//import com.ssafy.nuguri.chat.domain.QChatRoom;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.data.mongodb.core.MongoOperations;
-//import org.springframework.data.mongodb.repository.support.QuerydslRepositorySupport;
-//
-//import javax.sql.DataSource;
-//import java.util.List;
-//
-//public class ChatRoomRepositoryImpl extends QuerydslRepositorySupport implements ChatRoomRepositoryCustom  {
-//
-//    private static final QChatRoom chatRoom = QChatRoom.chatRoom;
-//
-//    public ChatRoomRepositoryImpl(MongoOperations operations) {
-//        super(operations);
-//    }
-//
-//
-//    @Override
-//    public List<ChatRoom> findAlll() {
-//        List<ChatRoom> chatRooms = from(chatRoom).fetch();
-//        return chatRooms;
-//    }
-//}
+package com.ssafy.nuguri.chat.repository;
+
+import com.ssafy.nuguri.chat.domain.ChatRoom;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+
+public class ChatRoomRepositoryImpl implements ChatRoomRepositoryCustom {
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
+
+    @Override
+    public void updateChatRoom(Long roomId, Set<Long> userList) {
+        Query query = new Query();
+        Update update = new Update();
+
+        query.addCriteria(where("_id").is(roomId));
+        update.set("userList", userList);
+        mongoTemplate.updateMulti(query, update, "chatroom");
+    }
+
+    @Override
+    public Optional<ChatRoom> findChatRoomByRoomId(Long roomId) {
+        Query query = new Query();
+        query.addCriteria(where("_id").is(roomId));
+        return Optional.ofNullable(mongoTemplate.findOne(query, ChatRoom.class));
+    }
+}

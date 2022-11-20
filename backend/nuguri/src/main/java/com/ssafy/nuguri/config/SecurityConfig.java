@@ -55,8 +55,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 로그인, 회원가입 API 는 토큰이 없는 상태에서 요청이 들어오기 때문에 permitAll 설정
                 .and()
                 .authorizeRequests()
-                .antMatchers("/app/member/**", "/app/deal/**", "/api/hobby/**").authenticated()
-                .antMatchers("/**").permitAll()
+                .antMatchers("/app/deal/{dealId}/detail", "/app/deal/list", "/auth/**").permitAll()
+                .antMatchers("/app/member/**", "/app/deal/**", "/app/hobby/regist","/app/hobby/history/regist","/app/hobby/favorite/regist/{hobbyId}").authenticated()
 
                 // JwtFilter 를 addFilterBefore 로 등록했던 JwtSecurityConfig 클래스를 적용
                 .and()
@@ -71,8 +71,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //    configuration.addAllowedOrigin("*");
         configuration.setAllowedOriginPatterns(
                 Arrays.asList("http://localhost:3000",
-                        "https://i7a702.p.ssafy.io:3000",
-                        "https://i7a702.p.ssafy.io"));
+                        "https://k7a702.p.ssafy.io:3000",
+                        "https://k7a702.p.ssafy.io"));
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.setAllowCredentials(true);

@@ -22,4 +22,5 @@ public class DealDetailDto {
     // baseAddress Join
     private String dong;
     private Long sellerId;
+    private String sellerNickname;
 }
