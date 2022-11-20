@@ -266,7 +266,7 @@ const HobbyDetailPage = ({ hobbyRoomDefaultInfo }: { hobbyRoomDefaultInfo: Hobby
           <Text
             as="h1"
             css={css`
-              padding: 1rem;
+              padding: 2rem 0rem;
             `}
           >
             {content}
@@ -399,5 +399,5 @@ const DivWrapper = styled.div`
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  margin-top: 1rem;
+  margin-top: 2rem;
 `;
