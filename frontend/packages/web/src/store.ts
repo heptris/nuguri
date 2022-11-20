@@ -6,6 +6,7 @@ export type SearchBarType = { placeholder: string; value: string };
 export type BottomType = { children: ReactNode };
 export type ListCategoryType = number;
 export type PostType = number;
+export type ApplyType = number;
 
 const headerState = atom<HeaderType>({
   key: "headerState",
@@ -31,5 +32,8 @@ const postState = atom<PostType>({
   default: null,
 });
 
-export { headerState, searchBarState, menuCategoryState, postState, bottomState };
-
+const applyHobbyIdState = atom<ApplyType>({
+  key: "applyState",
+  default: null,
+});
+export { headerState, searchBarState, menuCategoryState, postState, bottomState, applyHobbyIdState };
