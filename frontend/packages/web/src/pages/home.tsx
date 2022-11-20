@@ -105,7 +105,7 @@ const HomePage = () => {
           </Link>
         </TitleWrapper>
         <CardWapper>
-          <DealCardList dealList={dealList} categoryId={categoryId} localId={localId} />
+          <DealCardList dealList={dealList} />
         </CardWapper>
       </CategorytWrapper>
       {/* <CategorytWrapper>

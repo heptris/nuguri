@@ -25,7 +25,6 @@ import { useFavoriteHobby } from "@/hooks/useFavoriteHobby";
 import { useFavHobbyRegist } from "@/hooks/useFavHobbyRegist";
 import { useMemberHobby } from "@/hooks/useMemberHobby";
 import { useRecoilState } from "recoil";
-import { applyHobbyIdState } from "@/store";
 
 const { APPLY, ADMIN } = ROUTES;
 
@@ -50,7 +49,6 @@ const HobbyDetailPage = ({ hobbyRoomDefaultInfo }: { hobbyRoomDefaultInfo: Hobby
   const { replace, push } = useRouter();
   const { userInfo } = useUser();
   const { isLogined } = useAuth();
-  const [, setHobbyId] = useRecoilState(applyHobbyIdState);
   const [favorite, setFavorite] = useState<boolean>();
   const getHobbyFavorite = async () => {
     const { data } = await apiInstance.get(ENDPOINT_API + "/hobby/favorite/favoritecheck" + `/${hobbyId}`);
@@ -147,7 +145,6 @@ const HobbyDetailPage = ({ hobbyRoomDefaultInfo }: { hobbyRoomDefaultInfo: Hobby
                   border-radius: 2rem;
                 `}
                 onClick={() => {
-                  setHobbyId(hobbyId);
                   push(`/apply/${hobbyId}`);
                 }}
               >

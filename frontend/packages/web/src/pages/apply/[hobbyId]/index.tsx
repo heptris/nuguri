@@ -8,8 +8,6 @@ import LooksTwoIcon from "@mui/icons-material/LooksTwo";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useAlert, useAuth, useBottom, useHeader } from "@/hooks";
 import { ChangeEvent, useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
-import { applyHobbyIdState } from "@/store";
 import { apiInstance, ENDPOINT_API } from "@/api";
 import { useRouter } from "next/router";
 import { ROUTES } from "@/constant";
