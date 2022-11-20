@@ -24,6 +24,8 @@ import Link from "@/components/Link";
 import { useFavoriteHobby } from "@/hooks/useFavoriteHobby";
 import { useFavHobbyRegist } from "@/hooks/useFavHobbyRegist";
 import { useMemberHobby } from "@/hooks/useMemberHobby";
+import { useRecoilState } from "recoil";
+import { applyHobbyIdState } from "@/store";
 
 const { APPLY, ADMIN } = ROUTES;
 
@@ -48,19 +50,19 @@ const HobbyDetailPage = ({ hobbyRoomDefaultInfo }: { hobbyRoomDefaultInfo: Hobby
   const { replace, push } = useRouter();
   const { userInfo } = useUser();
   const { isLogined } = useAuth();
+  const [, setHobbyId] = useRecoilState(applyHobbyIdState);
   const [favorite, setFavorite] = useState<boolean>();
   const getHobbyFavorite = async () => {
     const { data } = await apiInstance.get(ENDPOINT_API + "/hobby/favorite/favoritecheck" + `/${hobbyId}`);
-    console.log(data);
     return data.data;
   };
+
   useEffect(() => {
     getHobbyFavorite().then(data => {
       setFavorite(data);
     });
   }, []);
   const { hobbyMemberList } = useMemberHobby(hobbyId);
-  console.log(hobbyId);
 
   const { postFavoriteHobbyRegist } = useFavHobbyRegist(hobbyId);
   const week = new Array("일", "월", "화", "수", "목", "금", "토");
@@ -146,6 +148,7 @@ const HobbyDetailPage = ({ hobbyRoomDefaultInfo }: { hobbyRoomDefaultInfo: Hobby
                   border-radius: 2rem;
                 `}
                 onClick={() => {
+                  setHobbyId(hobbyId);
                   push(APPLY);
                 }}
               >
@@ -292,7 +295,7 @@ const HobbyDetailPage = ({ hobbyRoomDefaultInfo }: { hobbyRoomDefaultInfo: Hobby
               </IconTextWrapper>
               <IconTextWrapper>
                 <PaidIcon sx={{ marginRight: "0.5rem" }} />
-                <Text>{fee === 0 ? "무료" : fee}</Text>
+                <Text>{fee === 0 ? "무료" : fee.toLocaleString("ko-KR")}원</Text>
               </IconTextWrapper>
               <IconTextWrapper>
                 <CheckCircleIcon sx={{ marginRight: "0.5rem" }} />
