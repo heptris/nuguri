@@ -303,7 +303,7 @@ const HobbyDetailPage = ({ hobbyRoomDefaultInfo }: { hobbyRoomDefaultInfo: Hobby
               </IconTextWrapper>
               <IconTextWrapper>
                 <CalendarMonthIcon sx={{ marginRight: "0.5rem" }} />
-                <Text>{`${Month}.${Day}(${DayOfWeek}) ${hour}시`}</Text>
+                <Text>{`${Month}.${Day}(${DayOfWeek}) ${hour}시 ${minutes}분`}</Text>
               </IconTextWrapper>
               <IconTextWrapper>
                 <LocationOnIcon sx={{ marginRight: "0.5rem" }} />
