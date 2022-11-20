@@ -59,7 +59,7 @@ const DealDetailPage = (props: { regionId: number; dealDetailInfo: DealItemDetai
                 font-weight: bold;
               `}
             >
-              {price} 원
+              {price.toLocaleString("ko-KR")} 원
             </Text>
             {isLogined ? (
               <Button size="large" onClick={() => mutateToGetDealHistoryId()}>
