@@ -7,6 +7,7 @@ import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.nuguri.domain.hobby.ApproveStatus;
 import com.ssafy.nuguri.dto.hobby.HobbyDto;
+import com.ssafy.nuguri.dto.hobby.HobbyHistoryRegionCategoryRequestDto;
 import com.ssafy.nuguri.dto.hobby.HobbyHistoryResponseDto;
 
 import javax.persistence.EntityManager;
@@ -30,8 +31,8 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
 
 
 
-    public List<HobbyHistoryResponseDto> findByRegionAndCategory(Long RegionId, Long CategoryId) {
-        List<HobbyHistoryResponseDto> hobbyHistoryResponseDtoList = queryFactory.select(Projections.constructor(HobbyHistoryResponseDto.class,
+    public List<HobbyHistoryRegionCategoryRequestDto> findByRegionAndCategory(Long RegionId, Long CategoryId) {
+        List<HobbyHistoryRegionCategoryRequestDto> hobbyHistoryRegionCategoryRequestDto = queryFactory.select(Projections.constructor(HobbyHistoryRegionCategoryRequestDto.class,
                         hobby.id,
                         baseAddress.id,
                         category.id,
@@ -49,12 +50,9 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
                         hobby.rowAgeLimit,
                         hobby.highAgeLimit,
                         hobby.sexLimit,
-                        hobby.hobbyImage,
-                        hobbyHistory.approveStatus
+                        hobby.hobbyImage
                 ))
                 .from(hobby)
-                .innerJoin(hobby.hobbyHistoryList, hobbyHistory)
-                .innerJoin(hobbyHistory.member, member)
                 .innerJoin(hobby.category, category)
                 .innerJoin(hobby.baseAddress, baseAddress)
                 .where(RegionEq(RegionId),
@@ -62,7 +60,7 @@ public class HobbyRepositoryImpl implements HobbyRepositoryCustom{
                         hobby.isClosed.eq(Boolean.FALSE)
                 )
                 .fetch();
-        return hobbyHistoryResponseDtoList;
+        return hobbyHistoryRegionCategoryRequestDto;
     }
 
     private BooleanExpression RegionEq(Long RegionId) {

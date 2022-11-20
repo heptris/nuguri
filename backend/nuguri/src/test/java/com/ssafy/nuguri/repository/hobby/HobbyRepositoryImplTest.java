@@ -9,6 +9,7 @@ import com.ssafy.nuguri.domain.hobby.ApproveStatus;
 import com.ssafy.nuguri.domain.hobby.Hobby;
 import com.ssafy.nuguri.domain.hobby.HobbyHistory;
 import com.ssafy.nuguri.dto.hobby.HobbyDto;
+import com.ssafy.nuguri.dto.hobby.HobbyHistoryRegionCategoryRequestDto;
 import com.ssafy.nuguri.dto.hobby.HobbyHistoryResponseDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,16 +39,16 @@ class HobbyRepositoryImplTest {
 
     @Test
     public void 지역으로_찾기(){
-        List<HobbyHistoryResponseDto> result = hobbyRepository.findByRegionAndCategory(1L,null);
-        for (HobbyHistoryResponseDto a: result) {
+        List<HobbyHistoryRegionCategoryRequestDto> result = hobbyRepository.findByRegionAndCategory(1L,null);
+        for (HobbyHistoryRegionCategoryRequestDto a: result) {
             System.out.println("결과값: " + a.toString());
         }
     }
 
     @Test
     public void 지역과_카테고리로_찾기(){
-        List<HobbyHistoryResponseDto> result = hobbyRepository.findByRegionAndCategory(1L,1L);
-        for (HobbyHistoryResponseDto a: result) {
+        List<HobbyHistoryRegionCategoryRequestDto> result = hobbyRepository.findByRegionAndCategory(1L,1L);
+        for (HobbyHistoryRegionCategoryRequestDto a: result) {
             System.out.println("결과값: " + a.toString());
         }
     }

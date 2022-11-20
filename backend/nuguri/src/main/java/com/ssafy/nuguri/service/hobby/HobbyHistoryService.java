@@ -7,6 +7,7 @@ import com.ssafy.nuguri.domain.hobby.HobbyHistory;
 import com.ssafy.nuguri.dto.hobby.ChangeStatusRequestDto;
 import com.ssafy.nuguri.dto.hobby.HobbyHistoryDto;
 import com.ssafy.nuguri.domain.member.Member;
+import com.ssafy.nuguri.dto.hobby.HobbyHistoryListDto;
 import com.ssafy.nuguri.dto.hobby.HobbyHistoryResponseDto;
 import com.ssafy.nuguri.exception.ex.CustomException;
 import com.ssafy.nuguri.exception.ex.ErrorCode;
@@ -43,7 +44,7 @@ public class HobbyHistoryService {
 
         Hobby hobby = hobbyRepository.findById(hobbyId).orElseThrow(() -> new CustomException(HOBBY_NOT_FOUND));
 
-
+        if(hobbyHistoryRepository.DuplicateCheck(memberId,hobbyId)) throw new CustomException(ALREADY_USED_HOBBY_HISTORY);
 
         // 조건 미달
         if(hobby.getCurNum() >= hobby.getMaxNum()) throw new CustomException(FULL_HOBBY_ERROR); // 정원초과
@@ -77,12 +78,12 @@ public class HobbyHistoryService {
     }
 
     @Transactional
-    public List<HobbyHistoryDto> findWaitingMemberList(Long hobbyId) { // 해당 취미방 신청 대기자
+    public List<HobbyHistoryListDto> findWaitingMemberList(Long hobbyId) { // 해당 취미방 신청 대기자
         return hobbyHistoryRepository.userByStatus(hobbyId,ApproveStatus.READY);
     }
 
     @Transactional
-    public List<HobbyHistoryDto> findParticipantList(Long hobbyId) { // 해당 취미방 참여자
+    public List<HobbyHistoryListDto> findParticipantList(Long hobbyId) { // 해당 취미방 참여자
         return hobbyHistoryRepository.userByStatus(hobbyId,ApproveStatus.APPROVE);
     }
 

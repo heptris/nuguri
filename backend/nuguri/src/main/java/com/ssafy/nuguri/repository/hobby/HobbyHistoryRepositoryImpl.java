@@ -10,6 +10,7 @@ import com.ssafy.nuguri.domain.hobby.ApproveStatus;
 import com.ssafy.nuguri.domain.hobby.Hobby;
 import com.ssafy.nuguri.domain.hobby.QHobbyFavorite;
 import com.ssafy.nuguri.dto.hobby.HobbyHistoryDto;
+import com.ssafy.nuguri.dto.hobby.HobbyHistoryListDto;
 import com.ssafy.nuguri.dto.hobby.HobbyHistoryResponseDto;
 
 import javax.persistence.EntityManager;
@@ -33,13 +34,15 @@ public class HobbyHistoryRepositoryImpl implements HobbyHistoryRepositoryCustom{
     }
 
     @Override
-    public List<HobbyHistoryDto> userByStatus(Long hobbyId, ApproveStatus approveStatus) {
-        List<HobbyHistoryDto> hobbyHistoryDtoList = queryFactory.select(Projections.constructor(HobbyHistoryDto.class,
+    public List<HobbyHistoryListDto> userByStatus(Long hobbyId, ApproveStatus approveStatus) {
+        List<HobbyHistoryListDto> hobbyHistoryDtoList = queryFactory.select(Projections.constructor(HobbyHistoryListDto.class,
                         hobbyHistory.id,
                         hobby.id,
                         member.id,
                         hobbyHistory.isPromoter,
-                        hobbyHistory.approveStatus
+                        hobbyHistory.approveStatus,
+                        member.nickname,
+                        member.profileImage
                 ))
                 .from(hobbyHistory)
                 .innerJoin(hobbyHistory.hobby,hobby)
@@ -164,6 +167,15 @@ public class HobbyHistoryRepositoryImpl implements HobbyHistoryRepositoryCustom{
                 .where(hobbyHistory.id.eq(hobbyHistoryId))
                 .fetchOne();
         return hobbyHistoryDto;
+    }
+
+    @Override
+    public boolean DuplicateCheck(Long memberId, Long hobbyId) {
+        int result = queryFactory.selectFrom(hobbyHistory)
+                .where(hobbyHistory.member.id.eq(memberId)
+                        ,hobbyHistory.hobby.id.eq(hobbyId)).fetch().size();
+        if(result == 0) return false; // 신규
+        else return true; // 이미 있음
     }
 
     @Override

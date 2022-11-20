@@ -3,6 +3,7 @@ package com.ssafy.nuguri.controller.hobby;
 import com.ssafy.nuguri.domain.hobby.ApproveStatus;
 import com.ssafy.nuguri.dto.hobby.ChangeStatusRequestDto;
 import com.ssafy.nuguri.dto.hobby.HobbyHistoryDto;
+import com.ssafy.nuguri.dto.hobby.HobbyIdRequestDto;
 import com.ssafy.nuguri.dto.response.ResponseDto;
 import com.ssafy.nuguri.service.hobby.HobbyHistoryService;
 import io.swagger.annotations.ApiOperation;
@@ -19,9 +20,9 @@ public class HobbyHistoryController {
     private final HobbyHistoryService hobbyHistoryService;
     @ApiOperation(value = "취미방 참여 신청")
     @PostMapping("/regist")
-    public ResponseEntity regist(Long hobbyId){
+    public ResponseEntity regist(@RequestBody HobbyIdRequestDto hobbyIdRequestDto){
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseDto(HttpStatus.OK.value(), "취미방 참여", hobbyHistoryService.createHobbyHistory(hobbyId))
+                new ResponseDto(HttpStatus.OK.value(), "취미방 참여", hobbyHistoryService.createHobbyHistory(hobbyIdRequestDto.getHobbyId()))
         );
     }
 

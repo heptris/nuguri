@@ -33,11 +33,11 @@ public class HobbyFavoriteRepositoryImpl implements HobbyFavoriteRepositoryCusto
     }
 
     @Override
-    public boolean favoritecheck(Long memberId, Long hobbyId) {
-        Integer result = queryFactory.selectFrom(hobbyFavorite)
+    public boolean favoriteCheck(Long memberId, Long hobbyId) {
+         HobbyFavorite result = queryFactory.selectFrom(hobbyFavorite)
                 .where(hobbyFavorite.member.id.eq(memberId)
                         ,hobbyFavorite.hobby.id.eq(hobbyId))
-                .fetch().size();
-        return (result == 0)?false:true;
+                .fetchOne();
+        return (result == null)?false:result.isFavorite();
     }
 }

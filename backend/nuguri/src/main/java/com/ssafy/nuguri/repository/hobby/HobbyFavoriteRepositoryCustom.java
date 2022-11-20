@@ -8,5 +8,5 @@ public interface HobbyFavoriteRepositoryCustom {
 
     Integer getFavoriteNumberByHobbyId(Long hobbyId);
 
-    boolean favoritecheck(Long memberId, Long hobbyId);
+    boolean favoriteCheck(Long memberId, Long hobbyId);
 }

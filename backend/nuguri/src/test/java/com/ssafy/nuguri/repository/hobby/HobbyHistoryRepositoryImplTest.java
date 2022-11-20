@@ -10,6 +10,7 @@ import com.ssafy.nuguri.domain.hobby.HobbyFavorite;
 import com.ssafy.nuguri.domain.hobby.HobbyHistory;
 import com.ssafy.nuguri.domain.member.Member;
 import com.ssafy.nuguri.dto.hobby.HobbyHistoryDto;
+import com.ssafy.nuguri.dto.hobby.HobbyHistoryListDto;
 import com.ssafy.nuguri.dto.hobby.HobbyHistoryResponseDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,8 +44,8 @@ class HobbyHistoryRepositoryImplTest {
 
     @Test
     public void 승인_대기자_목록(){
-        List<HobbyHistoryDto> result = hobbyHistoryRepository.userByStatus(1L,ApproveStatus.READY);
-        for (HobbyHistoryDto m :result
+        List<HobbyHistoryListDto> result = hobbyHistoryRepository.userByStatus(1L,ApproveStatus.READY);
+        for (HobbyHistoryListDto m :result
              ) {
             System.out.println("hobbyId 1을 대기중인 멤버: "+ m);
         }
@@ -52,8 +53,8 @@ class HobbyHistoryRepositoryImplTest {
 
     @Test
     public void 취미방_참가자_목록(){
-        List<HobbyHistoryDto> result = hobbyHistoryRepository.userByStatus(1L,ApproveStatus.APPROVE);
-        for (HobbyHistoryDto m :result
+        List<HobbyHistoryListDto> result = hobbyHistoryRepository.userByStatus(1L,ApproveStatus.APPROVE);
+        for (HobbyHistoryListDto m :result
         ) {
             System.out.println("hobbyId 1에 참여중인 멤버: "+ m);
         }
