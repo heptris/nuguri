@@ -8,6 +8,8 @@ import { css } from "@emotion/react";
 import { Card, IconButton } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { racconsThemes } from "@common/components/src/styles/theme";
@@ -59,6 +61,20 @@ const DealDetailPage = (props: { regionId: number; dealDetailInfo: DealItemDetai
       });
   };
 
+  const [favCnt, setFavCnt] = useState<number>();
+  const [chatCnt, setChatCnt] = useState<number>();
+
+  const getFavoriteChatCnt = async () => {
+    const { data } = await apiInstance.get(ENDPOINT_API + "/deal-history/" + `${dealId}` + "/count");
+    return data.data;
+  };
+  useEffect(() => {
+    getFavoriteChatCnt().then(data => {
+      const { chatCnt, favCnt } = data;
+      setChatCnt(chatCnt);
+      setFavCnt(favCnt);
+    });
+  });
   useEffect(() => {
     isLogined &&
       setBottom({
@@ -135,14 +151,18 @@ const DealDetailPage = (props: { regionId: number; dealDetailInfo: DealItemDetai
                   border-radius: 2rem;
                 `}
                 onClick={() => mutateToGetDealHistoryId()}
+                disabled={deal}
               >
-                <Text
-                  css={css`
-                    color: white;
-                  `}
-                >
-                  채팅하기
-                </Text>
+                {deal && <Text>판매완료</Text>}
+                {!deal && (
+                  <Text
+                    css={css`
+                      color: white;
+                    `}
+                  >
+                    채팅하기
+                  </Text>
+                )}
               </Button>
             ) : (
               <Button disabled>로그인이 필요합니다</Button>
@@ -229,6 +249,10 @@ const DealDetailPage = (props: { regionId: number; dealDetailInfo: DealItemDetai
             {title}
           </Text>
         </Card>
+        <DivLocationWrapper>
+          <LocationOnIcon color="action" sx={{ fontSize: "1.2rem", marginRight: "0.2rem" }} />
+          <Text as="span">{dong}</Text>
+        </DivLocationWrapper>
         <MainWrapper>
           <Text
             as="h1"
@@ -239,6 +263,14 @@ const DealDetailPage = (props: { regionId: number; dealDetailInfo: DealItemDetai
             {description}
           </Text>
         </MainWrapper>
+        <DivWrapper>
+          <FavoriteIcon color="action" sx={{ fontSize: "1.2rem", marginRight: "0.2rem" }} />
+          <Text as="span">{favCnt}</Text>
+          <IconButton>
+            <ChatBubbleOutlineIcon color="action" sx={{ fontSize: "1.2rem" }} />
+          </IconButton>
+          <Text as="span">{chatCnt}</Text>
+        </DivWrapper>
       </div>
     </div>
   );
@@ -249,8 +281,8 @@ export default DealDetailPage;
 const MainWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 1rem;
   width: inherit;
+  padding: 1rem 0rem;
 `;
 
 const FavoriteBtn = styled.div`
@@ -274,18 +306,16 @@ const ButtonDiv = styled.div`
   box-sizing: border-box;
 `;
 
-const IconTextWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 1rem;
-`;
-
 const DivWrapper = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  padding: 0rem 2rem;
   box-sizing: border-box;
-  margin-top: 1rem;
+  margin-top: 2rem;
+`;
+
+const DivLocationWrapper = styled(DivWrapper)`
+  justify-content: center;
 `;
