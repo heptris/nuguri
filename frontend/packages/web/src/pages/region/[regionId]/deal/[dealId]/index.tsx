@@ -35,7 +35,7 @@ const categoryName = ["성장, 자기계발", "운동, 액티비티", "문화, �
 
 const DealDetailPage = (props: { regionId: number; dealDetailInfo: DealItemDetailType }) => {
   const { regionId, dealDetailInfo } = props;
-  const { sellerId, dealId, deal, dealImage, description, dong, hit, price, title, favorite } = dealDetailInfo;
+  const { sellerId, dealId, deal, dealImage, description, dong, hit, price, title, favorite, sellerNickname } = dealDetailInfo;
   const [categoryId, setCategoryId] = useRecoilState(dealDetailCategoryId);
   console.log(categoryId);
   console.log(dealDetailInfo);
@@ -134,9 +134,7 @@ const DealDetailPage = (props: { regionId: number; dealDetailInfo: DealItemDetai
                   width: 30%;
                   border-radius: 2rem;
                 `}
-                onClick={() => {
-                  () => mutateToGetDealHistoryId();
-                }}
+                onClick={() => mutateToGetDealHistoryId()}
               >
                 <Text
                   css={css`
@@ -219,7 +217,7 @@ const DealDetailPage = (props: { regionId: number; dealDetailInfo: DealItemDetai
               font-size: 1.2rem;
             `}
           >
-            {"사용자 이름"}
+            {sellerNickname}
           </Text>
           <Text
             css={css`
