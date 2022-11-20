@@ -13,19 +13,23 @@ import { applyHobbyIdState } from "@/store";
 import { apiInstance, ENDPOINT_API } from "@/api";
 import { useRouter } from "next/router";
 import { ROUTES } from "@/constant";
+
 const { HOME } = ROUTES;
 const ApplyPage = () => {
   useHeader({ mode: "ITEM" });
   const { isLogined } = useAuth();
   const { handleAlertOpen } = useAlert();
   const { setBottom } = useBottom(<></>);
-  const [hobbyId, setHobbyId] = useRecoilState(applyHobbyIdState);
+  const router = useRouter();
+  const { hobbyId } = router.query;
+  const data = {
+    hobbyId,
+  };
   const [userConfirm, setUserConfirm] = useState<boolean>(false);
   const { replace, push } = useRouter();
-  console.log(hobbyId);
-  const onApplyHobby = async () => {
-    await apiInstance
-      .post(ENDPOINT_API + "/hobby/history/regist", hobbyId)
+  const onApplyHobby = () => {
+    apiInstance
+      .post(ENDPOINT_API + "/hobby/history/regist", data)
       .then(res => {
         console.log(res);
         handleAlertOpen("취미모임 참여에 성공했습니다. 방장의 승인을 기다려주세요.", true, 2000);

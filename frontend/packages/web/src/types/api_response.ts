@@ -34,6 +34,8 @@ type HobbyRoomType = {
 };
 
 type DealItemDetailType = {
+  categoryId: number;
+  localId: number;
   dealId: number;
   title: string;
   description: string;
