@@ -91,7 +91,6 @@ const HobbyDetailPage = ({ hobbyRoomDefaultInfo }: { hobbyRoomDefaultInfo: Hobby
               justify-content: center;
               align-items: center;
               padding: 0.5rem;
-              position: relative;
             `}
           >
             {favorite && (
@@ -149,7 +148,7 @@ const HobbyDetailPage = ({ hobbyRoomDefaultInfo }: { hobbyRoomDefaultInfo: Hobby
                 `}
                 onClick={() => {
                   setHobbyId(hobbyId);
-                  push(APPLY);
+                  push(`/apply/${hobbyId}`);
                 }}
               >
                 <Text

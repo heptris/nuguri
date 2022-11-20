@@ -48,7 +48,9 @@ const DealListPage = ({ defaultDealList, localId }: { defaultDealList: DealItemT
       >
         중고거래
       </Text>
-      <DealCardList categoryId={categoryId} dealList={dealList} localId={localId} />
+      <ListWrapper>
+        <DealCardList dealList={dealList} />
+      </ListWrapper>
     </MainWrapper>
   );
 };
@@ -57,6 +59,13 @@ const MainWrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding: 1rem 2rem;
+`;
+const ListWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+  box-sizing: border-box;
 `;
 
 export default DealListPage;

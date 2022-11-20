@@ -1,5 +1,5 @@
 import Link from "@/components/Link";
-import { Card, Text } from "@common/components";
+import { Button, Card, Text } from "@common/components";
 import { racconsThemes } from "@common/components/src/styles/theme";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
@@ -11,10 +11,11 @@ import { IconButton } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 const { REGION, HOBBY, DEAL, GROUP_DEAL } = ROUTES;
 
-export const DealCardList = ({ dealList, categoryId, localId }) => {
+export const DealCardList = ({ dealList }) => {
+  const categoryName = ["성장, 자기계발", "운동, 액티비티", "문화, 예술", "푸드, 드링크", "취미", "여행, 나들이"];
   return (
     <>
-      {dealList?.map(({ dealId, dealImage, price, title, hit, deal }: DealItemDetailType) => {
+      {dealList?.map(({ dealId, dealImage, price, title, hit, deal, categoryId, localId }: DealItemDetailType) => {
         return (
           <Link
             href={REGION + `/${localId}` + DEAL + `/${dealId}`}
@@ -27,6 +28,24 @@ export const DealCardList = ({ dealList, categoryId, localId }) => {
               Image={<Image src={dealImage} width={500} height={400} />}
               Content={
                 <>
+                  <ButtonDiv
+                    css={css`
+                      margin: 0.5rem 0;
+                    `}
+                  >
+                    <Text
+                      css={css`
+                        color: ${racconsThemes.defaultTheme.color.background.submain};
+                        padding: 0.3rem 0.5rem;
+                        @media screen and (max-width: 599px) {
+                          font-size: 0.6rem;
+                          padding: 0.1rem;
+                        }
+                      `}
+                    >
+                      {categoryName[categoryId - 1]}
+                    </Text>
+                  </ButtonDiv>
                   <Text
                     as="h1"
                     css={css`
@@ -60,31 +79,41 @@ export const DealCardList = ({ dealList, categoryId, localId }) => {
               }
               Bottom={
                 <>
-                  <div>
-                    <IconButton aria-label="add to favorites">
-                      <FavoriteBorderIcon />
-                    </IconButton>
-                    <Text as="span">{hit}</Text>
-                  </div>
-                  <ButtonDiv
+                  <DivWrapper
                     css={css`
-                      border-radius: 0.5rem;
-                      background-color: ${racconsThemes.defaultTheme.color.text.sub};
+                      justify-content: space-between;
                     `}
                   >
-                    <Text
-                      css={css`
-                        color: ${racconsThemes.defaultTheme.color.background.submain};
-                        padding: 0.2rem 0.5rem;
-                        @media screen and (max-width: 599px) {
-                          font-size: 0.6rem;
-                          padding: 0.1rem;
-                        }
-                      `}
-                    >
-                      {deal ? "판매" : "마감"}완료
-                    </Text>
-                  </ButtonDiv>
+                    <IconWrapper>
+                      <FavoriteBorderIcon color="action" sx={{ fontSize: "1.3rem", marginRight: "0.3rem" }} />
+                      <Text as="span">{hit}</Text>
+                    </IconWrapper>
+                    {deal && (
+                      <Button
+                        disabled
+                        css={css`
+                          padding: 0.5rem;
+                          min-width: 6rem;
+                          @media screen and (max-width: 599px) {
+                            padding: 0.3rem;
+                            min-width: 4rem;
+                          }
+                        `}
+                      >
+                        <Text
+                          as="span"
+                          css={css`
+                            font-size: 1rem;
+                            @media screen and (max-width: 599px) {
+                              font-size: 0.8rem;
+                            }
+                          `}
+                        >
+                          판매완료
+                        </Text>
+                      </Button>
+                    )}
+                  </DivWrapper>
                 </>
               }
             />
@@ -94,6 +123,24 @@ export const DealCardList = ({ dealList, categoryId, localId }) => {
     </>
   );
 };
+const DivWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  box-sizing: border-box;
+  @media screen and (max-width: 599px) {
+    font-size: 0.6rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+`;
+const IconWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 const ButtonDiv = styled.div`
   display: inline-flex;
