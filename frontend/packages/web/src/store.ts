@@ -6,7 +6,7 @@ export type SearchBarType = { placeholder: string; value: string };
 export type BottomType = { children: ReactNode };
 export type ListCategoryType = number;
 export type PostType = number;
-export type ApplyType = number;
+export type DealDetilType = number;
 
 const headerState = atom<HeaderType>({
   key: "headerState",
@@ -32,8 +32,8 @@ const postState = atom<PostType>({
   default: null,
 });
 
-const applyHobbyIdState = atom<ApplyType>({
-  key: "applyState",
+const dealDetailCategoryId = atom<DealDetilType>({
+  key: "dealCategoryIdState",
   default: null,
 });
-export { headerState, searchBarState, menuCategoryState, postState, bottomState, applyHobbyIdState };
+export { headerState, searchBarState, menuCategoryState, postState, bottomState, dealDetailCategoryId };

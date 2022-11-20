@@ -4,6 +4,8 @@ import { racconsThemes } from "@common/components/src/styles/theme";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import Image from "next/image";
+import { useRecoilState } from "recoil";
+import { dealDetailCategoryId } from "@/store";
 
 import { ROUTES } from "@/constant";
 import { DealItemDetailType } from "@/types";
@@ -13,6 +15,7 @@ const { REGION, HOBBY, DEAL, GROUP_DEAL } = ROUTES;
 
 export const DealCardList = ({ dealList }) => {
   const categoryName = ["성장, 자기계발", "운동, 액티비티", "문화, 예술", "푸드, 드링크", "취미", "여행, 나들이"];
+  const [dealCategoryId, setDealCategoryId] = useRecoilState(dealDetailCategoryId);
   return (
     <>
       {dealList?.map(({ dealId, dealImage, price, title, hit, deal, categoryId, localId }: DealItemDetailType) => {
@@ -23,6 +26,9 @@ export const DealCardList = ({ dealList }) => {
             css={css`
               display: contents;
             `}
+            onClick={() => {
+              setDealCategoryId(categoryId);
+            }}
           >
             <Card
               Image={<Image src={dealImage} width={500} height={400} />}
