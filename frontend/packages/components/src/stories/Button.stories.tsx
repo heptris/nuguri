@@ -4,7 +4,7 @@ import React from "react";
 
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 
-import { Button } from "../Button";
+import { Button } from "../components/Button";
 import { JSX } from "@emotion/react/jsx-runtime";
 import { ButtonTypeMap } from "@mui/material";
 

@@ -9,7 +9,7 @@
 stages:
   - spring-build
   - spring-dockerize
- # - react-test
+  # - react-test
   - react-dockerize
   - deploy
 
@@ -40,7 +40,7 @@ spring-dockerize:
   image: docker:latest
   stage: spring-dockerize
   variables:
-    DOCKER_TLS_CERTDIR: ""
+    DOCKER_TLS_CERTDIR: ''
   services:
     - docker:dind
   before_script: |
@@ -72,7 +72,7 @@ react-dockerize:
   image: docker:latest
   stage: react-dockerize
   variables:
-    DOCKER_TLS_CERTDIR: ""
+    DOCKER_TLS_CERTDIR: ''
   services:
     - docker:dind
   before_script: |
@@ -91,7 +91,7 @@ deploy:
   image: docker:latest
   stage: deploy
   variables:
-    DOCKER_TLS_CERTDIR: ""
+    DOCKER_TLS_CERTDIR: ''
   tags:
     - deploy
   before_script: |

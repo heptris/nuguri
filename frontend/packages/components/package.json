@@ -1,7 +1,7 @@
 {
   "name": "@common/components",
   "packageManager": "yarn@3.2.4",
-  "main": "src/index.tsx",
+  "main": "src/components/index.tsx",
   "private": true,
   "dependencies": {
     "@emotion/cache": "^11.10.3",
